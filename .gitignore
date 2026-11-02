@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+uploads/
+output/
+feedback.csv
+*.pyc
