@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Split PDF</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h1>Split PDF</h1>
+
+<p>Split a PDF at a specific page.</p>
+
+<form action="/split" method="post" enctype="multipart/form-data">
+
+    <input type="file"
+           name="file"
+           accept=".pdf"
+           required>
+
+    <br><br>
+
+    <input
+        type="number"
+        name="page"
+        placeholder="Page Number"
+        min="1"
+        required>
+
+    <br><br>
+
+    <button type="submit">
+        Split PDF
+    </button>
+
+</form>
+
+<br>
+
+<a href="/">← Back Home</a>
+
+</body>
+</html>

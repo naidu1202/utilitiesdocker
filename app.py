@@ -32,13 +32,28 @@ templates = Jinja2Templates(directory="templates")
 
 from fastapi.responses import HTMLResponse
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse(
         request=request,
-        name="index.html"
+        name="home.html"
     )
 
+
+@app.get("/merge-page", response_class=HTMLResponse)
+async def merge_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="merge.html"
+    )
+
+
+@app.get("/split-page", response_class=HTMLResponse)
+async def split_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="split.html"
+    )
 
 
 @app.post("/merge")
