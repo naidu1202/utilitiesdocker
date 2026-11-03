@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}JFIF to JPG Converter{% endblock %}
+
+{% block content %}
+
+<h2>JFIF to JPG Converter</h2>
+
+<p>
+Convert JFIF images to JPEG format.
+</p>
+
+<form action="/jfif-to-jpg"
+      method="post"
+      enctype="multipart/form-data">
+
+    <input type="file"
+           name="file"
+           accept=".jfif"
+           required>
+
+    <br><br>
+
+    <button type="submit">
+        Convert to JPG
+    </button>
+
+</form>
+
+{% endblock %}

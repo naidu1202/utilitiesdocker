@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EMI Calculator - UtilitiesDocker</title>
+    <meta name="description" content="Calculate monthly EMI and total loan repayment instantly.">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 20px;
+        }
+        .result {
+            margin-top: 20px;
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>EMI Calculator</h1>
+
+<label>Loan Amount</label>
+<input type="number" id="loan" placeholder="500000">
+
+<label>Annual Interest Rate (%)</label>
+<input type="number" id="interest" placeholder="8.5">
+
+<label>Loan Tenure (Years)</label>
+<input type="number" id="years" placeholder="20">
+
+<button onclick="calculateEMI()">Calculate EMI</button>
+
+<div class="result" id="result"></div>
+
+<script>
+function calculateEMI() {
+
+    let P = parseFloat(document.getElementById("loan").value);
+    let annualRate = parseFloat(document.getElementById("interest").value);
+    let years = parseFloat(document.getElementById("years").value);
+
+    let r = annualRate / 12 / 100;
+    let n = years * 12;
+
+    let emi = (P * r * Math.pow(1 + r, n)) /
+              (Math.pow(1 + r, n) - 1);
+
+    let totalPayment = emi * n;
+    let totalInterest = totalPayment - P;
+
+    document.getElementById("result").innerHTML = `
+        <h3>Loan Summary</h3>
+
+        <p>
+            Monthly EMI:
+            <strong>$${emi.toFixed(2)}</strong>
+        </p>
+
+        <p>
+            Total Interest:
+            <strong>$${totalInterest.toFixed(2)}</strong>
+        </p>
+
+        <p>
+            Total Repayment:
+            <strong>$${totalPayment.toFixed(2)}</strong>
+        </p>
+    `;
+}
+</script>
+
+</body>
+</html>

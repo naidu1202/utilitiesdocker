@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Text Compare Tool | UtilitiesDocker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Text Compare Tool</h2>
+    <p>Compare two texts and highlight differences instantly.</p>
+
+    <form method="POST">
+        <div class="row">
+            <div class="col">
+                <label>Text 1</label>
+                <textarea name="text1" rows="15" class="form-control">{{ text1 or '' }}</textarea>
+            </div>
+
+            <div class="col">
+                <label>Text 2</label>
+                <textarea name="text2" rows="15" class="form-control">{{ text2 or '' }}</textarea>
+            </div>
+        </div>
+
+        <br>
+
+        <button class="btn btn-primary">
+            Compare
+        </button>
+    </form>
+
+    {% if result %}
+    <hr>
+    <h3>Comparison Result</h3>
+
+    <div class="diff-box">
+        {{ result|safe }}
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.diff-box{
+    border:1px solid #ddd;
+    padding:15px;
+    background:#fff;
+    overflow:auto;
+}
+
+.diff_add{
+    background:#d4edda;
+}
+
+.diff_sub{
+    background:#f8d7da;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Age Calculator - UtilitiesDocker</title>
+    <meta name="description" content="Calculate your exact age in years, months and days.">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f4f4f4;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Age Calculator</h1>
+
+<label>Select your Date of Birth:</label><br>
+<input type="date" id="dob">
+
+<br><br>
+<button onclick="calculateAge()">Calculate Age</button>
+
+<div class="result" id="result"></div>
+
+<script>
+function calculateAge() {
+    let dob = new Date(document.getElementById("dob").value);
+
+    if (!document.getElementById("dob").value) {
+        alert("Please select a date");
+        return;
+    }
+
+    let today = new Date();
+
+    let years = today.getFullYear() - dob.getFullYear();
+    let months = today.getMonth() - dob.getMonth();
+    let days = today.getDate() - dob.getDate();
+
+    if (days < 0) {
+        months--;
+        let lastMonth = new Date(today.getFullYear(),
+                                 today.getMonth(), 0);
+        days += lastMonth.getDate();
+    }
+
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    document.getElementById("result").innerHTML =
+        `<h3>Your Age</h3>
+         <p><strong>${years}</strong> Years,
+         <strong>${months}</strong> Months,
+         <strong>${days}</strong> Days</p>`;
+}
+</script>
+
+</body>
+</html>

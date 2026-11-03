@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}SVG to PNG Converter{% endblock %}
+
+{% block content %}
+
+<h2>SVG to PNG Converter</h2>
+
+<p>
+Convert vector SVG files into PNG images.
+</p>
+
+<form action="/svg-to-png"
+      method="post"
+      enctype="multipart/form-data">
+
+    <input type="file"
+           name="file"
+           accept=".svg"
+           required>
+
+    <br><br>
+
+    <button type="submit">
+        Convert to PNG
+    </button>
+
+</form>
+
+{% endblock %}

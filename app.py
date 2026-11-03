@@ -6,11 +6,19 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi import Form
 from pdf2image import convert_from_path
+from pydantic import BaseModel
+from difflib import HtmlDiff
+from pdf2docx import Converter
+from pillow_heif import register_heif_opener
+import cairosvg
+register_heif_opener()
+
 
 from rembg import remove
 import uuid
 import os
 import qrcode
+import base64
 
 
 templates = Jinja2Templates(directory="templates")
@@ -45,6 +53,33 @@ templates = Jinja2Templates(directory="templates")
 
 from fastapi.responses import HTMLResponse
 
+class EncodeRequest(BaseModel):
+    text: str
+
+@app.post("/api/base64/encode")
+def encode_base64(req: EncodeRequest):
+    encoded = base64.b64encode(
+        req.text.encode("utf-8")
+    ).decode("utf-8")
+
+    return {
+        "encoded": encoded
+    }
+
+class DecodeRequest(BaseModel):
+    text: str
+
+@app.post("/api/base64/decode")
+def decode_base64(req: DecodeRequest):
+
+    decoded = base64.b64decode(
+        req.text
+    ).decode("utf-8")
+
+    return {
+        "decoded": decoded
+    }
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse(
@@ -52,6 +87,105 @@ async def home(request: Request):
         name="home.html"
     )
 
+@app.get("/svg-to-png", response_class=HTMLResponse)
+async def svg_to_png_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="svg_to_png.html"
+    )
+
+@app.post("/svg-to-png")
+async def svg_to_png(
+    file: UploadFile = File(...)
+):
+
+    svg_data = await file.read()
+
+    output_file = f"output/{uuid.uuid4()}.png"
+
+    cairosvg.svg2png(
+        bytestring=svg_data,
+        write_to=output_file
+    )
+
+    return FileResponse(
+        output_file,
+        media_type="image/png",
+        filename="converted.png"
+    )
+
+@app.get("/jfif-to-jpg", response_class=HTMLResponse)
+async def jfif_to_jpg_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="jfif_to_jpg.html"
+    )
+
+
+
+@app.post("/jfif-to-jpg")
+async def jfif_to_jpg(
+    file: UploadFile = File(...)
+):
+
+    input_file = f"uploads/{uuid.uuid4()}_{file.filename}"
+
+    with open(input_file, "wb") as f:
+        f.write(await file.read())
+
+    image = Image.open(input_file)
+
+    output_file = f"output/{uuid.uuid4()}.jpg"
+
+    image.save(output_file, "JPEG")
+
+    return FileResponse(
+        output_file,
+        media_type="image/jpeg",
+        filename="converted.jpg"
+    )
+
+@app.get("/heic-to-jpg", response_class=HTMLResponse)
+async def heic_to_jpg_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="heic_to_jpg.html"
+    )
+
+@app.post("/heic-to-jpg")
+async def heic_to_jpg(
+    file: UploadFile = File(...)
+):
+
+    input_file = f"uploads/{uuid.uuid4()}_{file.filename}"
+
+    with open(input_file, "wb") as f:
+        f.write(await file.read())
+
+    image = Image.open(input_file)
+
+    output_file = f"output/{uuid.uuid4()}.jpg"
+
+    image.convert("RGB").save(
+        output_file,
+        "JPEG"
+    )
+
+    return FileResponse(
+        output_file,
+        media_type="image/jpeg",
+        filename="converted.jpg"
+    )
+
+@app.get("/age-calculator", response_class=HTMLResponse)
+async def age_calculator():
+    with open("templates/age-calculator.html") as f:
+        return HTMLResponse(f.read())
+
+@app.get("/emi-calculator", response_class=HTMLResponse)
+async def emi_calculator():
+    with open("templates/emi-calculator.html") as f:
+        return HTMLResponse(f.read())
 
 @app.get("/merge-page", response_class=HTMLResponse)
 async def merge_page(request: Request):
@@ -60,11 +194,139 @@ async def merge_page(request: Request):
         name="merge.html"
     )
 
+@app.get("/text-compare", response_class=HTMLResponse)
+async def text_compare(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="text-compare.html"
+    )
+
+@app.post("/text-compare", response_class=HTMLResponse)
+async def compare_text(
+    request: Request,
+    text1: str = Form(...),
+    text2: str = Form(...)
+):
+    diff = HtmlDiff()
+
+    result = diff.make_table(
+        text1.splitlines(),
+        text2.splitlines(),
+        "Text 1",
+        "Text 2",
+        context=True
+    )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="text-compare.html",
+        context={
+            "result": result,
+            "text1": text1,
+            "text2": text2
+        }
+    )
+
 @app.get("/remove-background")
 async def remove_background_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="remove_background.html"
+    )
+
+@app.get("/word-to-pdf")
+async def word_to_pdf_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="word_to_pdf.html"
+    )
+
+@app.get("/webp-to-jpg")
+async def webp_to_jpg_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="webp_to_jpg.html"
+    )
+
+@app.post("/webp-to-jpg")
+async def webp_to_jpg(file: UploadFile = File(...)):
+
+    input_file = f"uploads/{uuid.uuid4()}_{file.filename}"
+
+    with open(input_file, "wb") as f:
+        f.write(await file.read())
+
+    image = Image.open(input_file)
+
+    output_file = f"output/{uuid.uuid4()}.jpg"
+
+    image.convert("RGB").save(output_file)
+
+    return FileResponse(
+        output_file,
+        media_type="image/jpeg",
+        filename="converted.jpg"
+    )
+
+
+
+@app.post("/word-to-pdf")
+async def word_to_pdf(
+    file: UploadFile = File(...)
+):
+    input_file = f"uploads/{uuid.uuid4()}_{file.filename}"
+
+    with open(input_file, "wb") as f:
+        f.write(await file.read())
+
+    subprocess.run([
+        "libreoffice",
+        "--headless",
+        "--convert-to",
+        "pdf",
+        input_file,
+        "--outdir",
+        "output"
+    ])
+
+    pdf_file = os.path.join(
+        "output",
+        os.path.splitext(os.path.basename(input_file))[0] + ".pdf"
+    )
+
+    return FileResponse(
+        pdf_file,
+        media_type="application/pdf",
+        filename="converted.pdf"
+    )
+
+
+@app.get("/pdf-to-word")
+async def pdf_to_word_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="pdf_to_word.html"
+    )
+
+@app.post("/pdf-to-word")
+async def pdf_to_word(
+    file: UploadFile = File(...)
+):
+    pdf_file = f"uploads/{uuid.uuid4()}.pdf"
+
+    with open(pdf_file, "wb") as f:
+        f.write(await file.read())
+
+    docx_file = f"output/{uuid.uuid4()}.docx"
+
+    cv = Converter(pdf_file)
+    cv.convert(docx_file)
+    cv.close()
+
+    return FileResponse(
+        docx_file,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        filename="converted.docx"
     )
 
 @app.get("/json-formatter", response_class=HTMLResponse)
@@ -125,6 +387,52 @@ async def protect_pdf_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="protect_pdf.html"
+    )
+
+@app.get("/image-compressor", response_class=HTMLResponse)
+async def image_compressor_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="image_compressor.html"
+    )
+
+@app.post("/compress-image")
+async def compress_image(
+    file: UploadFile = File(...)
+):
+    input_path = f"uploads/{uuid.uuid4()}_{file.filename}"
+
+    with open(input_path, "wb") as f:
+        f.write(await file.read())
+
+    output_path = (
+        f"output/{uuid.uuid4()}_compressed.jpg"
+    )
+
+    img = Image.open(input_path)
+
+    if img.mode in ("RGBA", "P"):
+        img = img.convert("RGB")
+
+    img.save(
+        output_path,
+        "JPEG",
+        optimize=True,
+        quality=60
+    )
+
+    return FileResponse(
+        output_path,
+        media_type="image/jpeg",
+        filename="compressed.jpg"
+    )
+
+
+@app.get("/base64-tool", response_class=HTMLResponse)
+async def base64_tool_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="base64_tool.html"
     )
 
 

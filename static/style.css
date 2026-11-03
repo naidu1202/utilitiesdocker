@@ -86,21 +86,23 @@ body {
 
 /* ===== Hero ===== */
 
-.hero {
-    text-align: center;
-
-    /* This is the important part */
-    padding-top: 40px;
-    padding-bottom: 30px;
-
-    max-width: 1100px;
-    margin: 0 auto;
+.hero{
+    text-align:center;
+    padding:30px 20px;
+    background:#f8fafc;
 }
 
-.hero h1 {
-    font-size: 72px;
-    font-weight: 800;
-    margin-bottom: 10px;
+.hero h1{
+    font-size:48px;
+    font-weight:700;
+    margin-bottom:10px;
+    line-height:1.2;
+}
+
+.hero p{
+    font-size:18px;
+    color:#666;
+    margin-bottom:20px;
 }
 
 .hero-subtitle {
@@ -126,46 +128,40 @@ body {
 
 /* ===== Tool Grid ===== */
 
-.tool-grid {
-    max-width: 1300px;
-
-    margin: 20px auto 50px;
-
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-
-    gap: 25px;
-
-    padding: 0 20px;
+.tool-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+    padding:20px;
 }
 
-.tool-card {
-    background: white;
-    padding: 28px;
-    border-radius: 18px;
-
-    text-decoration: none;
-    color: inherit;
-
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-
-    transition: all 0.2s ease;
+.tool-card{
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    min-height:90px;
+    text-decoration:none;
+    color:#333;
+    transition:0.2s;
 }
 
-.tool-card:hover {
-    transform: translateY(-3px);
-
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+.tool-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
 }
 
-.tool-card h2 {
-    margin-bottom: 15px;
-    font-size: 20px;
+.tool-card h2,
+.tool-card h3{
+    font-size:18px;
+    margin:0 0 8px;
 }
 
-.tool-card p {
-    color: #666;
-    font-size: 15px;
+.tool-card p{
+    font-size:13px;
+    margin:0;
+    color:#666;
+    line-height:1.3;
 }
 
 /* ===== Feedback ===== */
@@ -175,25 +171,21 @@ body {
     margin: 20px 0 40px;
 }
 
-.feedback-btn {
-    display: inline-block;
-
-    background: #2563eb;
-    color: white;
-
-    text-decoration: none;
-
-    padding: 14px 24px;
-
-    border-radius: 10px;
-
-    font-weight: 600;
+.feedback-btn{
+    display:inline-block;
+    background:#2563eb;
+    color:white !important;
+    padding:12px 24px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.2s;
 }
 
-.feedback-btn:hover {
-    background: #1d4ed8;
+.feedback-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
 }
-
 /* ===== Info Section ===== */
 
 .info-section {

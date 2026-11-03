@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Base64 Encoder Decoder Online | UtilitiesDocker</title>
+
+<meta name="description"
+content="Encode and decode Base64 text online for free.">
+
+<style>
+
+body{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+  font-family:Arial;
+}
+
+textarea{
+  width:100%;
+  height:200px;
+}
+
+button{
+  margin-right:10px;
+  padding:10px 20px;
+  background:#2563eb;
+  color:white;
+  border:none;
+  border-radius:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Base64 Encoder / Decoder</h1>
+
+<p>
+Encode plain text into Base64 or decode Base64 back into readable text.
+</p>
+
+<textarea
+id="input"
+placeholder="Paste text or Base64 here"></textarea>
+
+<br><br>
+
+<button onclick="encodeText()">
+Encode
+</button>
+
+<button onclick="decodeText()">
+Decode
+</button>
+
+<button onclick="copyResult()">
+Copy Result
+</button>
+
+<br><br>
+
+<textarea
+id="output"
+placeholder="Result"></textarea>
+
+<script>
+
+function encodeText(){
+
+    const value =
+      document.getElementById("input").value;
+
+    document.getElementById("output").value =
+      btoa(value);
+}
+
+function decodeText(){
+
+    try {
+
+        const value =
+          document.getElementById("input").value;
+
+        document.getElementById("output").value =
+          atob(value);
+
+    } catch {
+
+        alert("Invalid Base64");
+    }
+}
+
+function copyResult(){
+
+    navigator.clipboard.writeText(
+      document.getElementById("output").value
+    );
+
+    alert("Copied");
+}
+
+</script>
+
+</body>
+</html>
