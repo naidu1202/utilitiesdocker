@@ -7,14 +7,20 @@ from fastapi.responses import HTMLResponse
 from fastapi import Form
 from pdf2image import convert_from_path
 
-from fastapi import Form
+from rembg import remove
+import uuid
+import os
+import qrcode
+
+
+templates = Jinja2Templates(directory="templates")
+
+
 from datetime import datetime
 
 from pypdf import PdfReader, PdfWriter
 from docx2pdf import convert
 
-import os
-import uuid
 import subprocess
 from PIL import Image
 
@@ -25,6 +31,8 @@ app = FastAPI()
 
 os.makedirs("uploads", exist_ok=True)
 os.makedirs("output", exist_ok=True)
+os.makedirs("outputs", exist_ok=True)
+
 
 app.mount(
     "/static",
@@ -52,6 +60,26 @@ async def merge_page(request: Request):
         name="merge.html"
     )
 
+@app.get("/remove-background")
+async def remove_background_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="remove_background.html"
+    )
+
+@app.get("/json-formatter", response_class=HTMLResponse)
+async def json_formatter_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="json_formatter.html"
+    )
+
+@app.get("/qr-generator", response_class=HTMLResponse)
+async def qr_generator_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="qr_generator.html"
+    )
 
 @app.get("/split-page", response_class=HTMLResponse)
 async def split_page(request: Request):
@@ -97,6 +125,56 @@ async def protect_pdf_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="protect_pdf.html"
+    )
+
+
+@app.post("/generate-qr")
+async def generate_qr(
+    content: str = Form(...)
+):
+
+    filename = f"output/{uuid.uuid4()}.png"
+
+    qr = qrcode.QRCode(
+        version=1,
+        box_size=10,
+        border=5
+    )
+
+    qr.add_data(content)
+    qr.make(fit=True)
+
+    img = qr.make_image(
+        fill_color="black",
+        back_color="white"
+    )
+
+    img.save(filename)
+
+    return FileResponse(
+        filename,
+        media_type="image/png",
+        filename="qrcode.png"
+    )
+
+
+@app.post("/remove-background")
+async def remove_background(file: UploadFile = File(...)):
+
+    input_data = await file.read()
+
+    output_data = remove(input_data)
+
+    filename = f"{uuid.uuid4()}.png"
+    output_file = f"outputs/{filename}"
+
+    with open(output_file, "wb") as f:
+        f.write(output_data)
+
+    return FileResponse(
+        output_file,
+        media_type="image/png",
+        filename="background_removed.png"
     )
 
 @app.post("/merge")

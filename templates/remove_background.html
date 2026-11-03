@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Remove Background - UtilitiesDocker</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            max-width:800px;
+            margin:auto;
+            padding:20px;
+        }
+
+        .container{
+            border:1px solid #ddd;
+            padding:20px;
+            border-radius:10px;
+        }
+
+        button{
+            background:#2563eb;
+            color:white;
+            border:none;
+            padding:10px 20px;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#1d4ed8;
+        }
+
+        #preview{
+            max-width:350px;
+            margin-top:20px;
+            display:none;
+        }
+
+        #loading{
+            display:none;
+            margin-top:15px;
+            color:#666;
+        }
+
+        #download{
+            display:none;
+            margin-top:20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Remove Background</h1>
+
+<p>
+Upload an image and automatically remove the background.
+</p>
+
+<div class="container">
+
+    <input type="file" id="fileInput" accept="image/*">
+
+    <br><br>
+
+    <img id="preview">
+
+    <br><br>
+
+    <button onclick="removeBackground()">
+        Remove Background
+    </button>
+
+    <div id="loading">
+        Processing image...
+    </div>
+
+    <div id="download">
+        <a id="downloadLink">
+            Download Result
+        </a>
+    </div>
+
+</div>
+
+<script>
+
+const fileInput = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
+
+fileInput.addEventListener("change", () => {
+
+    const file = fileInput.files[0];
+
+    if(!file) return;
+
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+});
+
+async function removeBackground(){
+
+    const file = fileInput.files[0];
+
+    if(!file){
+        alert("Please select an image");
+        return;
+    }
+
+    document.getElementById("loading").style.display = "block";
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const response = await fetch(
+        "/remove-background",
+        {
+            method:"POST",
+            body:formData
+        }
+    );
+
+    const blob = await response.blob();
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.getElementById("downloadLink");
+
+    link.href = url;
+    link.download = "background_removed.png";
+
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("download").style.display = "block";
+}
+
+</script>
+
+</body>
+</html>
