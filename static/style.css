@@ -227,28 +227,21 @@ body {
 /* ===== Footer ===== */
 
 .footer {
-    background: white;
-    border-top: 1px solid #e5e5e5;
-
-    margin-top: 50px;
-
-    padding: 40px 20px;
-
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    padding: 30px 20px;
     text-align: center;
+    margin-top: 40px;
 }
 
-.footer h3 {
-    margin-bottom: 10px;
-}
-
-.footer-links {
-    margin: 20px 0;
+.footer h3,
+.footer p {
+    margin: 8px 0;
 }
 
 .footer-links a {
-    margin: 0 12px;
+    color: #64748b;
     text-decoration: none;
-    color: #555;
 }
 
 .footer-links a:hover {
@@ -256,15 +249,18 @@ body {
 }
 
 .privacy-note {
-    margin: 15px 0;
-    color: #666;
-}
-
-.copyright {
-    color: #999;
+    color: #6b7280;
     font-size: 14px;
 }
 
+.copyright {
+    margin: 8px 0 0;
+    font-size: 13px;
+}
+
+.footer p {
+    color: #6b7280;
+}
 /* ===== Modal ===== */
 
 .modal {
