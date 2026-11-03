@@ -11,6 +11,7 @@ from difflib import HtmlDiff
 from pdf2docx import Converter
 from pillow_heif import register_heif_opener
 import cairosvg
+import pytesseract
 register_heif_opener()
 
 
@@ -92,6 +93,42 @@ async def svg_to_png_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="svg_to_png.html"
+    )
+
+@app.get("/ocr-pdf", response_class=HTMLResponse)
+async def ocr_pdf(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="ocr_pdf.html"
+    )
+
+@app.post("/ocr-pdf")
+async def ocr_pdf(
+    file: UploadFile = File(...)
+):
+
+    pdf_path = f"uploads/{uuid.uuid4()}.pdf"
+
+    with open(pdf_path, "wb") as f:
+        f.write(await file.read())
+
+    images = convert_from_path(pdf_path)
+
+    extracted_text = ""
+
+    for image in images:
+        extracted_text += pytesseract.image_to_string(image)
+        extracted_text += "\n\n"
+
+    output_file = f"output/{uuid.uuid4()}.txt"
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(extracted_text)
+
+    return FileResponse(
+        output_file,
+        media_type="text/plain",
+        filename="ocr-result.txt"
     )
 
 @app.post("/svg-to-png")
@@ -187,7 +224,7 @@ async def emi_calculator():
     with open("templates/emi-calculator.html") as f:
         return HTMLResponse(f.read())
 
-@app.get("/merge-page", response_class=HTMLResponse)
+@app.get("/merge", response_class=HTMLResponse)
 async def merge_page(request: Request):
     return templates.TemplateResponse(
         request=request,
@@ -343,14 +380,14 @@ async def qr_generator_page(request: Request):
         name="qr_generator.html"
     )
 
-@app.get("/split-page", response_class=HTMLResponse)
+@app.get("/split", response_class=HTMLResponse)
 async def split_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="split.html"
     )
 
-@app.get("/pdf-to-jpg-page", response_class=HTMLResponse)
+@app.get("/pdf-to-jpg", response_class=HTMLResponse)
 async def pdf_to_jpg_page(request: Request):
     return templates.TemplateResponse(
         request=request,
@@ -358,7 +395,7 @@ async def pdf_to_jpg_page(request: Request):
     )
 
 
-@app.get("/rotate-page", response_class=HTMLResponse)
+@app.get("/rotate", response_class=HTMLResponse)
 async def rotate_page(request: Request):
     return templates.TemplateResponse(
         request=request,
@@ -366,7 +403,7 @@ async def rotate_page(request: Request):
     )
 
 
-@app.get("/delete-pages-page", response_class=HTMLResponse)
+@app.get("/delete-pages", response_class=HTMLResponse)
 async def delete_pages_page(request: Request):
     return templates.TemplateResponse(
         request=request,
@@ -374,7 +411,7 @@ async def delete_pages_page(request: Request):
     )
 
 
-@app.get("/extract-pages-page", response_class=HTMLResponse)
+@app.get("/extract-pages", response_class=HTMLResponse)
 async def extract_pages_page(request: Request):
     return templates.TemplateResponse(
         request=request,
@@ -382,7 +419,7 @@ async def extract_pages_page(request: Request):
     )
 
 
-@app.get("/protect-pdf-page", response_class=HTMLResponse)
+@app.get("/protect-pdf", response_class=HTMLResponse)
 async def protect_pdf_page(request: Request):
     return templates.TemplateResponse(
         request=request,
@@ -542,7 +579,7 @@ async def split(
         filename=f"page_{page}.pdf"
     )
 
-@app.get("/compress-page", response_class=HTMLResponse)
+@app.get("/compress", response_class=HTMLResponse)
 async def compress_page(request: Request):
     return templates.TemplateResponse(
         request=request,
@@ -584,7 +621,7 @@ async def compress_pdf(
         filename="compressed.pdf"
     )
 
-@app.get("/images-to-pdf-page", response_class=HTMLResponse)
+@app.get("/images-to-pdf", response_class=HTMLResponse)
 async def images_to_pdf_page(request: Request):
     return templates.TemplateResponse(
         request=request,
