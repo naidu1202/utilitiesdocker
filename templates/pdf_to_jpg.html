@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PDF To JPG</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="card">
+
+<h1>📸 PDF To JPG</h1>
+
+<form action="/pdf-to-jpg"
+      method="post"
+      enctype="multipart/form-data">
+
+<input type="file"
+       name="file"
+       accept=".pdf"
+       required>
+
+<br><br>
+
+<button type="submit">
+Convert
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

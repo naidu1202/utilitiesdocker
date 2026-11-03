@@ -1,101 +1,331 @@
+/* ===== Global ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-
-font-family: Arial;
-max-width: 800px;
-margin: auto;
-padding: 30px;
-background: #f4f4f4;
-
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f6f8;
+    color: #222;
+    line-height: 1.6;
 }
 
-.card {
+/* ===== Navbar ===== */
 
-background: white;
-padding: 20px;
-margin-bottom: 20px;
-border-radius: 10px;
-
+.navbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-button {
-
-padding: 10px 20px;
-background: blue;
-color: white;
-border: none;
-cursor: pointer;
-
+.logo {
+    font-size: 22px;
+    font-weight: 700;
 }
 
-.feedback-btn{
-    background:#2563eb;
-    color:white;
-    padding:12px 18px;
-    border-radius:6px;
-    text-decoration:none;
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
+
+.nav-links a {
+    text-decoration: none;
+    color: #222;
+    font-weight: 500;
+}
+
+/* ===== Dropdown ===== */
+
+.dropdown {
+    position: relative;
+}
+
+.dropbtn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    min-width: 240px;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-content a:hover {
+    background: #f5f5f5;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* ===== Hero ===== */
+
+.hero {
+    text-align: center;
+
+    /* This is the important part */
+    padding-top: 40px;
+    padding-bottom: 30px;
+
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    font-size: 72px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.hero-subtitle {
+    font-size: 22px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.hero-description {
+    font-size: 18px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.hero-badges {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 16px;
+    color: #444;
+}
+
+/* ===== Tool Grid ===== */
+
+.tool-grid {
+    max-width: 1300px;
+
+    margin: 20px auto 50px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
+    gap: 25px;
+
+    padding: 0 20px;
+}
+
+.tool-card {
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+
+    text-decoration: none;
+    color: inherit;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+    transition: all 0.2s ease;
+}
+
+.tool-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.tool-card h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.tool-card p {
+    color: #666;
+    font-size: 15px;
+}
+
+/* ===== Feedback ===== */
+
+.feedback-section {
+    text-align: center;
+    margin: 20px 0 40px;
+}
+
+.feedback-btn {
+    display: inline-block;
+
+    background: #2563eb;
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 24px;
+
+    border-radius: 10px;
+
+    font-weight: 600;
+}
+
+.feedback-btn:hover {
+    background: #1d4ed8;
+}
+
+/* ===== Info Section ===== */
+
+.info-section {
+    max-width: 1000px;
+
+    margin: 50px auto;
+
+    text-align: center;
+
+    padding: 0 20px;
+}
+
+.info-section h2 {
+    margin-bottom: 25px;
+}
+
+.feature-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.feature-item {
+    background: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ===== Footer ===== */
+
+.footer {
+    background: white;
+    border-top: 1px solid #e5e5e5;
+
+    margin-top: 50px;
+
+    padding: 40px 20px;
+
+    text-align: center;
+}
+
+.footer h3 {
+    margin-bottom: 10px;
+}
+
+.footer-links {
+    margin: 20px 0;
+}
+
+.footer-links a {
+    margin: 0 12px;
+    text-decoration: none;
+    color: #555;
+}
+
+.footer-links a:hover {
+    color: #2563eb;
+}
+
+.privacy-note {
+    margin: 15px 0;
+    color: #666;
+}
+
+.copyright {
+    color: #999;
+    font-size: 14px;
+}
+
+/* ===== Modal ===== */
 
 .modal {
     display: none;
     position: fixed;
-    z-index: 9999;
+    z-index: 2000;
+
     left: 0;
     top: 0;
+
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
+
+    background: rgba(0,0,0,0.5);
 }
 
 .modal-content {
-    background-color: #ffffff;
-    margin: 8% auto;
-    padding: 25px;
-    width: 500px;
-    max-width: 90%;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    background: white;
+
+    max-width: 500px;
+
+    margin: 100px auto;
+
+    padding: 30px;
+
+    border-radius: 15px;
 }
 
 .close {
     float: right;
+    cursor: pointer;
     font-size: 28px;
-    font-weight: bold;
+}
+
+/* ===== Forms ===== */
+
+input,
+select,
+textarea {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+
+    border: none;
+
+    padding: 12px 18px;
+
+    border-radius: 8px;
+
     cursor: pointer;
 }
 
-
-.tool-grid{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap:20px;
-    margin-top:30px;
-}
-
-.tool-card{
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    text-decoration:none;
-    color:black;
-    box-shadow:0 2px 8px rgba(0,0,0,0.15);
-    transition:0.2s;
-}
-
-.tool-card:hover{
-    transform:translateY(-4px);
-}
-
-.coming-soon{
-    opacity:0.8;
-}
-
-.badge{
-    display:inline-block;
-    margin-top:10px;
-    background:#f59e0b;
-    color:white;
-    padding:5px 10px;
-    border-radius:20px;
-    font-size:12px;
+button:hover {
+    background: #1d4ed8;
 }

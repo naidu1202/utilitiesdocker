@@ -1,49 +1,261 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UtilitiesDocker</title>
+    <title>
+UtilitiesDocker | Free Online Tools
+</title>
+
+<meta name="description"
+      content="Free online utilities for PDF, images, file conversion and productivity. Merge PDF, Split PDF, Compress PDF and more.">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-<h1>UtilitiesDocker</h1>
+<div class="navbar">
 
-<p>Free PDF utilities for everyone.</p>
+    <div class="trust-banner">
+    ✅ 100% Free | ⚡ Fast Processing | 🔒 Secure | 🌐 Works Anywhere
+    </div>
+
+    <div class="logo">
+        🛠️ UtilitiesDocker
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <div class="dropdown">
+
+            <button class="dropbtn">
+                All Tools ▼
+            </button>
+
+            <div class="dropdown-content">
+
+                <a href="/merge-page">
+                    📄 Merge PDF
+                </a>
+
+                <a href="/split-page">
+                    ✂️ Split PDF
+                </a>
+
+                <a href="/compress-page">
+                    🗜️ Compress PDF
+                </a>
+
+                <a href="/images-to-pdf-page">
+                    🖼️ Images to PDF
+                </a>
+
+                <a href="/pdf-to-jpg-page">
+                    📸 PDF to JPG
+                </a>
+
+                <a href="/rotate-page">
+                    🔄 Rotate PDF
+                </a>
+
+                <a href="/delete-pages-page">
+                    🗑️ Delete Pages
+                </a>
+
+                <a href="/extract-pages-page">
+                    📑 Extract Pages
+                </a>
+
+                <a href="/protect-pdf-page">
+                    🔒 Protect PDF
+                </a>
+
+                <a href="/ocr-pdf-page">
+                    🔍 OCR PDF
+                </a>
+
+                <a href="#">
+                    📄 Word to PDF (Coming Soon)
+                </a>
+
+                <a href="#">
+                    📊 Excel to PDF (Coming Soon)
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <div class="tool-grid">
 
     <a href="/merge-page" class="tool-card">
-        <h2>Merge PDF</h2>
-        <p>Combine multiple PDF files into one.</p>
+        <h2>📄 Merge PDF</h2>
+        <p>Combine multiple PDF files into one document.</p>
     </a>
 
     <a href="/split-page" class="tool-card">
-        <h2>Split PDF</h2>
-        <p>Split PDF into separate documents.</p>
+        <h2>✂️ Split PDF</h2>
+        <p>Split PDF files into separate pages.</p>
     </a>
 
-    <div class="tool-card coming-soon">
+    <a href="/compress-page" class="tool-card">
         <h2>🗜️ Compress PDF</h2>
         <p>Reduce PDF file size.</p>
-        <span class="badge">Coming Soon</span>
-    </div>
+    </a>
 
-    <div class="tool-card coming-soon">
-        <h2>📝 PDF to Word</h2>
-        <p>Convert PDF to editable Word documents.</p>
-        <span class="badge">Coming Soon</span>
-    </div>
+    <a href="/images-to-pdf-page" class="tool-card">
+        <h2>🖼️ Images to PDF</h2>
+        <p>Convert images into a PDF document.</p>
+    </a>
 
+    <a href="/pdf-to-jpg-page" class="tool-card">
+        <h2>📸 PDF to JPG</h2>
+        <p>Convert PDF pages into JPG images.</p>
+    </a>
+
+    <a href="/rotate-page" class="tool-card">
+        <h2>🔄 Rotate PDF</h2>
+        <p>Rotate every page in a PDF.</p>
+    </a>
+
+    <a href="/delete-pages-page" class="tool-card">
+        <h2>🗑️ Delete Pages</h2>
+        <p>Remove unwanted pages.</p>
+    </a>
+
+    <a href="/extract-pages-page" class="tool-card">
+        <h2>📑 Extract Pages</h2>
+        <p>Create a PDF from selected pages.</p>
+    </a>
+
+    <a href="/protect-pdf-page" class="tool-card">
+        <h2>🔒 Protect PDF</h2>
+        <p>Add a password to PDF.</p>
+    </a>
 
 </div>
 
-<br>
+<section class="seo-section">
 
-<a href="javascript:void(0)"
-   class="feedback-btn"
-   onclick="openFeedback()">
-    🛠️ Help Improve UtilitiesDocker
-</a>
+    <h2>Free Online Utilities</h2>
+
+    <p>
+        UtilitiesDocker provides free online utilities for PDFs, images, file conversion and productivity. Use tools to merge PDF files, split documents, compress large PDFs, convert images and simplify         everyday tasks directly from your browser.
+        No registration is required and all tools are   designed to be simple, fast and easy to use.
+    </p>
+
+
+</section>
+
+
+
+
+    <!-- Feedback Modal -->
+
+    <div id="feedbackModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close"
+                  onclick="closeFeedback()">&times;</span>
+
+            <h2>🛠️ Help Improve UtilitiesDocker</h2>
+
+            <form action="/feedback" method="post">
+
+                <label>Feedback Type</label>
+
+                <select name="feedback_type" required>
+                    <option value="">Select</option>
+                    <option>General Feedback</option>
+                    <option>Report a Bug</option>
+                    <option>Suggest a Tool</option>
+                    <option>Feature Request</option>
+                </select>
+
+                <br><br>
+
+                <label>Your Feedback</label>
+
+                <textarea
+                    name="message"
+                    rows="5"
+                    required
+                    placeholder="Tell us what you think..."></textarea>
+
+                <br><br>
+
+                <label>Email (optional)</label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="your@email.com">
+
+                <br><br>
+
+                <button type="submit">
+                    Submit Feedback
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+
+    function openFeedback() {
+        document.getElementById("feedbackModal").style.display = "block";
+    }
+
+    function closeFeedback() {
+        document.getElementById("feedbackModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+
+        let modal = document.getElementById("feedbackModal");
+
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+
+    }
+
+    </script>
+
+
+<footer class="footer">
+
+
+    <div class="footer-links">
+
+        <a href="javascript:void(0)"
+           onclick="openFeedback()">
+            Feedback
+        </a>
+
+    </div>
+
+    <p class="privacy-note">
+        🔒 Files are processed automatically and are not stored permanently.
+    </p>
+
+    <p>
+        © 2026 UtilitiesDocker
+    </p>
+
+</footer>
 
 </body>
 </html>

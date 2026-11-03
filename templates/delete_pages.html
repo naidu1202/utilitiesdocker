@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Delete Pages</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="card">
+
+<h1>🗑️ Delete Pages</h1>
+
+<form action="/delete-pages"
+      method="post"
+      enctype="multipart/form-data">
+
+<input type="file"
+       name="file"
+       required>
+
+<br><br>
+
+<input type="text"
+       name="pages"
+       placeholder="2,4,6"
+       required>
+
+<br><br>
+
+<button type="submit">
+Delete Pages
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

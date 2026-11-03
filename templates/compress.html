@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compress PDF - UtilitiesDocker</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="card">
+
+    <h1>🗜️ Compress PDF</h1>
+
+    <p>
+        Reduce PDF file size while maintaining good quality.
+    </p>
+
+    <form
+        action="/compress"
+        method="post"
+        enctype="multipart/form-data">
+
+        <label>Select PDF File</label>
+
+        <input
+            type="file"
+            name="file"
+            accept=".pdf"
+            required>
+
+        <br><br>
+
+        <label>Compression Level</label>
+
+        <select name="quality">
+            <option value="screen">Maximum Compression</option>
+            <option value="ebook" selected>Balanced</option>
+            <option value="prepress">High Quality</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            Compress PDF
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/" class="back-link">
+        ← Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>
