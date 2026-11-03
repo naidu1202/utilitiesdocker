@@ -95,8 +95,8 @@ async def svg_to_png_page(request: Request):
         name="svg_to_png.html"
     )
 
-@app.get("/ocr-pdf", response_class=HTMLResponse)
-async def ocr_pdf(request: Request):
+@app.get("/ocr-pdf-page", response_class=HTMLResponse)
+async def ocr_pdf_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="ocr_pdf.html"
