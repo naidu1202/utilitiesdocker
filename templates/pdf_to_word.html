@@ -3,8 +3,10 @@
 {% block title %}PDF to Word{% endblock %}
 
 {% block content %}
-<h2>PDF to Word</h2>
 
+
+<div class="tool-container">
+ <h1> PDF to Word</h1>
 <form action="/pdf-to-word"
       method="post"
       enctype="multipart/form-data">
@@ -19,5 +21,6 @@
     </button>
 
 </form>
+</div>
 
 {% endblock %}

@@ -5,6 +5,13 @@
 UtilitiesDocker | Free Online Tools
 </title>
 
+<link rel="manifest"
+      href="/static/manifest.json">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="UtilitiesDocker">
+
 <meta name="description"
       content="Free online utilities for PDF, images, file conversion and productivity. Merge PDF, Split PDF, Compress PDF and more.">
 
@@ -16,11 +23,15 @@ UtilitiesDocker | Free Online Tools
 </head>
 <body>
 
-<div class="navbar">
 
-    <div class="trust-banner">
-    ✅ 100% Free | ⚡ Fast Processing | 🔒 Secure | 🌐 Works Anywhere
-</div>
+<div class="nav-row">
+
+    <div class="nav-features">
+        <span>✅ Free</span>
+        <span>⚡ Fast</span>
+        <span>🔒 Secure</span>
+        <span>🌍 Anywhere</span>
+    </div>
 
     <div class="logo">
         🛠️ UtilitiesDocker
@@ -115,11 +126,12 @@ UtilitiesDocker | Free Online Tools
 
 </div>
 
+
 <!-- Hero Section -->
 
 <section class="hero">
 
-    <h1>Free PDF, Image, Utility Tools & Developer</h1>
+
 
     <p>
         Convert, compress, edit and optimize files online.
@@ -514,6 +526,16 @@ UtilitiesDocker | Free Online Tools
     </p>
 
 </footer>
+
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/service-worker.js')
+            .then(reg => console.log('SW Registered'))
+            .catch(err => console.log('SW Failed', err));
+    });
+}
+</script>
 
 </body>
 </html>

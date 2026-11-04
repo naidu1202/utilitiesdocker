@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Split PDF</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-<h1>Split PDF</h1>
+{% block title %}
+Merge PDF
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-container">
+
+     <h1>📄 Split PDF</h1>
 
 <p>Split a PDF at a specific page.</p>
 
@@ -36,7 +38,8 @@
 
 <br>
 
-<a href="/">← Back Home</a>
 
-</body>
-</html>
+
+</div>
+
+{% endblock %}
