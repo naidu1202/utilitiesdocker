@@ -1,34 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Merge PDF</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-<h1>Merge PDF Files</h1>
+{% block title %}
+Merge PDF
+{% endblock %}
 
-<p>Combine multiple PDF files into one document.</p>
+{% block content %}
 
-<form action="/merge" method="post" enctype="multipart/form-data">
+<div class="tool-container">
 
-    <input type="file"
-           name="files"
-           multiple
-           accept=".pdf"
-           required>
+    <h1>📄 Merge PDF</h1>
 
-    <br><br>
+    <p>
+        Combine multiple PDF files into one document.
+    </p>
 
-    <button type="submit">
-        Merge PDFs
-    </button>
+    <form
+        action="/merge"
+        method="post"
+        enctype="multipart/form-data">
 
-</form>
+        <input
+            type="file"
+            name="files"
+            multiple
+            required>
 
-<br>
+        <button type="submit">
+            Merge PDF Files
+        </button>
 
-<a href="/">← Back Home</a>
+    </form>
 
-</body>
-</html>
+</div>
+
+{% endblock %}

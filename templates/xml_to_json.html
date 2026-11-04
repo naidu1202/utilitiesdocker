@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}XML to JSON Converter{% endblock %}
+
+{% block content %}
+
+<h2>📊 XML to JSON Converter</h2>
+
+<form action="/xml-to-json" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+    <button type="submit">Convert</button>
+</form>
+
+{% endblock %}

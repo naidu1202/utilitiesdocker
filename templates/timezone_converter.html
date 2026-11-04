@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Time Zone Converter{% endblock %}
+
+{% block content %}
+
+<div class="tool-page">
+
+    <h1>🕒 Time Zone Converter</h1>
+
+    <p>
+        Convert dates and times between different time zones.
+    </p>
+
+    <label>Date & Time</label>
+
+    <input
+        type="datetime-local"
+        id="datetime"
+        style="width:100%;padding:12px;">
+
+    <br><br>
+
+    <label>From Time Zone</label>
+
+    <select id="fromZone">
+
+        <option value="Asia/Singapore">
+            Singapore (SGT)
+        </option>
+
+        <option value="Asia/Kolkata">
+            India (IST)
+        </option>
+
+        <option value="Europe/London">
+            London (GMT/BST)
+        </option>
+
+        <option value="America/New_York">
+            New York (EST/EDT)
+        </option>
+
+        <option value="America/Los_Angeles">
+            Los Angeles (PST/PDT)
+        </option>
+
+        <option value="Asia/Tokyo">
+            Tokyo (JST)
+        </option>
+
+        <option value="Australia/Sydney">
+            Sydney (AEDT)
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <label>To Time Zone</label>
+
+    <select id="toZone">
+
+        <option value="Asia/Kolkata">
+            India (IST)
+        </option>
+
+        <option value="Asia/Singapore">
+            Singapore (SGT)
+        </option>
+
+        <option value="Europe/London">
+            London (GMT/BST)
+        </option>
+
+        <option value="America/New_York">
+            New York (EST/EDT)
+        </option>
+
+        <option value="America/Los_Angeles">
+            Los Angeles (PST/PDT)
+        </option>
+
+        <option value="Asia/Tokyo">
+            Tokyo (JST)
+        </option>
+
+        <option value="Australia/Sydney">
+            Sydney (AEDT)
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button
+        class="tool-btn"
+        onclick="convertTime()">
+        Convert
+    </button>
+
+    <div
+        id="result"
+        class="result-box"
+        style="margin-top:20px;">
+    </div>
+
+</div>
+
+<script>
+
+function convertTime() {
+
+    const input =
+        document.getElementById("datetime").value;
+
+    if (!input) {
+
+        alert("Select date and time");
+
+        return;
+    }
+
+    const fromZone =
+        document.getElementById("fromZone").value;
+
+    const toZone =
+        document.getElementById("toZone").value;
+
+    const date =
+        new Date(input);
+
+    const utc =
+        new Date(
+            date.toLocaleString(
+                "en-US",
+                { timeZone: fromZone }
+            )
+        );
+
+    const converted =
+        new Date(
+            utc.toLocaleString(
+                "en-US",
+                { timeZone: toZone }
+            )
+        );
+
+    document.getElementById("result").innerHTML =
+        `
+        <h3>Converted Time</h3>
+
+        <p>
+            <strong>${toZone}</strong>
+        </p>
+
+        <p>
+            ${converted.toLocaleString()}
+        </p>
+        `;
+}
+
+</script>
+
+{% endblock %}

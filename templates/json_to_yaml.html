@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}JSON to YAML Converter{% endblock %}
+
+{% block content %}
+
+<h2>📊 JSON to YAML Converter</h2>
+
+<form action="/json-to-yaml" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+    <button type="submit">Convert</button>
+</form>
+
+{% endblock %}

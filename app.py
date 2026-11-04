@@ -14,6 +14,16 @@ import cairosvg
 import pytesseract
 register_heif_opener()
 
+import csv
+import io
+import json
+import xmltodict
+import yaml
+from dicttoxml import dicttoxml
+
+import requests
+
+
 
 from rembg import remove
 import uuid
@@ -81,6 +91,206 @@ def decode_base64(req: DecodeRequest):
         "decoded": decoded
     }
 
+@app.get("/exchange-rate", response_class=HTMLResponse)
+async def exchange_rate(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="exchange_rate.html"
+    )
+
+
+@app.get("/weather", response_class=HTMLResponse)
+async def weather(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="weather.html"
+    )
+
+@app.get("/ip-lookup", response_class=HTMLResponse)
+async def ip_lookup(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="ip_lookup.html"
+    )
+
+@app.get("/timezone-converter", response_class=HTMLResponse)
+async def timezone_converter(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="timezone_converter.html"
+    )
+
+
+@app.post("/ip-lookup")
+async def ip_lookup(
+    ip: str = Form(...)
+):
+    response = requests.get(
+        f"https://ipwho.is/{ip}"
+    )
+
+    return response.json()
+
+@app.post("/api/exchange-rate")
+async def exchange_rate(
+    amount: float = Form(...),
+    from_currency: str = Form(...),
+    to_currency: str = Form(...)
+):
+
+    try:
+
+        url = f"https://open.er-api.com/v6/latest/{from_currency}"
+
+        response = requests.get(url)
+
+        data = response.json()
+
+        rate = data["rates"][to_currency]
+
+        converted = round(amount * rate, 2)
+
+        return {
+            "success": True,
+            "amount": amount,
+            "from": from_currency,
+            "to": to_currency,
+            "rate": rate,
+            "converted": converted
+        }
+
+    except Exception as e:
+
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+@app.post("/csv-to-json")
+async def csv_to_json(file: UploadFile = File(...)):
+
+    content = await file.read()
+
+    csv_text = content.decode("utf-8")
+
+    reader = csv.DictReader(io.StringIO(csv_text))
+
+    data = list(reader)
+
+    output_file = f"output/{uuid.uuid4()}.json"
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+
+    return FileResponse(
+        output_file,
+        media_type="application/json",
+        filename="converted.json"
+    )
+
+
+@app.post("/json-to-csv")
+async def json_to_csv(file: UploadFile = File(...)):
+
+    data = json.loads(
+        (await file.read()).decode("utf-8")
+    )
+
+    output_file = f"output/{uuid.uuid4()}.csv"
+
+    with open(output_file, "w", newline="", encoding="utf-8") as f:
+
+        writer = csv.DictWriter(
+            f,
+            fieldnames=data[0].keys()
+        )
+
+        writer.writeheader()
+        writer.writerows(data)
+
+    return FileResponse(
+        output_file,
+        media_type="text/csv",
+        filename="converted.csv"
+    )
+
+@app.post("/xml-to-json")
+async def xml_to_json(file: UploadFile = File(...)):
+
+    xml_data = await file.read()
+
+    data = xmltodict.parse(xml_data)
+
+    output_file = f"output/{uuid.uuid4()}.json"
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+
+    return FileResponse(
+        output_file,
+        media_type="application/json",
+        filename="converted.json"
+    )
+
+@app.post("/json-to-xml")
+async def json_to_xml(file: UploadFile = File(...)):
+
+    data = json.loads(
+        (await file.read()).decode("utf-8")
+    )
+
+    xml_data = dicttoxml(data)
+
+    output_file = f"output/{uuid.uuid4()}.xml"
+
+    with open(output_file, "wb") as f:
+        f.write(xml_data)
+
+    return FileResponse(
+        output_file,
+        media_type="application/xml",
+        filename="converted.xml"
+    )
+
+@app.post("/yaml-to-json")
+async def yaml_to_json(file: UploadFile = File(...)):
+
+    yaml_data = await file.read()
+
+    data = yaml.safe_load(yaml_data)
+
+    output_file = f"output/{uuid.uuid4()}.json"
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+
+    return FileResponse(
+        output_file,
+        media_type="application/json",
+        filename="converted.json"
+    )
+
+
+@app.post("/json-to-yaml")
+async def json_to_yaml(file: UploadFile = File(...)):
+
+    data = json.loads(
+        (await file.read()).decode("utf-8")
+    )
+
+    output_file = f"output/{uuid.uuid4()}.yaml"
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        yaml.dump(data, f)
+
+    return FileResponse(
+        output_file,
+        filename="converted.yaml"
+    )
+
+
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse(
@@ -100,6 +310,62 @@ async def ocr_pdf_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="ocr_pdf.html"
+    )
+
+@app.get("/text-utilities", response_class=HTMLResponse)
+async def text_utilities_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="text_utilities.html"
+    )
+
+@app.get("/developer-tools", response_class=HTMLResponse)
+async def developer_tools_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="developer_tools.html"
+    )
+
+@app.get("/csv-to-json", response_class=HTMLResponse)
+async def csv_to_json_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="csv_to_json.html"
+    )
+
+@app.get("/json-to-csv", response_class=HTMLResponse)
+async def json_to_csv_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="json_to_csv.html"
+    )
+
+@app.get("/xml-to-json", response_class=HTMLResponse)
+async def xml_to_json_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="xml_to_json.html"
+    )
+
+@app.get("/json-to-xml", response_class=HTMLResponse)
+async def json_to_xml_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="json_to_xml.html"
+    )
+
+@app.get("/yaml-to-json", response_class=HTMLResponse)
+async def yaml_to_json_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="yaml_to_json.html"
+    )
+
+@app.get("/json-to-yaml", response_class=HTMLResponse)
+async def json_to_yaml_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="json_to_yaml.html"
     )
 
 @app.post("/ocr-pdf")

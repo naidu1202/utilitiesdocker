@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}IP Geolocation Lookup{% endblock %}
+
+{% block content %}
+
+<div class="tool-page">
+
+    <h1>🌍 IP Geolocation Lookup</h1>
+
+    <p>
+        Find location, ISP and timezone information for any public IP address.
+    </p>
+
+    <input
+        type="text"
+        id="ip"
+        placeholder="8.8.8.8"
+        style="width:100%;padding:12px;">
+
+    <br><br>
+
+    <button
+        class="tool-btn"
+        onclick="lookupIP()">
+
+        Lookup IP
+
+    </button>
+
+    <div
+        id="result"
+        class="result-box"
+        style="margin-top:20px;display:none;">
+    </div>
+
+</div>
+
+<script>
+
+async function lookupIP() {
+
+    const ip = document.getElementById("ip").value.trim();
+    const formData = new FormData();
+    formData.append("ip", ip);
+
+    const response = await fetch(
+        "/ip-lookup",
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    if (!ip) {
+
+        alert("Please enter an IP address");
+
+        return;
+    }
+
+    try {
+
+        document.getElementById("result").style.display = "block";
+
+        document.getElementById("result").innerHTML =
+            "Looking up IP information...";
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if (!data.success) {
+
+            document.getElementById("result").innerHTML =
+                "<span class='error'>Invalid IP address.</span>";
+
+            return;
+        }
+
+        document.getElementById("result").innerHTML = `
+
+            <h3>🌍 IP Information</h3>
+
+            <table style="width:100%;border-collapse:collapse;">
+
+                <tr>
+                    <td><strong>IP Address</strong></td>
+                    <td>${data.ip}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Country</strong></td>
+                    <td>${data.country}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Region</strong></td>
+                    <td>${data.region}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>City</strong></td>
+                    <td>${data.city}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Postal Code</strong></td>
+                    <td>${data.postal || "N/A"}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Latitude</strong></td>
+                    <td>${data.latitude}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Longitude</strong></td>
+                    <td>${data.longitude}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>ISP</strong></td>
+                    <td>${data.connection?.isp || "N/A"}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Organization</strong></td>
+                    <td>${data.connection?.org || "N/A"}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>ASN</strong></td>
+                    <td>${data.connection?.asn || "N/A"}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Timezone</strong></td>
+                    <td>${data.timezone?.id || "N/A"}</td>
+                </tr>
+
+                <tr>
+                    <td><strong>UTC Offset</strong></td>
+                    <td>${data.timezone?.utc || "N/A"}</td>
+                </tr>
+
+            </table>
+
+        `;
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        document.getElementById("result").style.display = "block";
+
+        document.getElementById("result").innerHTML =
+            "<span class='error'>Unable to lookup IP. Please try again.</span>";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

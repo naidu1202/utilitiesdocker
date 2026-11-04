@@ -1,0 +1,172 @@
+<div class="tool-page">
+
+    <div class="page-header">
+        <h1>📝 Text Utilities</h1>
+        <p>Word Counter, Case Converter and Duplicate Line Remover</p>
+    </div>
+
+    <textarea
+        id="textInput"
+        rows="12"
+        placeholder="Paste or type text here..."
+        style="width:100%;padding:15px;border-radius:10px;"></textarea>
+
+    <br><br>
+
+    <div class="stats-grid">
+
+        <div class="tool-card">
+            <h3 id="words">0</h3>
+            <p>Words</p>
+        </div>
+
+        <div class="tool-card">
+            <h3 id="characters">0</h3>
+            <p>Characters</p>
+        </div>
+
+        <div class="tool-card">
+            <h3 id="nospaces">0</h3>
+            <p>No Spaces</p>
+        </div>
+
+        <div class="tool-card">
+            <h3 id="sentences">0</h3>
+            <p>Sentences</p>
+        </div>
+
+        <div class="tool-card">
+            <h3 id="paragraphs">0</h3>
+            <p>Paragraphs</p>
+        </div>
+
+        <div class="tool-card">
+            <h3 id="reading">0 min</h3>
+            <p>Reading Time</p>
+        </div>
+
+    </div>
+
+    <br>
+
+    <h2>🔠 Case Converter</h2>
+
+    <div class="button-row">
+
+        <button onclick="toUpper()">UPPERCASE</button>
+
+        <button onclick="toLower()">lowercase</button>
+
+        <button onclick="toTitle()">Title Case</button>
+
+        <button onclick="toSnake()">snake_case</button>
+
+        <button onclick="toKebab()">kebab-case</button>
+
+    </div>
+
+    <br>
+
+    <h2>🧹 Remove Duplicates</h2>
+
+    <button onclick="removeDuplicates()">
+        Remove Duplicate Lines
+    </button>
+
+</div>
+
+<script>
+
+const input = document.getElementById("textInput");
+
+input.addEventListener("input", updateStats);
+
+function updateStats(){
+
+    let text = input.value;
+
+    let words = text.trim()
+        ? text.trim().split(/\s+/).length
+        : 0;
+
+    let chars = text.length;
+
+    let noSpaces =
+        text.replace(/\s/g,'').length;
+
+    let sentences = text.trim()
+        ? text.split(/[.!?]+/)
+              .filter(x => x.trim())
+              .length
+        : 0;
+
+    let paragraphs = text.trim()
+        ? text.split(/\n\s*\n/)
+              .filter(x => x.trim())
+              .length
+        : 0;
+
+    let reading = Math.ceil(words / 200);
+
+    document.getElementById('words').innerText = words;
+    document.getElementById('characters').innerText = chars;
+    document.getElementById('nospaces').innerText = noSpaces;
+    document.getElementById('sentences').innerText = sentences;
+    document.getElementById('paragraphs').innerText = paragraphs;
+    document.getElementById('reading').innerText = reading + " min";
+}
+
+function toUpper(){
+    input.value = input.value.toUpperCase();
+    updateStats();
+}
+
+function toLower(){
+    input.value = input.value.toLowerCase();
+    updateStats();
+}
+
+function toTitle(){
+
+    input.value = input.value
+        .toLowerCase()
+        .replace(/\b\w/g,
+            c => c.toUpperCase());
+
+    updateStats();
+}
+
+function toSnake(){
+
+    input.value = input.value
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "_");
+
+    updateStats();
+}
+
+function toKebab(){
+
+    input.value = input.value
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-");
+
+    updateStats();
+}
+
+function removeDuplicates(){
+
+    let lines = input.value.split("\n");
+
+    let unique = [...new Set(lines)];
+
+    input.value = unique.join("\n");
+
+    updateStats();
+}
+
+updateStats();
+
+</script>

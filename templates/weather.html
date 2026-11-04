@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Forecast{% endblock %}
+
+{% block content %}
+
+<div class="tool-page">
+
+    <h1>🌦 Weather Forecast</h1>
+
+    <p>
+        Get current weather for any city.
+    </p>
+
+    <input
+        type="text"
+        id="city"
+        placeholder="Enter city name">
+
+    <br><br>
+
+    <button
+        class="tool-btn"
+        onclick="getWeather()">
+
+        Get Weather
+
+    </button>
+
+    <div
+        id="result"
+        class="result-box">
+    </div>
+
+</div>
+
+<script>
+
+async function getWeather() {
+
+    let city =
+        document.getElementById("city").value;
+
+    try {
+
+        let geo =
+            await fetch(
+                `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`
+            );
+
+        let geoData =
+            await geo.json();
+
+        let lat =
+            geoData.results[0].latitude;
+
+        let lon =
+            geoData.results[0].longitude;
+
+        let weather =
+            await fetch(
+                `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
+            );
+
+        let weatherData =
+            await weather.json();
+
+        document.getElementById("result").innerHTML = `
+            <h3>${city}</h3>
+            Temperature:
+            ${weatherData.current_weather.temperature} °C
+            <br>
+            Wind Speed:
+            ${weatherData.current_weather.windspeed} km/h
+        `;
+
+    }
+    catch {
+
+        document.getElementById("result").innerHTML =
+            "City not found.";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}
