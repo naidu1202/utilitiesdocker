@@ -161,6 +161,20 @@ async def sitemap():
         media_type="application/xml"
     )
 
+
+
+@app.get("/robots.txt")
+async def robots_txt():
+
+    return Response(
+        content="""User-agent: *
+Allow: /
+
+Sitemap: https://utilitiesdocker.com/sitemap.xml
+""",
+        media_type="text/plain"
+    )
+
 @app.get("/exchange-rate", response_class=HTMLResponse)
 async def exchange_rate(request: Request):
 
