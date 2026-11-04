@@ -23,7 +23,7 @@ from dicttoxml import dicttoxml
 
 import requests
 
-
+from fastapi.responses import Response
 
 from rembg import remove
 import uuid
@@ -90,6 +90,76 @@ def decode_base64(req: DecodeRequest):
     return {
         "decoded": decoded
     }
+
+@app.get("/sitemap.xml")
+async def sitemap():
+
+    urls = [
+
+        "/",
+        "/merge",
+        "/split",
+        "/compress",
+        "/images-to-pdf",
+        "/pdf-to-jpg",
+        "/rotate",
+        "/delete-pages",
+        "/extract-pages",
+        "/protect-pdf",
+
+        "/word-to-pdf",
+        "/pdf-to-word",
+        "/ocr-pdf-page",
+
+        "/remove-background",
+        "/heic-to-jpg",
+        "/webp-to-jpg",
+        "/svg-to-png",
+        "/jfif-to-jpg",
+        "/image-compressor",
+
+        "/json-formatter",
+        "/base64-tool",
+        "/qr-generator",
+
+        "/csv-to-json",
+        "/json-to-csv",
+        "/xml-to-json",
+        "/json-to-xml",
+        "/yaml-to-json",
+        "/json-to-yaml",
+
+        "/text-compare",
+        "/text-utilities",
+
+        "/age-calculator",
+        "/emi-calculator",
+
+        "/exchange-rate",
+        "/timezone-converter",
+        "/weather",
+        "/ip-lookup"
+    ]
+
+    base = "https://utilitiesdocker.com"
+
+    xml = '<?xml version="1.0" encoding="UTF-8"?>'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+
+    for url in urls:
+
+        xml += f"""
+        <url>
+            <loc>{base}{url}</loc>
+        </url>
+        """
+
+    xml += "</urlset>"
+
+    return Response(
+        content=xml,
+        media_type="application/xml"
+    )
 
 @app.get("/exchange-rate", response_class=HTMLResponse)
 async def exchange_rate(request: Request):
