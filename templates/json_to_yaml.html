@@ -4,11 +4,15 @@
 
 {% block content %}
 
+<div class="tool-container">
+
 <h2>📊 JSON to YAML Converter</h2>
 
 <form action="/json-to-yaml" method="post" enctype="multipart/form-data">
     <input type="file" name="file" required>
     <button type="submit">Convert</button>
 </form>
+
+</div>
 
 {% endblock %}

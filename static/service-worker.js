@@ -1,4 +1,4 @@
-const CACHE_NAME = "utilitiesdocker-v1";
+const CACHE_NAME = "utilitiesdocker-v3";
 
 const urlsToCache = [
     "/",
