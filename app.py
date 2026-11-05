@@ -190,42 +190,6 @@ async def converters(request: Request):
         name="converters.html"
     )
 
-@app.get("/speedtest", response_class=HTMLResponse)
-async def speedtest_page(request: Request):
-
-    return templates.TemplateResponse(
-        request=request,
-        name="speedtest.html"
-    )
-
-@app.get("/api/ping")
-async def ping():
-
-    return {
-        "status": "ok"
-    }
-
-@app.get("/api/download-test")
-async def download_test():
-    return FileResponse("static/200mb.bin")
-
-@app.post("/api/upload-test")
-async def upload_test(
-    file: UploadFile = File(...)
-):
-
-    data = await file.read()
-
-    with open(
-        f"uploads/upload_test_{uuid.uuid4()}.bin",
-        "wb"
-    ) as f:
-
-        f.write(data)
-
-    return {
-        "size": len(data)
-    }
 
 
 
