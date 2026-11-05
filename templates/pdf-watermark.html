@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>
+PDF Watermark | UtilitiesDocker
+</title>
+
+<meta
+name="description"
+content="Add custom text watermarks to PDF documents online for free.">
+
+<link
+rel="stylesheet"
+href="/static/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+💧 PDF Watermark
+</h1>
+
+<p>
+Add a custom watermark to your PDF document.
+</p>
+
+<form
+action="/pdf-watermark"
+method="post"
+enctype="multipart/form-data">
+
+<label>
+Select PDF
+</label>
+
+<br><br>
+
+<input
+type="file"
+name="file"
+accept=".pdf"
+required>
+
+<br><br>
+
+<label>
+Watermark Text
+</label>
+
+<br><br>
+
+<input
+type="text"
+name="watermark"
+placeholder="CONFIDENTIAL"
+required
+style="
+width:100%;
+padding:10px;">
+
+<br><br>
+
+<button type="submit">
+Add Watermark
+</button>
+
+</form>
+
+<br><br>
+
+<div
+style="
+background:#f5f5f5;
+padding:15px;
+border-radius:8px;">
+
+<strong>Examples</strong>
+
+<ul>
+
+<li>
+CONFIDENTIAL
+</li>
+
+<li>
+INTERNAL USE ONLY
+</li>
+
+<li>
+DRAFT
+</li>
+
+<li>
+UTILITIESDOCKER.COM
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</body>
+</html>

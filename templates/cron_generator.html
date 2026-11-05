@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cron Expression Generator | UtilitiesDocker</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <meta
+        name="description"
+        content="Generate cron expressions for Linux cron jobs online.">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🕒 Cron Expression Generator</h1>
+
+    <select id="schedule">
+
+        <option value="minute">
+            Every Minute
+        </option>
+
+        <option value="hour">
+            Every Hour
+        </option>
+
+        <option value="day">
+            Every Day
+        </option>
+
+        <option value="week">
+            Every Sunday
+        </option>
+
+        <option value="month">
+            First Day Of Month
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button onclick="generateCron()">
+        Generate Cron
+    </button>
+
+    <br><br>
+
+    <input
+        type="text"
+        id="cronOutput"
+        style="width:100%;padding:10px;"
+        readonly>
+
+    <br><br>
+
+    <div id="cronDescription"></div>
+
+</div>
+
+<script>
+
+function generateCron(){
+
+    let cron = "";
+    let description = "";
+
+    const schedule =
+        document.getElementById("schedule").value;
+
+    if(schedule==="minute"){
+
+        cron = "* * * * *";
+        description = "Runs every minute";
+
+    }
+    else if(schedule==="hour"){
+
+        cron = "0 * * * *";
+        description = "Runs at the beginning of every hour";
+
+    }
+    else if(schedule==="day"){
+
+        cron = "0 0 * * *";
+        description = "Runs daily at midnight";
+
+    }
+    else if(schedule==="week"){
+
+        cron = "0 0 * * 0";
+        description = "Runs every Sunday";
+
+    }
+    else if(schedule==="month"){
+
+        cron = "0 0 1 * *";
+        description = "Runs on the first day of every month";
+
+    }
+
+    document.getElementById("cronOutput").value =
+        cron;
+
+    document.getElementById("cronDescription").innerHTML =
+        "<b>" + description + "</b>";
+}
+
+</script>
+
+</body>
+</html>

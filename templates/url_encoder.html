@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Encoder Decoder</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>🌐 URL Encoder / Decoder</h1>
+
+<textarea
+id="input"
+rows="8"
+style="width:100%;"></textarea>
+
+<br><br>
+
+<button onclick="encodeUrl()">
+Encode
+</button>
+
+<button onclick="decodeUrl()">
+Decode
+</button>
+
+<br><br>
+
+<textarea
+id="output"
+rows="8"
+style="width:100%;"></textarea>
+
+</div>
+
+<script>
+
+function encodeUrl(){
+
+document.getElementById("output").value =
+encodeURIComponent(
+document.getElementById("input").value
+);
+
+}
+
+function decodeUrl(){
+
+document.getElementById("output").value =
+decodeURIComponent(
+document.getElementById("input").value
+);
+
+}
+
+</script>
+
+</body>
+</html>

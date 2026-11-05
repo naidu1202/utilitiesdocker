@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>
+AI Summarizer | UtilitiesDocker
+</title>
+
+<link
+rel="stylesheet"
+href="/static/style.css">
+
+<meta
+name="description"
+content="Summarize articles, documents and notes using AI.">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+✨ AI Summarizer
+</h1>
+
+<p>
+Paste text and generate a summary using Gemini AI.
+</p>
+
+<textarea
+id="inputText"
+rows="12"
+style="width:100%;"
+placeholder="Paste text here...">
+</textarea>
+
+<br><br>
+
+<button onclick="summarize()">
+Generate Summary
+</button>
+
+<br><br>
+
+<textarea
+id="result"
+rows="18"
+style="width:100%;">
+</textarea>
+
+</div>
+
+<script>
+
+async function summarize(){
+
+    const form =
+        new FormData();
+
+    form.append(
+        "text",
+        document.getElementById(
+            "inputText"
+        ).value
+    );
+
+    const response =
+        await fetch(
+            "/ai-summarizer",
+            {
+                method:"POST",
+                body:form
+            }
+        );
+
+    const data =
+        await response.json();
+
+    document.getElementById(
+        "result"
+    ).value =
+        data.result ||
+        data.error;
+
+}
+
+</script>
+
+</body>
+</html>

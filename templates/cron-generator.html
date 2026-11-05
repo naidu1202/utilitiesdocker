@@ -1,0 +1,20 @@
+
+function generateCron(){
+
+    const schedule =
+        document.getElementById("schedule").value;
+
+    let cron="";
+
+    if(schedule=="minute")
+        cron = "* * * * *";
+
+    else if(schedule=="hour")
+        cron = "0 * * * *";
+
+    else if(schedule=="day")
+        cron = "0 0 * * *";
+
+    document.getElementById("result").value =
+        cron;
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Watermark | UtilitiesDocker</title>
+
+    <meta
+        name="description"
+        content="Add text watermark to images online for free. Protect photos and images with custom watermark text.">
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>💧 Image Watermark</h1>
+
+    <p>
+        Upload an image and add a custom text watermark.
+    </p>
+
+    <form
+        action="/image-watermark"
+        method="post"
+        enctype="multipart/form-data">
+
+        <input
+            type="file"
+            name="file"
+            accept="image/*"
+            required>
+
+        <br><br>
+
+        <input
+            type="text"
+            name="watermark"
+            placeholder="Enter watermark text"
+            required
+            style="width:100%;padding:10px;">
+
+        <br><br>
+
+        <button type="submit">
+            Add Watermark
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

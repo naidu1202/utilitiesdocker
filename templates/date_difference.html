@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>
+Date Difference Calculator
+</title>
+
+<link
+rel="stylesheet"
+href="/static/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+📅 Date Difference Calculator
+</h1>
+
+Start Date
+
+<input
+type="date"
+id="start">
+
+<br><br>
+
+End Date
+
+<input
+type="date"
+id="end">
+
+<br><br>
+
+<button onclick="calculate()">
+Calculate
+</button>
+
+<br><br>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+function calculate(){
+
+    const start =
+        new Date(
+            document.getElementById("start").value
+        );
+
+    const end =
+        new Date(
+            document.getElementById("end").value
+        );
+
+    const diff =
+        Math.abs(end - start);
+
+    const days =
+        Math.floor(
+            diff /
+            (1000 * 60 * 60 * 24)
+        );
+
+    document.getElementById("result")
+        .innerHTML =
+        "<h3>" +
+        days +
+        " Days</h3>";
+}
+
+</script>
+
+</body>
+</html>

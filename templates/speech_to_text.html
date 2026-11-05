@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>
+Speech To Text | UtilitiesDocker
+</title>
+
+<meta
+name="description"
+content="Convert speech to text online for free using your microphone.">
+
+<link
+rel="stylesheet"
+href="/static/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+🎤 Speech To Text
+</h1>
+
+<p>
+Click Start Recording and speak into your microphone.
+</p>
+
+<button onclick="startRecording()">
+🎤 Start Recording
+</button>
+
+<button onclick="stopRecording()">
+⏹ Stop Recording
+</button>
+
+<button onclick="copyText()">
+📋 Copy Text
+</button>
+
+<br><br>
+
+<textarea
+id="output"
+rows="15"
+style="
+width:100%;
+padding:10px;"
+placeholder="Speech will appear here...">
+</textarea>
+
+</div>
+
+<script>
+
+let recognition;
+
+if (
+    'webkitSpeechRecognition' in window
+) {
+
+    recognition =
+        new webkitSpeechRecognition();
+
+    recognition.continuous = true;
+
+    recognition.interimResults = true;
+
+    recognition.lang = "en-US";
+
+    recognition.onresult =
+        function(event){
+
+            let transcript = "";
+
+            for(
+                let i = 0;
+                i < event.results.length;
+                i++
+            ){
+
+                transcript +=
+                    event.results[i][0].transcript +
+                    " ";
+
+            }
+
+            document.getElementById(
+                "output"
+            ).value = transcript;
+        };
+
+    recognition.onerror =
+        function(event){
+
+            alert(
+                "Speech Recognition Error: " +
+                event.error
+            );
+
+        };
+
+}
+else {
+
+    alert(
+        "Speech recognition is not supported in this browser."
+    );
+}
+
+function startRecording(){
+
+    recognition.start();
+
+}
+
+function stopRecording(){
+
+    recognition.stop();
+
+}
+
+function copyText(){
+
+    navigator.clipboard.writeText(
+        document.getElementById(
+            "output"
+        ).value
+    );
+
+    alert("Copied!");
+
+}
+
+</script>
+
+</body>
+</html>

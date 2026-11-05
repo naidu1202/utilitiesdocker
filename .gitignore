@@ -9,3 +9,4 @@ static/*.bin
 *.bin
 static/*.bin
 static/*.bin
+.env

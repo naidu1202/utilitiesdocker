@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON Validator | UtilitiesDocker</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <meta
+        name="description"
+        content="Validate JSON online. Check JSON syntax and identify errors instantly.">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>✅ JSON Validator</h1>
+
+    <textarea
+        id="jsonInput"
+        rows="15"
+        style="width:100%;"
+        placeholder='{"name":"John"}'>
+    </textarea>
+
+    <br><br>
+
+    <button onclick="validateJson()">
+        Validate JSON
+    </button>
+
+    <br><br>
+
+    <div
+        id="result"
+        style="font-weight:bold;font-size:18px;">
+    </div>
+
+</div>
+
+<script>
+
+function validateJson(){
+
+    try {
+
+        JSON.parse(
+            document.getElementById("jsonInput").value
+        );
+
+        document.getElementById("result").innerHTML =
+            "✅ Valid JSON";
+
+        document.getElementById("result").style.color =
+            "green";
+
+    }
+    catch(error){
+
+        document.getElementById("result").innerHTML =
+            "❌ Invalid JSON<br><br>" +
+            error.message;
+
+        document.getElementById("result").style.color =
+            "red";
+    }
+}
+
+</script>
+
+</body>
+</html>

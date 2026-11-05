@@ -1,0 +1,26 @@
+<h1>⏰ Timestamp Converter</h1>
+
+<input
+type="number"
+id="timestamp">
+
+<button onclick="convertTimestamp()">
+Convert
+</button>
+
+<div id="result"></div>
+
+<script>
+
+function convertTimestamp(){
+
+    let ts =
+        document.getElementById("timestamp").value;
+
+    let date =
+        new Date(ts * 1000);
+
+    document.getElementById("result").innerHTML =
+        date.toString();
+}
+</script>

@@ -1,0 +1,29 @@
+<h1>✅ JSON Validator</h1>
+
+<textarea id="jsonInput" rows="15"></textarea>
+
+<button onclick="validateJson()">
+Validate
+</button>
+
+<div id="result"></div>
+
+<script>
+function validateJson() {
+
+    try {
+
+        JSON.parse(
+            document.getElementById("jsonInput").value
+        );
+
+        document.getElementById("result").innerHTML =
+            "✅ Valid JSON";
+
+    } catch(e){
+
+        document.getElementById("result").innerHTML =
+            "❌ Invalid JSON<br>" + e.message;
+    }
+}
+</script>

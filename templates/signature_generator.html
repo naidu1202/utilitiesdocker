@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signature Generator | UtilitiesDocker</title>
+
+    <meta
+        name="description"
+        content="Create and download digital signatures online for free. Draw your signature and save as PNG.">
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>✍️ Signature Generator</h1>
+
+    <p>
+        Draw your signature below and download it as PNG.
+    </p>
+
+    <canvas
+        id="signaturePad"
+        width="700"
+        height="250"
+        style="
+            border:2px solid #ccc;
+            background:white;
+            touch-action:none;">
+    </canvas>
+
+    <br><br>
+
+    <button onclick="clearCanvas()">
+        🗑 Clear
+    </button>
+
+    <button onclick="downloadSignature()">
+        💾 Download PNG
+    </button>
+
+</div>
+
+<script>
+
+const canvas =
+    document.getElementById("signaturePad");
+
+const ctx =
+    canvas.getContext("2d");
+
+let drawing = false;
+
+function startDraw(event){
+
+    drawing = true;
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        (event.clientX || event.touches[0].clientX) - rect.left,
+        (event.clientY || event.touches[0].clientY) - rect.top
+    );
+}
+
+function draw(event){
+
+    if(!drawing) return;
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const x =
+        (event.clientX || event.touches[0].clientX)
+        - rect.left;
+
+    const y =
+        (event.clientY || event.touches[0].clientY)
+        - rect.top;
+
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "#000";
+
+    ctx.lineTo(x,y);
+    ctx.stroke();
+}
+
+function stopDraw(){
+    drawing = false;
+}
+
+function clearCanvas(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+}
+
+function downloadSignature(){
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "signature.png";
+
+    link.href =
+        canvas.toDataURL("image/png");
+
+    link.click();
+}
+
+canvas.addEventListener(
+    "mousedown",
+    startDraw
+);
+
+canvas.addEventListener(
+    "mousemove",
+    draw
+);
+
+canvas.addEventListener(
+    "mouseup",
+    stopDraw
+);
+
+canvas.addEventListener(
+    "mouseleave",
+    stopDraw
+);
+
+canvas.addEventListener(
+    "touchstart",
+    startDraw
+);
+
+canvas.addEventListener(
+    "touchmove",
+    draw
+);
+
+canvas.addEventListener(
+    "touchend",
+    stopDraw
+);
+
+</script>
+
+</body>
+</html>

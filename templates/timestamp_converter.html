@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timestamp Converter | UtilitiesDocker</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <meta
+        name="description"
+        content="Convert Unix timestamps to human-readable dates and vice versa.">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>⏰ Timestamp Converter</h1>
+
+    <input
+        type="number"
+        id="timestamp"
+        placeholder="Unix Timestamp"
+        style="width:100%;padding:10px;">
+
+    <br><br>
+
+    <button onclick="convertTimestamp()">
+        Convert Timestamp
+    </button>
+
+    <button onclick="currentTimestamp()">
+        Current Timestamp
+    </button>
+
+    <br><br>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+function convertTimestamp(){
+
+    const ts =
+        document.getElementById("timestamp").value;
+
+    if(!ts){
+        return;
+    }
+
+    const date =
+        new Date(ts * 1000);
+
+    document.getElementById("result").innerHTML =
+        "<h3>" + date.toString() + "</h3>";
+}
+
+function currentTimestamp(){
+
+    const current =
+        Math.floor(Date.now() / 1000);
+
+    document.getElementById("timestamp").value =
+        current;
+
+    convertTimestamp();
+}
+
+</script>
+
+</body>
+</html>

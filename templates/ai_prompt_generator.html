@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Prompt Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>🤖 AI Prompt Generator</h1>
+
+<select id="category">
+
+<option value="coding">
+Coding
+</option>
+
+<option value="marketing">
+Marketing
+</option>
+
+<option value="linkedin">
+LinkedIn
+</option>
+
+<option value="seo">
+SEO
+</option>
+
+</select>
+
+<br><br>
+
+<input
+type="text"
+id="topic"
+placeholder="Enter Topic"
+style="width:100%;padding:10px;">
+
+<br><br>
+
+<button onclick="generatePrompt()">
+Generate Prompt
+</button>
+
+<br><br>
+
+<textarea
+id="output"
+rows="15"
+style="width:100%;">
+</textarea>
+
+</div>
+
+<script>
+
+function generatePrompt(){
+
+const category =
+document.getElementById("category").value;
+
+const topic =
+document.getElementById("topic").value;
+
+let prompt = "";
+
+if(category=="coding"){
+
+prompt =
+`Act as a senior software engineer.
+
+Build ${topic}
+
+Requirements:
+- Production ready
+- Error handling
+- Logging
+- Best practices
+- Complete code`;
+
+}
+
+else if(category=="marketing"){
+
+prompt =
+`Act as a marketing strategist.
+
+Create a complete marketing campaign for:
+
+${topic}
+
+Include:
+- Target audience
+- Social media plan
+- Email campaign
+- Call to action`;
+
+}
+
+else if(category=="linkedin"){
+
+prompt =
+`Create a professional LinkedIn post about
+
+${topic}
+
+Include:
+- Hook
+- Main content
+- CTA
+- 5 hashtags`;
+
+}
+
+else {
+
+prompt =
+`Act as an SEO expert.
+
+Create SEO content for
+
+${topic}
+
+Include:
+- Keywords
+- Meta description
+- H1
+- H2 headings`;
+
+}
+
+document.getElementById("output").value =
+prompt;
+
+}
+
+</script>
+
+</body>
+</html>

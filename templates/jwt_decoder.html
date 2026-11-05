@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JWT Decoder | UtilitiesDocker</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <meta
+        name="description"
+        content="Decode JWT tokens online. View JWT header and payload instantly.">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🔐 JWT Decoder</h1>
+
+    <textarea
+        id="jwt"
+        rows="8"
+        style="width:100%;"
+        placeholder="Paste JWT Token Here">
+    </textarea>
+
+    <br><br>
+
+    <button onclick="decodeJwt()">
+        Decode JWT
+    </button>
+
+    <br><br>
+
+    <h2>Header</h2>
+
+    <pre
+        id="header"
+        style="background:#f5f5f5;padding:10px;">
+    </pre>
+
+    <h2>Payload</h2>
+
+    <pre
+        id="payload"
+        style="background:#f5f5f5;padding:10px;">
+    </pre>
+
+</div>
+
+<script>
+
+function parseJwt(part){
+
+    part = part.replace(/-/g, '+');
+    part = part.replace(/_/g, '/');
+
+    return JSON.parse(
+        decodeURIComponent(
+            atob(part)
+            .split('')
+            .map(c =>
+                '%' +
+                ('00' + c.charCodeAt(0).toString(16))
+                .slice(-2)
+            )
+            .join('')
+        )
+    );
+}
+
+function decodeJwt(){
+
+    try{
+
+        const token =
+            document.getElementById("jwt").value.trim();
+
+        const parts =
+            token.split(".");
+
+        if(parts.length !== 3){
+
+            alert("Invalid JWT");
+
+            return;
+        }
+
+        const header =
+            parseJwt(parts[0]);
+
+        const payload =
+            parseJwt(parts[1]);
+
+        document.getElementById("header").textContent =
+            JSON.stringify(
+                header,
+                null,
+                4
+            );
+
+        document.getElementById("payload").textContent =
+            JSON.stringify(
+                payload,
+                null,
+                4
+            );
+
+    }
+    catch(err){
+
+        alert(
+            "Invalid JWT Token"
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

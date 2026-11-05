@@ -13,13 +13,20 @@ from pillow_heif import register_heif_opener
 import cairosvg
 import pytesseract
 register_heif_opener()
-
+from gtts import gTTS
+from PIL import ImageDraw
+from PIL import ImageDraw, ImageFont
+import barcode
+from barcode.writer import ImageWriter
 import csv
 import io
 import json
 import xmltodict
 import yaml
 from dicttoxml import dicttoxml
+
+from google import genai
+from dotenv import load_dotenv
 
 import requests
 
@@ -34,6 +41,11 @@ import base64
 
 templates = Jinja2Templates(directory="templates")
 
+load_dotenv()
+
+client = genai.Client(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
 
 from datetime import datetime
 
@@ -42,7 +54,9 @@ from docx2pdf import convert
 
 import subprocess
 from PIL import Image
-
+from reportlab.pdfgen import canvas
+from pypdf import PdfReader
+from pypdf import PdfWriter
 
 
 
@@ -91,6 +105,186 @@ def decode_base64(req: DecodeRequest):
         "decoded": decoded
     }
 
+@app.get("/ai-summarizer")
+async def ai_summarizer_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="ai_summarizer.html"
+    )
+
+@app.get("/test-models")
+async def test_models():
+
+    models = []
+
+    for model in client.models.list():
+        models.append(model.name)
+
+    return {
+        "models": models
+    }
+
+@app.post("/ai-summarizer")
+async def ai_summarizer(
+    text: str = Form(...)
+):
+
+    try:
+
+        response = client.models.generate_content(
+
+            model="gemini-flash-lite-latest",
+
+            contents=f"""
+            Summarize the text below.
+
+            Provide:
+
+            Summary
+            Key Points
+            Action Items
+
+            Text:
+            {text}
+            """
+        )
+
+        return {
+            "result": response.text
+        }
+
+    except Exception as e:
+
+        print(e)
+
+        return {
+            "error": str(e)
+        }
+
+@app.get("/barcode-generator")
+async def barcode_generator_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="barcode_generator.html"
+    )
+
+@app.get("/text-to-speech")
+async def text_to_speech_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="text_to_speech.html"
+    )
+
+@app.post("/text-to-speech")
+async def text_to_speech(
+
+    text: str = Form(...)
+
+):
+
+    output_file = (
+        f"output/{uuid.uuid4()}.mp3"
+    )
+
+    tts = gTTS(
+        text=text,
+        lang="en"
+    )
+
+    tts.save(output_file)
+
+    return FileResponse(
+        output_file,
+        media_type="audio/mpeg",
+        filename="speech.mp3"
+    )
+
+
+@app.get("/powerpoint-to-pdf")
+async def powerpoint_to_pdf_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="powerpoint_to_pdf.html"
+    )
+
+@app.post("/powerpoint-to-pdf")
+async def powerpoint_to_pdf(
+    file: UploadFile = File(...)
+):
+
+    input_file = (
+        f"uploads/{uuid.uuid4()}_{file.filename}"
+    )
+
+    with open(input_file, "wb") as f:
+        f.write(await file.read())
+
+    subprocess.run([
+        "libreoffice",
+        "--headless",
+        "--convert-to",
+        "pdf",
+        input_file,
+        "--outdir",
+        "output"
+    ])
+
+    pdf_file = os.path.join(
+        "output",
+        os.path.splitext(
+            os.path.basename(input_file)
+        )[0] + ".pdf"
+    )
+
+    return FileResponse(
+        pdf_file,
+        media_type="application/pdf",
+        filename="converted.pdf"
+    )
+
+
+@app.post("/generate-barcode")
+async def generate_barcode(
+
+    content: str = Form(...)
+
+):
+
+    filename = (
+        f"output/{uuid.uuid4()}"
+    )
+
+    code128 = barcode.get(
+        "code128",
+        content,
+        writer=ImageWriter()
+    )
+
+    code128.save(filename)
+
+    return FileResponse(
+        filename + ".png",
+        media_type="image/png",
+        filename="barcode.png"
+    )
+
+@app.get("/date-difference")
+async def date_difference_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="date_difference.html"
+    )
+
 @app.get("/sitemap.xml")
 async def sitemap():
 
@@ -107,11 +301,20 @@ async def sitemap():
         "/extract-pages",
         "/protect-pdf",
 
+        "/excel_to_pdf",
+        "/unlock_pdf",
+        "/sign_pdf",
+        "/pdf_watermark",
+        "/powerpoint_to_pdf",
+
         "/word-to-pdf",
         "/pdf-to-word",
         "/ocr-pdf-page",
 
         "/remove-background",
+        "/resize_image",
+        "/image_converter",
+        "/image_watermark",
         "/heic-to-jpg",
         "/webp-to-jpg",
         "/svg-to-png",
@@ -120,6 +323,8 @@ async def sitemap():
 
         "/json-formatter",
         "/base64-tool",
+        "/ai_summarizer",
+        "/ai_prompt_generator",
         "/qr-generator",
 
         "/csv-to-json",
@@ -128,12 +333,28 @@ async def sitemap():
         "/json-to-xml",
         "/yaml-to-json",
         "/json-to-yaml",
+        "/text_to_speech",
+        "/speech_to_text",
+        "/date_difference",
+        "/barcode_generator",
+        "/signature_generator",
+        "/password_generator",
+        "/weather",
+        "/holidays",
+        "/converters",
+        "/text-compare",
+        "/url_encoder",
+        "/jason-validator",
+        "/jwt-decoder",
+        "/timestamp_converter",
+        "/cron_generator",
 
         "/text-compare",
         "/text-utilities",
 
         "/age-calculator",
         "/emi-calculator",
+
 
         "/exchange-rate",
         "/timezone-converter",
@@ -183,6 +404,67 @@ async def exchange_rate(request: Request):
         name="exchange_rate.html"
     )
 
+@app.get("/sign-pdf")
+async def sign_pdf_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="sign_pdf.html"
+    )
+
+@app.post("/sign-pdf")
+async def sign_pdf(
+
+    pdf_file: UploadFile = File(...),
+
+    signature_file: UploadFile = File(...)
+
+):
+
+    pdf_path = (
+        f"uploads/{uuid.uuid4()}.pdf"
+    )
+
+    sig_path = (
+        f"uploads/{uuid.uuid4()}.png"
+    )
+
+    with open(pdf_path, "wb") as f:
+        f.write(await pdf_file.read())
+
+    with open(sig_path, "wb") as f:
+        f.write(await signature_file.read())
+
+    reader = PdfReader(pdf_path)
+
+    writer = PdfWriter()
+
+    for page in reader.pages:
+        writer.add_page(page)
+
+    output_file = (
+        f"output/{uuid.uuid4()}.pdf"
+    )
+
+    with open(output_file, "wb") as f:
+        writer.write(f)
+
+    return FileResponse(
+        output_file,
+        filename="signed.pdf"
+    )
+
+
+@app.get("/speech-to-text")
+async def speech_to_text_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="speech_to_text.html"
+    )
+
 @app.get("/converters", response_class=HTMLResponse)
 async def converters(request: Request):
     return templates.TemplateResponse(
@@ -191,7 +473,395 @@ async def converters(request: Request):
     )
 
 
+@app.get("/password-generator", response_class=HTMLResponse)
+async def password_generator(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="password_generator.html"
+    )
 
+@app.get("/url-encoder", response_class=HTMLResponse)
+async def url_encoder_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="url_encoder.html"
+    )
+
+@app.get("/unlock-pdf")
+async def unlock_pdf(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="unlock_pdf.html"
+    )
+
+@app.get("/resize-image")
+async def resize_image_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="resize_image.html"
+    )
+
+@app.post("/resize-image")
+async def resize_image(
+    file: UploadFile = File(...),
+    width: int = Form(...),
+    height: int = Form(...)
+):
+
+    input_file = (
+        f"uploads/{uuid.uuid4()}_{file.filename}"
+    )
+
+    with open(input_file, "wb") as f:
+        f.write(await file.read())
+
+    img = Image.open(input_file)
+
+    resized = img.resize(
+        (width, height),
+        Image.Resampling.LANCZOS
+    )
+
+    ext = img.format.lower()
+
+    output_file = (
+        f"output/{uuid.uuid4()}.{ext}"
+    )
+
+    resized.save(output_file)
+
+    return FileResponse(
+        output_file,
+        filename=f"resized.{ext}"
+    )
+
+@app.get("/image-converter")
+async def image_converter_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="image_converter.html"
+    )
+
+@app.post("/image-converter")
+async def image_converter(
+    file: UploadFile = File(...),
+    output_format: str = Form(...)
+):
+
+    input_file = (
+        f"uploads/{uuid.uuid4()}_{file.filename}"
+    )
+
+    with open(input_file, "wb") as f:
+        f.write(await file.read())
+
+    image = Image.open(input_file)
+
+    if output_format in ["jpg", "jpeg"]:
+        image = image.convert("RGB")
+
+    output_file = (
+        f"output/{uuid.uuid4()}.{output_format}"
+    )
+
+    image.save(
+        output_file,
+        output_format.upper()
+        if output_format != "jpg"
+        else "JPEG"
+    )
+
+    return FileResponse(
+        output_file,
+        filename=f"converted.{output_format}"
+    )
+
+@app.get("/json-validator")
+async def json_validator_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="json_validator.html"
+    )
+
+@app.get("/jwt-decoder")
+async def jwt_decoder(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="jwt_decoder.html"
+    )
+
+@app.get("/pdf-watermark")
+async def pdf_watermark(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="pdf_watermark.html"
+    )
+
+
+@app.post("/pdf-watermark")
+async def pdf_watermark(
+
+    file: UploadFile = File(...),
+
+    watermark: str = Form(...)
+
+):
+
+    pdf_path = (
+        f"uploads/{uuid.uuid4()}.pdf"
+    )
+
+    with open(pdf_path, "wb") as f:
+        f.write(await file.read())
+
+    watermark_pdf = (
+        f"output/{uuid.uuid4()}_watermark.pdf"
+    )
+
+    c = canvas.Canvas(watermark_pdf)
+
+    c.setFont(
+        "Helvetica-Bold",
+        40
+    )
+
+    c.setFillGray(
+        0.5,
+        0.5
+    )
+
+    c.drawString(
+        150,
+        400,
+        watermark
+    )
+
+    c.save()
+
+    reader = PdfReader(pdf_path)
+
+    watermark_reader = PdfReader(
+        watermark_pdf
+    )
+
+    writer = PdfWriter()
+
+    watermark_page = (
+        watermark_reader.pages[0]
+    )
+
+    for page in reader.pages:
+
+        page.merge_page(
+            watermark_page
+        )
+
+        writer.add_page(page)
+
+    output_file = (
+        f"output/{uuid.uuid4()}.pdf"
+    )
+
+    with open(output_file, "wb") as f:
+        writer.write(f)
+
+    return FileResponse(
+        output_file,
+        media_type="application/pdf",
+        filename="watermarked.pdf"
+    )
+
+@app.get("/timestamp-converter")
+async def timestamp_converter(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="timestamp_converter.html"
+    )
+
+@app.get("/signature-generator")
+async def signature_generator(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="signature_generator.html"
+    )
+
+@app.get("/image-watermark")
+async def image_watermark(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="image_watermark.html"
+    )
+
+@app.post("/image-watermark")
+async def image_watermark(
+
+    file: UploadFile = File(...),
+
+    watermark: str = Form(...)
+
+):
+
+    input_file = (
+        f"uploads/{uuid.uuid4()}_{file.filename}"
+    )
+
+    with open(input_file, "wb") as f:
+        f.write(await file.read())
+
+    image = Image.open(input_file)
+
+    draw = ImageDraw.Draw(image)
+
+    width, height = image.size
+
+    try:
+
+        font = ImageFont.truetype(
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+            max(25, width // 15)
+        )
+
+    except:
+
+        font = ImageFont.load_default()
+
+    # Center position
+    x = width // 4
+    y = height // 2
+
+    # Shadow
+    draw.text(
+        (x + 2, y + 2),
+        watermark,
+        fill=(255, 255, 255),
+        font=font
+    )
+
+    # Main watermark
+    draw.text(
+        (x, y),
+        watermark,
+        fill=(255, 0, 0),
+        font=font
+    )
+
+    output_file = (
+        f"output/{uuid.uuid4()}.png"
+    )
+
+    image.save(output_file)
+
+    return FileResponse(
+        output_file,
+        media_type="image/png",
+        filename="watermarked.png"
+    )
+
+@app.get("/cron-generator")
+async def cron_generator(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="cron_generator.html"
+    )
+
+@app.post("/unlock-pdf")
+async def unlock_pdf(
+    file: UploadFile = File(...),
+    password: str = Form(...)
+):
+
+    pdf_path = f"uploads/{uuid.uuid4()}.pdf"
+
+    with open(pdf_path, "wb") as f:
+        f.write(await file.read())
+
+    reader = PdfReader(pdf_path)
+
+    # unlock
+    reader.decrypt(password)
+
+    writer = PdfWriter()
+
+    for page in reader.pages:
+        writer.add_page(page)
+
+    output_file = f"output/{uuid.uuid4()}.pdf"
+
+    with open(output_file, "wb") as f:
+        writer.write(f)
+
+    return FileResponse(
+        output_file,
+        media_type="application/pdf",
+        filename="unlocked.pdf"
+    )
+
+
+@app.get("/ai-prompt-generator", response_class=HTMLResponse)
+async def ai_prompt_generator_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="ai_prompt_generator.html"
+    )
+
+
+@app.get("/excel-to-pdf")
+async def excel_to_pdf_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="excel_to_pdf.html"
+    )
+
+@app.post("/excel-to-pdf")
+async def excel_to_pdf(
+    file: UploadFile = File(...)
+):
+
+    input_file = (
+        f"uploads/{uuid.uuid4()}_{file.filename}"
+    )
+
+    with open(input_file, "wb") as f:
+        f.write(await file.read())
+
+    subprocess.run([
+        "libreoffice",
+        "--headless",
+        "--convert-to",
+        "pdf",
+        input_file,
+        "--outdir",
+        "output"
+    ])
+
+    pdf_file = os.path.join(
+        "output",
+        os.path.splitext(
+            os.path.basename(input_file)
+        )[0] + ".pdf"
+    )
+
+    return FileResponse(
+        pdf_file,
+        media_type="application/pdf",
+        filename="converted.pdf"
+    )
 
 @app.get("/holidays", response_class=HTMLResponse)
 async def holidays_page(request: Request):
