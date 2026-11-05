@@ -503,6 +503,26 @@ button:hover {
     background: #f3ecff;
 }
 
+#holidayTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#holidayTable th,
+#holidayTable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+#holidayTable th {
+    background: #2563eb;
+    color: white;
+}
+
+#holidayTable tr:nth-child(even) {
+    background: #f7f7f7;
+}
+
 .tool-btn {
     padding: 12px 25px;
     background: #4f46e5;

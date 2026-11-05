@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="tool-container">
+
+    <h1>🎉 Public Holidays</h1>
+
+    <label>Country</label>
+
+    <select id="country">
+
+        <option value="SG">Singapore</option>
+        <option value="MY">Malaysia</option>
+        <option value="IN">India</option>
+        <option value="CN">China</option>
+        <option value="JP">Japan</option>
+        <option value="US">United States</option>
+        <option value="GB">United Kingdom</option>
+        <option value="AU">Australia</option>
+
+    </select>
+
+    <br><br>
+
+    <label>Year</label>
+
+    <select id="year"></select>
+
+    <br><br>
+
+    <button onclick="getHolidays()">
+        Get Holidays
+    </button>
+
+    <br><br>
+
+    <div id="summary"></div>
+
+    <br>
+
+    <table id="holidayTable">
+
+        <thead>
+
+            <tr>
+                <th>Date</th>
+                <th>Holiday</th>
+            </tr>
+
+        </thead>
+
+        <tbody></tbody>
+
+    </table>
+
+</div>
+
+<script>
+
+const currentYear =
+    new Date().getFullYear();
+
+for (let year = 2025; year <= 2035; year++) {
+
+    document
+        .getElementById("year")
+        .innerHTML +=
+        `<option value="${year}">
+            ${year}
+         </option>`;
+}
+
+document
+    .getElementById("year")
+    .value = currentYear;
+
+async function getHolidays() {
+
+    const country =
+        document.getElementById("country").value;
+
+    const year =
+        document.getElementById("year").value;
+
+    const tbody =
+        document.querySelector(
+            "#holidayTable tbody"
+        );
+
+    tbody.innerHTML =
+        "<tr><td colspan='2'>Loading...</td></tr>";
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/holidays/${country}/${year}`
+            );
+
+        const holidays =
+            await response.json();
+
+        tbody.innerHTML = "";
+
+        if (!Array.isArray(holidays)) {
+
+            document.getElementById("summary")
+                .innerHTML = "No holidays available";
+
+            return;
+        }
+
+        document.getElementById("summary")
+            .innerHTML =
+            `<strong>${holidays.length} holidays found</strong>`;
+
+
+        holidays.forEach(holiday => {
+
+            tbody.innerHTML += `
+                <tr>
+
+                    <td>
+                        ${holiday.date}
+                    </td>
+
+                    <td>
+                        ${holiday.localName}
+                    </td>
+
+                </tr>
+            `;
+        });
+
+    } catch(error) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="2">
+                    Unable to load holidays
+                </td>
+            </tr>
+        `;
+    }
+}
+
+getHolidays();
+
+</script>
+
+{% endblock %}

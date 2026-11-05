@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>🚀 Internet Speed Test</h1>
+
+<div class="tool-container">
+
+    <button onclick="runSpeedTest()">
+        Start Speed Test
+    </button>
+
+    <br><br>
+
+    <div id="ping">Ping: -</div>
+
+    <br>
+
+    <div id="download">
+        Download: -
+    </div>
+
+    <br>
+
+    <div id="upload">
+        Upload: -
+    </div>
+
+</div>
+
+<script>
+
+async function testPing() {
+
+    const start = performance.now();
+
+    await fetch("/api/ping");
+
+    const end = performance.now();
+
+    return Math.round(end - start);
+}
+
+async function testDownload() {
+
+    const start = performance.now();
+
+    const response =
+        await fetch(
+            "/api/download-test?nocache=" +
+            Date.now()
+        );
+
+    await response.blob();
+
+    const end = performance.now();
+
+    const seconds =
+        (end - start) / 1000;
+
+    const fileSizeMB = 200;
+
+    return (
+        fileSizeMB * 8
+    ) / seconds;
+}
+
+async function testUpload() {
+
+    const sizeMB = 200;
+
+    const array =
+        new Uint8Array(
+            sizeMB * 1024 * 1024
+        );
+
+    crypto.getRandomValues(
+        array.subarray(
+            0,
+            Math.min(
+                array.length,
+                65536
+            )
+        )
+    );
+
+    for(let i = 65536; i < array.length; i++) {
+
+        array[i] =
+            Math.floor(
+                Math.random() * 256
+            );
+    }
+
+    const blob =
+        new Blob([array]);
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        "file",
+        blob,
+        "test.bin"
+    );
+
+    const start =
+        performance.now();
+
+    await fetch(
+        "/api/upload-test",
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    const end =
+        performance.now();
+
+    const seconds =
+        (end - start) / 1000;
+
+    return (
+        sizeMB * 8
+    ) / seconds;
+}
+
+async function runSpeedTest() {
+
+    document.getElementById("ping")
+        .innerHTML =
+        "Ping: Testing...";
+
+    document.getElementById("download")
+        .innerHTML =
+        "Download: Testing...";
+
+    document.getElementById("upload")
+        .innerHTML =
+        "Upload: Testing...";
+
+    const ping =
+        await testPing();
+
+    document.getElementById("ping")
+        .innerHTML =
+        `Ping: ${ping} ms`;
+
+    const download =
+        await testDownload();
+
+    document.getElementById("download")
+        .innerHTML =
+        `Download: ${download.toFixed(2)} Mbps`;
+
+    const upload =
+        await testUpload();
+
+    document.getElementById("upload")
+        .innerHTML =
+        `Upload: ${upload.toFixed(2)} Mbps`;
+}
+
+</script>
+
+{% endblock %}

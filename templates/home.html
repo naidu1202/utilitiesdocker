@@ -308,10 +308,32 @@ UtilitiesDocker | Free Online Tools
     <p>Currency Converter</p>
     </a>
 
+    <a href="/holidays" class="tool-card">
+    <h3>Public Holidays</h3>
+    <p>View public holidays by country and year.</p>
+    </a>
+
     <a href="/weather" class="tool-card">
     <h3>Weather Forecast</h3>
     <p>Get live weather information by city.</p>
     </a>
+
+    <a href="/speedtest" class="tool-card">
+
+    <div class="tool-icon">
+        🚀
+    </div>
+
+    <div class="tool-title">
+        Internet Speed Test
+    </div>
+
+    <div class="tool-description">
+        Test your download speed,
+        upload speed and ping.
+    </div>
+
+</a>
 
     <a href="/ip-lookup" class="tool-card">
     <h3>IP Lookup</h3>
@@ -322,7 +344,11 @@ UtilitiesDocker | Free Online Tools
     <h3>🕒 Time Zone Converter</h3>
     <p>Convert Between Time Zones</p>
     </a>
-
+    
+    <a href="/converters" class="tool-card">
+    <h3>🔄 Unit Converter</h3>
+    <p>Weight, Length, Volume, Data</p>
+    </a>
 
     <a href="/text-compare" class="tool-card">
         <h3>📝 Text Compare</h3>
@@ -529,6 +555,26 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/static/service-worker.js')
             .then(reg => console.log('SW Registered'))
             .catch(err => console.log('SW Failed', err));
+    });
+}
+</script>
+
+<script>
+function searchTools() {
+
+    let input = document.getElementById("toolSearch").value.toLowerCase();
+    let cards = document.querySelectorAll(".tool-card");
+
+    cards.forEach(card => {
+
+        let text = card.innerText.toLowerCase();
+
+        if (text.includes(input)) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+
     });
 }
 </script>

@@ -4,3 +4,8 @@ uploads/
 output/
 feedback.csv
 *.pyc
+static/*.bin
+static/*.bin
+*.bin
+static/*.bin
+static/*.bin

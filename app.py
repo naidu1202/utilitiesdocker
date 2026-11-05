@@ -183,6 +183,86 @@ async def exchange_rate(request: Request):
         name="exchange_rate.html"
     )
 
+@app.get("/converters", response_class=HTMLResponse)
+async def converters(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="converters.html"
+    )
+
+@app.get("/speedtest", response_class=HTMLResponse)
+async def speedtest_page(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="speedtest.html"
+    )
+
+@app.get("/api/ping")
+async def ping():
+
+    return {
+        "status": "ok"
+    }
+
+@app.get("/api/download-test")
+async def download_test():
+    return FileResponse("static/200mb.bin")
+
+@app.post("/api/upload-test")
+async def upload_test(
+    file: UploadFile = File(...)
+):
+
+    data = await file.read()
+
+    with open(
+        f"uploads/upload_test_{uuid.uuid4()}.bin",
+        "wb"
+    ) as f:
+
+        f.write(data)
+
+    return {
+        "size": len(data)
+    }
+
+
+
+@app.get("/holidays", response_class=HTMLResponse)
+async def holidays_page(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="holidays.html"
+    )
+
+
+@app.get("/api/holidays/{country}/{year}")
+async def get_holidays(
+    country: str,
+    year: int
+):
+
+    url = (
+        f"https://date.nager.at/api/v3/"
+        f"publicholidays/{year}/{country}"
+    )
+
+    response = requests.get(
+        url,
+        timeout=10
+    )
+
+    if response.status_code == 204:
+
+        return []
+
+    if response.status_code != 200:
+
+        return []
+
+    return response.json()
 
 @app.get("/weather", response_class=HTMLResponse)
 async def weather(request: Request):
