@@ -359,7 +359,18 @@ async def sitemap():
         "/exchange-rate",
         "/timezone-converter",
         "/weather",
-        "/ip-lookup"
+        "/ip-lookup",
+        "/audio_extractor",
+        "/audio_converter",
+        "/mp3_cutter",
+        "/mp3_cutter_editor",
+        "/merge_audio",
+        "/video_to_mp3",
+        "/add_audio_to_video",
+        "/video_compressor",
+        "/video_to_gif",
+        "/gif_to_video",
+        "/photo_to_video"
     ]
 
     base = "https://utilitiesdocker.com"
