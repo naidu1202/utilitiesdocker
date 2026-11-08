@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}
+Audio Converter
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="tool-box">
+
+        <h1>🔄 Audio Converter</h1>
+
+        <p>
+            Convert MP3, WAV, AAC, M4A, OGG and FLAC files.
+        </p>
+
+        <form
+            action="/audio-converter"
+            method="post"
+            enctype="multipart/form-data"
+            id="converterForm">
+
+            <div class="upload-box">
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".mp3,.wav,.aac,.m4a,.ogg,.flac"
+                    required>
+
+            </div>
+
+            <br>
+
+            <label>
+                Output Format
+            </label>
+
+            <select
+                name="output_format"
+                class="form-control">
+
+                <option value="mp3">MP3</option>
+                <option value="wav">WAV</option>
+                <option value="aac">AAC</option>
+                <option value="m4a">M4A</option>
+                <option value="ogg">OGG</option>
+                <option value="flac">FLAC</option>
+
+            </select>
+
+            <br>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+
+                🔄 Convert Audio
+
+            </button>
+
+        </form>
+
+        <div
+            id="processingMessage"
+            class="alert alert-info mt-3"
+            style="display:none;">
+
+            ⏳ Converting Audio...
+            Please wait.
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+.tool-box{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.upload-box{
+    border:2px dashed #d1d5db;
+    padding:30px;
+    text-align:center;
+    border-radius:10px;
+    background:#f9fafb;
+}
+
+.form-control{
+    width:100%;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:6px;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+}
+
+.alert{
+    padding:12px;
+    border-radius:8px;
+}
+
+.alert-info{
+    background:#dbeafe;
+    color:#1e40af;
+}
+
+</style>
+
+<script>
+
+document.getElementById("converterForm").addEventListener(
+    "submit",
+    function(){
+
+        const msg = document.getElementById("processingMessage");
+
+        msg.style.display = "block";
+        msg.style.background = "#dbeafe";
+        msg.style.color = "#1e40af";
+
+        msg.innerHTML =
+            "⏳ Converting Audio... Please wait.";
+
+        setTimeout(function(){
+
+            msg.style.background = "#dcfce7";
+            msg.style.color = "#166534";
+
+            msg.innerHTML =
+                "✅ Audio Converted Successfully. Download should have started.";
+
+        }, 2000);
+
+    }
+
+);
+
+</script>
+
+{% endblock %}

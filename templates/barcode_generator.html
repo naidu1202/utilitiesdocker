@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
 
-<title>
+{% block title %}
 Barcode Generator
-</title>
+{% endblock %}
 
-<link
-rel="stylesheet"
-href="/static/style.css">
+{% block content %}
 
-</head>
-
-<body>
-
-<div class="container">
+<div class= "tool-container">
 
 <h1>
 🏷️ Barcode Generator
@@ -40,5 +32,4 @@ Generate Barcode
 
 </div>
 
-</body>
-</html>
+{% endblock %}

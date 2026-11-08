@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+GIF to Video
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-box">
+
+    <h1>🎥 GIF To Video</h1>
+
+    <p>
+        Convert animated GIF files into MP4 videos for sharing on social media and messaging apps.
+    </p>
+
+    <form
+        action="/gif-to-video"
+        method="post"
+        enctype="multipart/form-data"
+        id="gifVideoForm">
+
+        <div class="upload-box">
+
+            <p>
+                🖼️ Upload GIF File
+            </p>
+
+            <input
+                type="file"
+                name="file"
+                accept=".gif"
+                required>
+
+        </div>
+
+        <br>
+
+        <button
+            type="submit"
+            class="btn-primary">
+
+            🎥 Convert To MP4
+
+        </button>
+
+    </form>
+
+    <div
+        id="processingMessage"
+        class="message"
+        style="display:none;">
+    </div>
+
+</div>
+
+<style>
+
+.tool-box{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.upload-box{
+    border:2px dashed #d1d5db;
+    padding:40px;
+    text-align:center;
+    border-radius:10px;
+    background:#f9fafb;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+}
+
+.message{
+    margin-top:20px;
+    padding:15px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+</style>
+
+<script>
+
+document.getElementById(
+    "gifVideoForm"
+).addEventListener(
+    "submit",
+    function(){
+
+        const msg =
+            document.getElementById(
+                "processingMessage"
+            );
+
+        msg.style.display = "block";
+
+        msg.style.background =
+            "#dbeafe";
+
+        msg.style.color =
+            "#1e40af";
+
+        msg.innerHTML =
+            "⏳ Converting GIF to MP4... Please wait.";
+
+        setTimeout(function(){
+
+            msg.style.background =
+                "#dcfce7";
+
+            msg.style.color =
+                "#166534";
+
+            msg.innerHTML =
+                "✅ MP4 Created Successfully. Download should start automatically.";
+
+        }, 3000);
+
+    }
+);
+
+</script>
+
+{% endblock %}

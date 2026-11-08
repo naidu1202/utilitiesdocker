@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+MP3 Cutter
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="tool-card">
+
+        <h1>✂ MP3 Cutter</h1>
+
+        <p class="tool-description">
+            Upload an MP3 file and select the portion you want to keep.
+        </p>
+
+        {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form
+            action="/mp3-cutter"
+            method="post"
+            enctype="multipart/form-data">
+
+            <div class="form-group">
+
+                <label>Select MP3 File</label>
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".mp3,audio/*"
+                    required>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn-primary">
+
+                🎵 Upload MP3
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

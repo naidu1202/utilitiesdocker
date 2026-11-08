@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+Video to GIF
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-box">
+
+    <h1>🎞️ Video To GIF</h1>
+
+    <p>
+        Convert MP4, MOV, AVI and MKV videos into animated GIFs.
+    </p>
+
+    <form
+        action="/video-to-gif"
+        method="post"
+        enctype="multipart/form-data"
+        id="gifForm">
+
+        <div class="upload-box">
+
+            <p>
+                📹 Upload Video
+            </p>
+
+            <input
+                type="file"
+                name="file"
+                accept="video/*"
+                required>
+
+        </div>
+
+        <br>
+
+        <button
+            type="submit"
+            class="btn-primary">
+
+            🎞️ Create GIF
+
+        </button>
+
+    </form>
+
+    <div
+        id="processingMessage"
+        class="message"
+        style="display:none;">
+    </div>
+
+</div>
+
+<style>
+
+.tool-box{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.upload-box{
+    border:2px dashed #d1d5db;
+    padding:40px;
+    text-align:center;
+    border-radius:10px;
+    background:#f9fafb;
+}
+
+.btn-primary{
+    background:#7c3aed;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.btn-primary:hover{
+    background:#6d28d9;
+}
+
+.message{
+    margin-top:20px;
+    padding:15px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+</style>
+
+<script>
+
+document.getElementById(
+    "gifForm"
+).addEventListener(
+    "submit",
+    function(){
+
+        const msg =
+            document.getElementById(
+                "processingMessage"
+            );
+
+        msg.style.display = "block";
+
+        msg.style.background =
+            "#dbeafe";
+
+        msg.style.color =
+            "#1e40af";
+
+        msg.innerHTML =
+        "⏳ Creating GIF... Please wait.";
+
+        setTimeout(function(){
+
+            msg.style.background =
+                "#dcfce7";
+
+            msg.style.color =
+                "#166534";
+
+            msg.innerHTML =
+            "✅ GIF Created Successfully. Download should start automatically.";
+
+        }, 5000);
+
+    }
+);
+
+</script>
+
+{% endblock %}

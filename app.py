@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse
 from fastapi import Form
 from pdf2image import convert_from_path
 from pydantic import BaseModel
-from difflib import HtmlDiff
+from difflib import SequenceMatcher
 from pdf2docx import Converter
 from pillow_heif import register_heif_opener
 import cairosvg
@@ -404,6 +404,75 @@ async def exchange_rate(request: Request):
         name="exchange_rate.html"
     )
 
+    
+@app.get("/edit-pdf")
+async def edit_pdf_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="edit_pdf.html"
+    )
+
+import fitz
+
+@app.post("/edit-pdf")
+async def edit_pdf(
+
+    file: UploadFile = File(...),
+
+    find_text: str = Form(...),
+
+    replace_text: str = Form(...)
+
+):
+
+    pdf_path = (
+        f"uploads/{uuid.uuid4()}.pdf"
+    )
+
+    with open(pdf_path, "wb") as f:
+        f.write(await file.read())
+
+    doc = fitz.open(pdf_path)
+
+    for page in doc:
+
+        areas = page.search_for(
+            find_text
+        )
+
+        for area in areas:
+
+            page.add_redact_annot(
+                area,
+                fill=(1,1,1)
+            )
+
+        page.apply_redactions()
+
+        for area in areas:
+
+            page.insert_text(
+                area.tl,
+                replace_text,
+                fontsize=12,
+                color=(0,0,0)
+            )
+
+    output_file = (
+        f"output/{uuid.uuid4()}.pdf"
+    )
+
+    doc.save(output_file)
+
+    doc.close()
+
+    return FileResponse(
+        output_file,
+        filename="edited.pdf"
+    )
+
 @app.get("/sign-pdf")
 async def sign_pdf_page(
     request: Request
@@ -418,17 +487,16 @@ async def sign_pdf(
 
     pdf_file: UploadFile = File(...),
 
-    signature_file: UploadFile = File(...)
+    signature_file: UploadFile = File(...),
+
+    x: float = Form(100),
+
+    y: float = Form(100)
 
 ):
 
-    pdf_path = (
-        f"uploads/{uuid.uuid4()}.pdf"
-    )
-
-    sig_path = (
-        f"uploads/{uuid.uuid4()}.png"
-    )
+    pdf_path = f"uploads/{uuid.uuid4()}.pdf"
+    sig_path = f"uploads/{uuid.uuid4()}.png"
 
     with open(pdf_path, "wb") as f:
         f.write(await pdf_file.read())
@@ -436,25 +504,959 @@ async def sign_pdf(
     with open(sig_path, "wb") as f:
         f.write(await signature_file.read())
 
-    reader = PdfReader(pdf_path)
+    doc = fitz.open(pdf_path)
 
-    writer = PdfWriter()
+    page = doc[0]
 
-    for page in reader.pages:
-        writer.add_page(page)
+    signature_width = 140
+    signature_height = 60
 
-    output_file = (
-        f"output/{uuid.uuid4()}.pdf"
+    rect = fitz.Rect(
+        x - signature_width / 2,
+        y - signature_height / 2,
+        x + signature_width / 2,
+        y + signature_height / 2
     )
 
-    with open(output_file, "wb") as f:
-        writer.write(f)
+    page.insert_image(
+        rect,
+        filename=sig_path
+    )
+
+    output_file = f"output/{uuid.uuid4()}.pdf"
+
+    doc.save(output_file)
+    doc.close()
 
     return FileResponse(
         output_file,
         filename="signed.pdf"
     )
 
+@app.get("/redact-pdf")
+async def redact_pdf_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="redact_pdf.html"
+    )
+
+
+@app.post("/redact-pdf")
+async def redact_pdf(
+
+    file: UploadFile = File(...),
+
+    find_text: str = Form(...)
+
+):
+
+    pdf_path = f"uploads/{uuid.uuid4()}.pdf"
+
+    with open(pdf_path,"wb") as f:
+        f.write(await file.read())
+
+    doc = fitz.open(pdf_path)
+
+    for page in doc:
+
+        matches = page.search_for(
+            find_text
+        )
+
+        for rect in matches:
+
+            page.add_redact_annot(
+                rect,
+                fill=(0,0,0)
+            )
+
+        page.apply_redactions()
+
+    output_file = f"output/{uuid.uuid4()}.pdf"
+
+    doc.save(output_file)
+
+    doc.close()
+
+    return FileResponse(
+        output_file,
+        filename="redacted.pdf"
+    )
+
+@app.get("/organize-pdf")
+async def organize_pdf_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="organize_pdf.html"
+    )
+
+
+@app.post("/organize-pdf")
+async def organize_pdf(
+
+    file: UploadFile = File(...),
+
+    page_order: str = Form(...)
+
+):
+
+    pdf_path = f"uploads/{uuid.uuid4()}.pdf"
+
+    with open(pdf_path,"wb") as f:
+        f.write(await file.read())
+
+    reader = PdfReader(pdf_path)
+
+    writer = PdfWriter()
+
+    pages = [
+        int(x)
+        for x in page_order.split(",")
+    ]
+
+    for p in pages:
+
+        writer.add_page(
+            reader.pages[p-1]
+        )
+
+    output_file = f"output/{uuid.uuid4()}.pdf"
+
+    with open(output_file,"wb") as f:
+        writer.write(f)
+
+    return FileResponse(
+        output_file,
+        filename="organized.pdf"
+    )
+
+
+@app.get("/compare-pdf")
+async def compare_pdf_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="compare_pdf.html"
+    )
+
+
+@app.get("/audio-extractor")
+async def audio_extractor_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="audio_extractor.html"
+    )
+
+
+@app.post("/audio-extractor")
+async def audio_extractor(
+    file: UploadFile = File(...)
+):
+    try:
+
+        input_file = (
+            f"uploads/{uuid.uuid4()}_{file.filename}"
+        )
+
+        with open(input_file, "wb") as f:
+            f.write(await file.read())
+
+        output_file = (
+            f"output/{uuid.uuid4()}.mp3"
+        )
+
+        subprocess.run([
+            "ffmpeg",
+            "-i",
+            input_file,
+            "-vn",
+            "-acodec",
+            "libmp3lame",
+            "-q:a",
+            "2",
+            output_file
+        ], check=True)
+
+        return FileResponse(
+            output_file,
+            media_type="audio/mpeg",
+            filename="audio.mp3"
+        )
+
+    except Exception as e:
+        return {
+            "error": str(e)
+        }
+
+
+@app.get("/mp3-cutter")
+async def mp3_cutter_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="mp3_cutter.html"
+    )
+
+
+@app.post("/mp3-cutter")
+async def mp3_cutter_upload(
+    request: Request,
+    file: UploadFile = File(...)
+):
+    try:
+
+        input_file = (
+            f"uploads/{uuid.uuid4()}_{file.filename}"
+        )
+
+        with open(input_file, "wb") as f:
+            f.write(await file.read())
+
+        result = subprocess.run(
+            [
+                "ffprobe",
+                "-v",
+                "error",
+                "-show_entries",
+                "format=duration",
+                "-of",
+                "default=noprint_wrappers=1:nokey=1",
+                input_file
+            ],
+            capture_output=True,
+            text=True
+        )
+
+        duration = round( float(result.stdout.strip()),  2)
+
+        return templates.TemplateResponse(
+            request=request,
+            name="mp3_cutter_editor.html",
+            context={
+                "filename": os.path.basename(input_file),
+                "duration": duration
+            }
+        )
+
+    except Exception as e:
+
+        return templates.TemplateResponse(
+            request=request,
+            name="mp3_cutter.html",
+            context={
+                "error": str(e)
+            }
+        )
+
+@app.get("/audio-converter")
+async def audio_converter_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="audio_converter.html"
+    )
+
+
+@app.post("/audio-converter")
+async def audio_converter(
+    file: UploadFile = File(...),
+    output_format: str = Form(...)
+):
+    try:
+
+        input_file = (
+            f"uploads/{uuid.uuid4()}_{file.filename}"
+        )
+
+        with open(input_file, "wb") as f:
+            f.write(await file.read())
+
+        output_file = (
+            f"output/{uuid.uuid4()}.{output_format}"
+        )
+
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-i",
+                input_file,
+                output_file
+            ],
+            check=True
+        )
+
+        media_types = {
+            "mp3": "audio/mpeg",
+            "wav": "audio/wav",
+            "aac": "audio/aac",
+            "m4a": "audio/mp4",
+            "ogg": "audio/ogg",
+            "flac": "audio/flac"
+        }
+
+        return FileResponse(
+            output_file,
+            media_type=media_types.get(
+                output_format,
+                "application/octet-stream"
+            ),
+            filename=f"converted.{output_format}"
+        )
+
+    except Exception as e:
+
+        return {
+            "error": str(e)
+        }
+
+@app.get("/merge-audio")
+async def merge_audio_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="merge_audio.html"
+    )
+
+
+@app.post("/merge-audio")
+async def merge_audio(
+    files: list[UploadFile] = File(...)
+):
+    try:
+
+        audio_files = []
+
+        for file in files:
+
+            filepath = (
+                f"uploads/{uuid.uuid4()}_{file.filename}"
+            )
+
+            with open(filepath, "wb") as f:
+                f.write(await file.read())
+
+            audio_files.append(filepath)
+
+        concat_file = (
+            f"uploads/{uuid.uuid4()}_concat.txt"
+        )
+
+        with open(concat_file, "w") as f:
+
+            for audio in audio_files:
+
+                abs_path = os.path.abspath(audio)
+
+                f.write(
+                    f"file '{abs_path}'\n"
+                )
+
+        output_file = (
+            f"output/{uuid.uuid4()}.mp3"
+        )
+
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-f",
+                "concat",
+                "-safe",
+                "0",
+                "-i",
+                concat_file,
+                "-c",
+                "copy",
+                output_file
+            ],
+            check=True
+        )
+
+        return FileResponse(
+            output_file,
+            media_type="audio/mpeg",
+            filename="merged.mp3"
+        )
+
+    except Exception as e:
+
+        return {
+            "error": str(e)
+        }
+    
+
+@app.get("/video-to-mp3")
+async def video_to_mp3_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="video_to_mp3.html"
+    )
+
+
+@app.post("/video-to-mp3")
+async def video_to_mp3(
+    file: UploadFile = File(...)
+):
+    try:
+
+        input_file = (
+            f"uploads/{uuid.uuid4()}_{file.filename}"
+        )
+
+        with open(input_file, "wb") as f:
+            f.write(await file.read())
+
+        output_file = (
+            f"output/{uuid.uuid4()}.mp3"
+        )
+
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-i",
+                input_file,
+                "-vn",
+                "-acodec",
+                "libmp3lame",
+                "-q:a",
+                "2",
+                output_file
+            ],
+            check=True
+        )
+
+        return FileResponse(
+            output_file,
+            media_type="audio/mpeg",
+            filename="video_audio.mp3"
+        )
+
+    except Exception as e:
+
+        return {
+            "error": str(e)
+        }
+
+@app.get("/add-audio-to-video")
+async def add_audio_to_video_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="add_audio_to_video.html"
+    )
+
+
+@app.post("/add-audio-to-video")
+async def add_audio_to_video(
+
+    video: UploadFile = File(...),
+    audio: UploadFile = File(...)
+
+):
+    try:
+
+        video_path = (
+            f"uploads/{uuid.uuid4()}_{video.filename}"
+        )
+
+        audio_path = (
+            f"uploads/{uuid.uuid4()}_{audio.filename}"
+        )
+
+        with open(video_path, "wb") as f:
+            f.write(await video.read())
+
+        with open(audio_path, "wb") as f:
+            f.write(await audio.read())
+
+        output_file = (
+            f"output/{uuid.uuid4()}.mp4"
+        )
+
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-i",
+                video_path,
+                "-i",
+                audio_path,
+                "-c:v",
+                "copy",
+                "-map",
+                "0:v:0",
+                "-map",
+                "1:a:0",
+                "-shortest",
+                output_file
+            ],
+            check=True
+        )
+
+        return FileResponse(
+            output_file,
+            media_type="video/mp4",
+            filename="video_with_audio.mp4"
+        )
+
+    except Exception as e:
+
+        return {
+            "error": str(e)
+        }
+
+@app.get("/video-compressor")
+async def video_compressor_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="video_compressor.html"
+    )
+
+
+@app.post("/video-compressor")
+async def video_compressor(
+    file: UploadFile = File(...),
+    quality: str = Form(...)
+):
+    try:
+
+        input_file = (
+            f"uploads/{uuid.uuid4()}_{file.filename}"
+        )
+
+        with open(input_file, "wb") as f:
+            f.write(await file.read())
+
+        if quality == "high":
+            crf = "23"
+
+        elif quality == "max":
+            crf = "32"
+
+        else:
+            crf = "28"
+
+        output_file = (
+            f"output/{uuid.uuid4()}.mp4"
+        )
+
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-i",
+                input_file,
+                "-vcodec",
+                "libx264",
+                "-crf",
+                crf,
+                "-preset",
+                "medium",
+                "-acodec",
+                "aac",
+                output_file
+            ],
+            check=True
+        )
+
+        return FileResponse(
+            output_file,
+            media_type="video/mp4",
+            filename="compressed_video.mp4"
+        )
+
+    except Exception as e:
+
+        return {
+            "error": str(e)
+        }
+
+@app.get("/video-to-gif")
+async def video_to_gif_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="video_to_gif.html"
+    )
+
+
+@app.post("/video-to-gif")
+async def video_to_gif(
+    file: UploadFile = File(...)
+):
+    try:
+
+        input_file = (
+            f"uploads/{uuid.uuid4()}_{file.filename}"
+        )
+
+        with open(input_file, "wb") as f:
+            f.write(await file.read())
+
+        output_file = (
+            f"output/{uuid.uuid4()}.gif"
+        )
+
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-i",
+                input_file,
+                "-vf",
+                "fps=10,scale=600:-1:flags=lanczos",
+                output_file
+            ],
+            check=True
+        )
+
+        return FileResponse(
+            output_file,
+            media_type="image/gif",
+            filename="animated.gif"
+        )
+
+    except Exception as e:
+
+        return {
+            "error": str(e)
+        }
+
+@app.get("/gif-to-video")
+async def gif_to_video_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="gif_to_video.html"
+    )
+
+@app.post("/gif-to-video")
+async def gif_to_video(
+    file: UploadFile = File(...)
+):
+    try:
+
+        input_file = (
+            f"uploads/{uuid.uuid4()}_{file.filename}"
+        )
+
+        with open(input_file, "wb") as f:
+            f.write(await file.read())
+
+        output_file = (
+            f"output/{uuid.uuid4()}.mp4"
+        )
+
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-i",
+                input_file,
+                "-movflags",
+                "+faststart",
+                "-pix_fmt",
+                "yuv420p",
+                output_file
+            ],
+            check=True
+        )
+
+        return FileResponse(
+            output_file,
+            media_type="video/mp4",
+            filename="converted.mp4"
+        )
+
+    except Exception as e:
+
+        return {
+            "error": str(e)
+        }
+
+@app.get("/photo-to-video")
+async def photo_to_video_page(
+    request: Request
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="photo_to_video.html"
+    )
+
+@app.post("/photo-to-video")
+async def photo_to_video(
+    files: list[UploadFile] = File(...)
+):
+    try:
+
+        folder = f"uploads/{uuid.uuid4()}"
+        os.makedirs(folder, exist_ok=True)
+
+        for idx, file in enumerate(files):
+
+            jpg_path = os.path.join(
+                folder,
+                f"{idx:03d}.jpg"
+            )
+
+            image_data = await file.read()
+
+            with open(jpg_path, "wb") as f:
+                f.write(image_data)
+
+            img = Image.open(jpg_path)
+
+            if img.mode != "RGB":
+                img = img.convert("RGB")
+
+            # Resize while preserving aspect ratio
+            img.thumbnail(
+                (1280, 720),
+                Image.Resampling.LANCZOS
+            )
+
+            # Make width and height even numbers
+            width, height = img.size
+
+            width = width if width % 2 == 0 else width - 1
+            height = height if height % 2 == 0 else height - 1
+
+            img = img.resize(
+                (width, height),
+                Image.Resampling.LANCZOS
+            )
+
+            img.save(
+                jpg_path,
+                "JPEG",
+                quality=95
+            )
+
+        output_file = (
+            f"output/{uuid.uuid4()}.mp4"
+        )
+
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-framerate",
+                "0.33",          # 3 sec per image
+                "-i",
+                os.path.join(
+                    folder,
+                    "%03d.jpg"
+                ),
+                "-vf",
+                "pad=ceil(iw/2)*2:ceil(ih/2)*2",
+                "-c:v",
+                "libx264",
+                "-r",
+                "30",
+                "-pix_fmt",
+                "yuv420p",
+                output_file
+            ],
+            check=True,
+            capture_output=True
+        )
+
+        return FileResponse(
+            output_file,
+            media_type="video/mp4",
+            filename="slideshow.mp4"
+        )
+
+    except subprocess.CalledProcessError as e:
+
+        return {
+            "error": e.stderr.decode()
+        }
+
+    except Exception as e:
+
+        return {
+            "error": str(e)
+        }
+            
+@app.post("/cut-mp3")
+async def cut_mp3(
+    filename: str = Form(...),
+    start_time: float = Form(...),
+    end_time: float = Form(...)
+):
+    try:
+
+        input_file = os.path.join(
+            "uploads",
+            filename
+        )
+
+        if not os.path.exists(input_file):
+            raise Exception(
+                "Source audio file not found"
+            )
+
+        output_file = os.path.join(
+            "output",
+            f"{uuid.uuid4()}.mp3"
+        )
+
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-ss",
+                str(start_time),
+                "-to",
+                str(end_time),
+                "-i",
+                input_file,
+                "-c:a",
+                "libmp3lame",
+                "-q:a",
+                "2",
+                output_file
+            ],
+            check=True,
+            capture_output=True
+        )
+
+        return FileResponse(
+            path=output_file,
+            media_type="audio/mpeg",
+            filename="trimmed.mp3"
+        )
+
+    except subprocess.CalledProcessError as e:
+
+        error_message = (
+            e.stderr.decode()
+            if e.stderr
+            else str(e)
+        )
+
+        return HTMLResponse(
+            content=error_message,
+            status_code=500
+        )
+
+    except Exception as e:
+
+        return HTMLResponse(
+            content=str(e),
+            status_code=500
+        )
+
+
+        
+
+@app.get("/audio-file/{filename}")
+async def audio_file(
+    filename: str
+):
+
+    filepath = os.path.join(
+        "uploads",
+        filename
+    )
+
+    if not os.path.exists(filepath):
+
+        return {
+            "error": "Audio file not found"
+        }
+
+    return FileResponse(
+        filepath,
+        media_type="audio/mpeg"
+    )
+
+
+
+@app.post("/compare-pdf")
+async def compare_pdf(
+
+    request: Request,
+
+    file1: UploadFile = File(...),
+
+    file2: UploadFile = File(...)
+
+):
+
+    pdf1 = f"uploads/{uuid.uuid4()}.pdf"
+    pdf2 = f"uploads/{uuid.uuid4()}.pdf"
+
+    with open(pdf1,"wb") as f:
+        f.write(await file1.read())
+
+    with open(pdf2,"wb") as f:
+        f.write(await file2.read())
+
+    text1 = ""
+
+    for page in PdfReader(pdf1).pages:
+
+        extracted = page.extract_text()
+
+        if extracted:
+            text1 += extracted
+
+    text2 = ""
+
+    for page in PdfReader(pdf2).pages:
+
+        extracted = page.extract_text()
+
+        if extracted:
+            text2 += extracted
+
+    similarity = round(
+
+        SequenceMatcher(
+            None,
+            text1,
+            text2
+        ).ratio() * 100,
+
+        2
+
+    )
+
+    return templates.TemplateResponse(
+
+        request=request,
+
+        name="compare_pdf.html",
+
+        context={
+            "similarity": similarity
+        }
+
+    )
+
+    
+
+
+@app.get("/sql-formatter")
+async def sql_formatter_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="sql_formatter.html"
+    )
 
 @app.get("/speech-to-text")
 async def speech_to_text_page(
@@ -1295,36 +2297,42 @@ async def merge_page(request: Request):
         name="merge.html"
     )
 
-@app.get("/text-compare", response_class=HTMLResponse)
+
+
+@app.get("/text-compare")
 async def text_compare(request: Request):
     return templates.TemplateResponse(
         request=request,
-        name="text-compare.html"
+        name="text-compare.html",
+        context={
+            "text1": "",
+            "text2": ""
+        }
     )
 
-@app.post("/text-compare", response_class=HTMLResponse)
+@app.post("/text-compare")
 async def compare_text(
     request: Request,
     text1: str = Form(...),
     text2: str = Form(...)
 ):
-    diff = HtmlDiff()
 
-    result = diff.make_table(
-        text1.splitlines(),
-        text2.splitlines(),
-        "Text 1",
-        "Text 2",
-        context=True
+    similarity = round(
+        SequenceMatcher(None, text1, text2).ratio() * 100,
+        2
     )
 
     return templates.TemplateResponse(
         request=request,
         name="text-compare.html",
         context={
-            "result": result,
             "text1": text1,
-            "text2": text2
+            "text2": text2,
+            "similarity": similarity,
+            "chars1": len(text1),
+            "chars2": len(text2),
+            "lines1": len(text1.splitlines()),
+            "lines2": len(text2.splitlines())
         }
     )
 

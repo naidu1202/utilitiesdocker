@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}
+Audio Converter
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="tool-card-page">
+
+        <h1>🔄 Audio Converter</h1>
+
+        <p class="tool-description">
+            Convert audio files between MP3, WAV, AAC, M4A, OGG and FLAC formats.
+        </p>
+
+        <form id="converterForm"
+              method="POST"
+              enctype="multipart/form-data">
+
+            <div class="upload-area">
+
+                <label for="audioFile">
+                    🎵 Select Audio File
+                </label>
+
+                <input
+                    type="file"
+                    id="audioFile"
+                    name="audio"
+                    accept=".mp3,.wav,.aac,.m4a,.ogg,.flac"
+                    required
+                    class="form-control">
+
+            </div>
+
+            <br>
+
+            <div class="form-group">
+
+                <label>
+                    Convert To
+                </label>
+
+                <select
+                    name="output_format"
+                    class="form-control"
+                    required>
+
+                    <option value="mp3">MP3</option>
+                    <option value="wav">WAV</option>
+                    <option value="aac">AAC</option>
+                    <option value="m4a">M4A</option>
+                    <option value="ogg">OGG</option>
+                    <option value="flac">FLAC</option>
+
+                </select>
+
+            </div>
+
+            <br>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+
+                🔄 Convert Audio
+
+            </button>
+
+        </form>
+
+        <br>
+
+        <div
+            id="processingMessage"
+            class="alert alert-info"
+            style="display:none;">
+
+            ⏳ Processing audio... Please wait.
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+.tool-card-page{
+    background:#fff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.08);
+    max-width:700px;
+    margin:auto;
+}
+
+.tool-description{
+    color:#666;
+    margin-bottom:20px;
+}
+
+.upload-area{
+    border:2px dashed #ccc;
+    padding:30px;
+    text-align:center;
+    border-radius:10px;
+    background:#fafafa;
+}
+
+.form-control{
+    width:100%;
+    padding:10px;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+}
+
+.alert{
+    padding:15px;
+    border-radius:8px;
+}
+
+.alert-info{
+    background:#dbeafe;
+    color:#1e40af;
+}
+
+</style>
+
+<script>
+
+document.getElementById('converterForm')
+.addEventListener('submit', function() {
+
+    document.getElementById(
+        'processingMessage'
+    ).style.display = 'block';
+
+});
+
+</script>
+
+{% endblock %}

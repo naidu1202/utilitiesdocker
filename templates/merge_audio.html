@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}
+Merge Audio
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-box">
+
+    <h1>🎼 Merge Audio Files</h1>
+
+    <p>
+        Combine multiple MP3 files into one audio file.
+    </p>
+
+    <form
+        action="/merge-audio"
+        method="post"
+        enctype="multipart/form-data"
+        id="mergeForm">
+
+        <div class="upload-box">
+
+            <p>
+                Select multiple audio files
+            </p>
+
+            <input
+                type="file"
+                name="files"
+                accept=".mp3,.wav,.aac,.m4a"
+                multiple
+                required>
+
+        </div>
+
+        <br>
+
+        <button
+            type="submit"
+            class="btn-primary">
+
+            🎼 Merge Audio
+
+        </button>
+
+    </form>
+
+    <div
+        id="processingMessage"
+        class="message"
+        style="display:none;">
+
+    </div>
+
+</div>
+
+<style>
+
+.tool-box{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.upload-box{
+    border:2px dashed #d1d5db;
+    padding:40px;
+    text-align:center;
+    border-radius:10px;
+    background:#f9fafb;
+}
+
+.btn-primary{
+    background:#4f46e5;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.message{
+    margin-top:20px;
+    padding:12px;
+    border-radius:6px;
+}
+
+</style>
+
+<script>
+
+document.getElementById(
+    "mergeForm"
+).addEventListener(
+    "submit",
+    function(){
+
+        const msg =
+            document.getElementById(
+                "processingMessage"
+            );
+
+        msg.style.display = "block";
+
+        msg.style.background =
+            "#dbeafe";
+
+        msg.style.color =
+            "#1e40af";
+
+        msg.innerHTML =
+        "⏳ Merging Audio Files... Please wait.";
+
+        setTimeout(function(){
+
+            msg.style.background =
+                "#dcfce7";
+
+            msg.style.color =
+                "#166534";
+
+            msg.innerHTML =
+            "✅ Audio Merged Successfully. Download should start automatically.";
+
+        }, 3000);
+
+    }
+);
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}
+Compare PDFs
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-container">
+
+<h1>⚖️ Compare PDFs</h1>
+
+<form
+action="/compare-pdf"
+method="post"
+enctype="multipart/form-data"
+>
+
+<div class="tool-grid">
+
+<div>
+
+<label>First PDF</label>
+
+<input
+    type="file"
+    id="pdfFile1"
+    name="file1"
+    accept=".pdf"
+    required
+>
+
+<br><br>
+
+<canvas
+    id="canvas1"
+    style="
+        border:1px solid #ccc;
+        width:100%;
+        max-width:500px;
+        background:white;
+    "
+></canvas>
+
+<div
+    id="info1"
+    style="
+        margin-top:10px;
+        color:#2563eb;
+        font-weight:600;
+    "
+></div>
+
+</div>
+
+<div>
+
+<label>Second PDF</label>
+
+<input
+    type="file"
+    id="pdfFile2"
+    name="file2"
+    accept=".pdf"
+    required
+>
+
+<br><br>
+
+<canvas
+    id="canvas2"
+    style="
+        border:1px solid #ccc;
+        width:100%;
+        max-width:500px;
+        background:white;
+    "
+></canvas>
+
+<div
+    id="info2"
+    style="
+        margin-top:10px;
+        color:#2563eb;
+        font-weight:600;
+    "
+></div>
+
+</div>
+
+</div>
+
+<br>
+
+<button type="submit">
+    Compare PDFs
+</button>
+
+</form>
+
+{% if similarity is defined %}
+
+<div
+style="
+margin-top:20px;
+padding:20px;
+background:#eef6ff;
+border-radius:10px;
+"
+>
+
+<h2>
+Similarity:
+{{ similarity }}%
+</h2>
+
+</div>
+
+{% endif %}
+
+</div>
+
+<style>
+
+.tool-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+@media(max-width:768px){
+
+    .tool-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+
+async function previewPDF(
+    fileInputId,
+    canvasId,
+    infoId
+){
+
+    const input =
+        document.getElementById(
+            fileInputId
+        );
+
+    input.addEventListener(
+        "change",
+        function(e){
+
+            const file =
+                e.target.files[0];
+
+            if(!file) return;
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+            async function(){
+
+                const typedarray =
+                    new Uint8Array(
+                        this.result
+                    );
+
+                const pdf =
+                    await pdfjsLib
+                    .getDocument(
+                        typedarray
+                    ).promise;
+
+                document
+                .getElementById(
+                    infoId
+                )
+                .innerHTML =
+                "Pages: " +
+                pdf.numPages;
+
+                const page =
+                    await pdf.getPage(1);
+
+                const viewport =
+                    page.getViewport({
+                        scale:1.2
+                    });
+
+                const canvas =
+                    document.getElementById(
+                        canvasId
+                    );
+
+                const ctx =
+                    canvas.getContext(
+                        "2d"
+                    );
+
+                canvas.width =
+                    viewport.width;
+
+                canvas.height =
+                    viewport.height;
+
+                await page.render({
+
+                    canvasContext:ctx,
+
+                    viewport:viewport
+
+                }).promise;
+
+            };
+
+            reader.readAsArrayBuffer(
+                file
+            );
+
+        }
+    );
+
+}
+
+previewPDF(
+    "pdfFile1",
+    "canvas1",
+    "info1"
+);
+
+previewPDF(
+    "pdfFile2",
+    "canvas2",
+    "info2"
+);
+
+</script>
+
+{% endblock %}

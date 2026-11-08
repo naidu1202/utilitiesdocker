@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block title %}
+Organize PDF
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-container">
+
+    <h1>📄 Organize PDF</h1>
+
+    <form
+        action="/organize-pdf"
+        method="post"
+        enctype="multipart/form-data"
+        onsubmit="updateOrder()"
+    >
+
+        <label>PDF File</label>
+
+        <input
+            type="file"
+            id="pdfFile"
+            name="file"
+            accept=".pdf"
+            required
+        >
+
+        <br><br>
+
+        <div
+            style="
+                background:#eef6ff;
+                padding:12px;
+                border-radius:10px;
+                margin-bottom:15px;
+            "
+        >
+            Upload PDF → Drag Pages Into Desired Order → Organize PDF
+        </div>
+
+        <div
+            id="pageInfo"
+            style="
+                color:#2563eb;
+                font-weight:600;
+                margin-bottom:15px;
+            "
+        ></div>
+
+        <div id="pagesContainer"></div>
+
+        <input
+            type="hidden"
+            id="page_order"
+            name="page_order"
+        >
+
+        <br>
+
+        <button type="submit">
+            Organize PDF
+        </button>
+
+    </form>
+
+</div>
+
+<style>
+
+#pagesContainer{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-top:20px;
+}
+
+.page-card{
+    width:220px;
+    background:white;
+    border-radius:12px;
+    border:1px solid #ddd;
+    padding:10px;
+    cursor:move;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.page-card:hover{
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+.page-card canvas{
+    width:100%;
+    border:1px solid #eee;
+}
+
+.page-number{
+    text-align:center;
+    font-weight:600;
+    margin-top:10px;
+}
+
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+
+let pdfDoc = null;
+
+document
+.getElementById("pdfFile")
+.addEventListener(
+    "change",
+    async function(e){
+
+        const file =
+            e.target.files[0];
+
+        if(!file){
+            return;
+        }
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+        async function(){
+
+            const typedarray =
+                new Uint8Array(
+                    this.result
+                );
+
+            pdfDoc =
+                await pdfjsLib
+                    .getDocument(
+                        typedarray
+                    ).promise;
+
+            document
+            .getElementById(
+                "pageInfo"
+            )
+            .innerHTML =
+            "PDF contains <b>" +
+            pdfDoc.numPages +
+            "</b> pages. Drag cards to reorder.";
+
+            renderPages();
+
+        };
+
+        reader.readAsArrayBuffer(
+            file
+        );
+
+    }
+);
+
+async function renderPages(){
+
+    const container =
+        document.getElementById(
+            "pagesContainer"
+        );
+
+    container.innerHTML = "";
+
+    for(
+        let i = 1;
+        i <= pdfDoc.numPages;
+        i++
+    ){
+
+        const page =
+            await pdfDoc.getPage(i);
+
+        const viewport =
+            page.getViewport({
+                scale:0.5
+            });
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+        card.className =
+            "page-card";
+
+        card.dataset.page =
+            i;
+
+        const canvas =
+            document.createElement(
+                "canvas"
+            );
+
+        const ctx =
+            canvas.getContext(
+                "2d"
+            );
+
+        canvas.width =
+            viewport.width;
+
+        canvas.height =
+            viewport.height;
+
+        await page.render({
+
+            canvasContext:ctx,
+
+            viewport:viewport
+
+        }).promise;
+
+        const label =
+            document.createElement(
+                "div"
+            );
+
+        label.className =
+            "page-number";
+
+        label.innerHTML =
+            "Page " + i;
+
+        card.appendChild(
+            canvas
+        );
+
+        card.appendChild(
+            label
+        );
+
+        container.appendChild(
+            card
+        );
+    }
+
+    new Sortable(
+        container,
+        {
+            animation:150
+        }
+    );
+}
+
+function updateOrder(){
+
+    const order = [];
+
+    document
+    .querySelectorAll(
+        ".page-card"
+    )
+    .forEach(card=>{
+
+        order.push(
+            card.dataset.page
+        );
+
+    });
+
+    document
+    .getElementById(
+        "page_order"
+    )
+    .value =
+    order.join(",");
+
+    console.log(
+        order.join(",")
+    );
+}
+
+</script>
+
+{% endblock %}

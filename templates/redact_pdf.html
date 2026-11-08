@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}
+Redact PDF
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-container">
+
+    <h1>🛑 PDF Redaction Tool</h1>
+
+    <form
+        action="/redact-pdf"
+        method="post"
+        enctype="multipart/form-data"
+    >
+
+        <label>PDF File</label>
+
+        <input
+            type="file"
+            id="pdfFile"
+            name="file"
+            accept=".pdf"
+            required
+        >
+
+        <br><br>
+
+        <label>Text To Remove</label>
+
+        <input
+            type="text"
+            id="findText"
+            name="find_text"
+            placeholder="Example: Confidential"
+            required
+        >
+
+        <br><br>
+
+        <div
+            style="
+                background:#eef6ff;
+                padding:12px;
+                border-radius:10px;
+                margin-bottom:15px;
+            "
+        >
+            Upload PDF → Preview PDF → Enter Text → Redact PDF
+        </div>
+
+        <div
+            id="previewMessage"
+            style="
+                color:#2563eb;
+                font-weight:600;
+                margin-bottom:15px;
+            "
+        ></div>
+
+        <canvas
+            id="pdfCanvas"
+            style="
+                border:1px solid #ccc;
+                max-width:100%;
+                background:white;
+            "
+        ></canvas>
+
+        <br><br>
+
+        <button type="submit">
+            Redact PDF
+        </button>
+
+    </form>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+
+let pdfDoc = null;
+
+document
+.getElementById("findText")
+.addEventListener(
+    "input",
+    function(){
+
+        document
+        .getElementById(
+            "previewMessage"
+        )
+        .innerHTML =
+        "Text to redact: <b>" +
+        this.value +
+        "</b>";
+
+    }
+);
+
+document
+.getElementById("pdfFile")
+.addEventListener(
+    "change",
+    function(e){
+
+        const file =
+            e.target.files[0];
+
+        if(!file){
+            return;
+        }
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+        async function(){
+
+            const typedarray =
+                new Uint8Array(
+                    this.result
+                );
+
+            pdfDoc =
+                await pdfjsLib
+                .getDocument(
+                    typedarray
+                ).promise;
+
+            const page =
+                await pdfDoc.getPage(
+                    1
+                );
+
+            const viewport =
+                page.getViewport({
+                    scale:1.5
+                });
+
+            const canvas =
+                document.getElementById(
+                    "pdfCanvas"
+                );
+
+            const ctx =
+                canvas.getContext(
+                    "2d"
+                );
+
+            canvas.width =
+                viewport.width;
+
+            canvas.height =
+                viewport.height;
+
+            await page.render({
+
+                canvasContext:ctx,
+
+                viewport:viewport
+
+            }).promise;
+
+        };
+
+        reader.readAsArrayBuffer(
+            file
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

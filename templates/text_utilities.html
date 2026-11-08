@@ -7,73 +7,146 @@
 
     <textarea
         id="textInput"
-        rows="12"
+        rows="8"
         placeholder="Paste or type text here..."
-        style="width:100%;padding:15px;border-radius:10px;"></textarea>
-
-    <br><br>
+        style="
+            width:100%;
+            padding:15px;
+            border-radius:12px;
+            border:1px solid #d1d5db;
+            font-size:15px;
+            box-sizing:border-box;
+        "
+    ></textarea>
 
     <div class="stats-grid">
 
-        <div class="tool-card">
-            <h3 id="words">0</h3>
-            <p>Words</p>
+        <div class="stat-card">
+            <div class="stat-number" id="words">0</div>
+            <div class="stat-label">Words</div>
         </div>
 
-        <div class="tool-card">
-            <h3 id="characters">0</h3>
-            <p>Characters</p>
+        <div class="stat-card">
+            <div class="stat-number" id="characters">0</div>
+            <div class="stat-label">Characters</div>
         </div>
 
-        <div class="tool-card">
-            <h3 id="nospaces">0</h3>
-            <p>No Spaces</p>
+        <div class="stat-card">
+            <div class="stat-number" id="nospaces">0</div>
+            <div class="stat-label">No Spaces</div>
         </div>
 
-        <div class="tool-card">
-            <h3 id="sentences">0</h3>
-            <p>Sentences</p>
+        <div class="stat-card">
+            <div class="stat-number" id="sentences">0</div>
+            <div class="stat-label">Sentences</div>
         </div>
 
-        <div class="tool-card">
-            <h3 id="paragraphs">0</h3>
-            <p>Paragraphs</p>
+        <div class="stat-card">
+            <div class="stat-number" id="paragraphs">0</div>
+            <div class="stat-label">Paragraphs</div>
         </div>
 
-        <div class="tool-card">
-            <h3 id="reading">0 min</h3>
-            <p>Reading Time</p>
+        <div class="stat-card">
+            <div class="stat-number" id="reading">0 min</div>
+            <div class="stat-label">Reading Time</div>
         </div>
 
     </div>
-
-    <br>
 
     <h2>🔠 Case Converter</h2>
 
     <div class="button-row">
 
-        <button onclick="toUpper()">UPPERCASE</button>
+        <button onclick="toUpper()">
+            UPPERCASE
+        </button>
 
-        <button onclick="toLower()">lowercase</button>
+        <button onclick="toLower()">
+            lowercase
+        </button>
 
-        <button onclick="toTitle()">Title Case</button>
+        <button onclick="toTitle()">
+            Title Case
+        </button>
 
-        <button onclick="toSnake()">snake_case</button>
+        <button onclick="toSnake()">
+            snake_case
+        </button>
 
-        <button onclick="toKebab()">kebab-case</button>
+        <button onclick="toKebab()">
+            kebab-case
+        </button>
 
     </div>
 
-    <br>
-
-    <h2>🧹 Remove Duplicates</h2>
+    <h2 style="margin-top:30px;">
+        🧹 Remove Duplicates
+    </h2>
 
     <button onclick="removeDuplicates()">
         Remove Duplicate Lines
     </button>
 
 </div>
+
+<style>
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px;
+    margin:20px 0;
+}
+
+.stat-card{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:15px;
+    text-align:center;
+    transition:.2s;
+}
+
+.stat-card:hover{
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.stat-number{
+    font-size:28px;
+    font-weight:700;
+    color:#2563eb;
+}
+
+.stat-label{
+    font-size:13px;
+    color:#6b7280;
+    margin-top:5px;
+}
+
+.button-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+.button-row button,
+.tool-page button{
+    padding:10px 16px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+}
+
+.button-row button:hover,
+.tool-page button:hover{
+    background:#1d4ed8;
+}
+
+</style>
 
 <script>
 
@@ -106,14 +179,32 @@ function updateStats(){
               .length
         : 0;
 
-    let reading = Math.ceil(words / 200);
+    let reading =
+        Math.ceil(words / 200);
 
-    document.getElementById('words').innerText = words;
-    document.getElementById('characters').innerText = chars;
-    document.getElementById('nospaces').innerText = noSpaces;
-    document.getElementById('sentences').innerText = sentences;
-    document.getElementById('paragraphs').innerText = paragraphs;
-    document.getElementById('reading').innerText = reading + " min";
+    document.getElementById(
+        "words"
+    ).innerText = words;
+
+    document.getElementById(
+        "characters"
+    ).innerText = chars;
+
+    document.getElementById(
+        "nospaces"
+    ).innerText = noSpaces;
+
+    document.getElementById(
+        "sentences"
+    ).innerText = sentences;
+
+    document.getElementById(
+        "paragraphs"
+    ).innerText = paragraphs;
+
+    document.getElementById(
+        "reading"
+    ).innerText = reading + " min";
 }
 
 function toUpper(){
@@ -130,8 +221,10 @@ function toTitle(){
 
     input.value = input.value
         .toLowerCase()
-        .replace(/\b\w/g,
-            c => c.toUpperCase());
+        .replace(
+            /\b\w/g,
+            c => c.toUpperCase()
+        );
 
     updateStats();
 }
@@ -158,11 +251,14 @@ function toKebab(){
 
 function removeDuplicates(){
 
-    let lines = input.value.split("\n");
+    let lines =
+        input.value.split("\n");
 
-    let unique = [...new Set(lines)];
+    let unique =
+        [...new Set(lines)];
 
-    input.value = unique.join("\n");
+    input.value =
+        unique.join("\n");
 
     updateStats();
 }

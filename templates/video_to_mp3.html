@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+Video to MP3
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-box">
+
+    <h1>🎬 Video to MP3</h1>
+
+    <p>
+        Extract high-quality MP3 audio from MP4, MOV, AVI, MKV and other video formats.
+    </p>
+
+    <form
+        id="videoForm"
+        action="/video-to-mp3"
+        method="post"
+        enctype="multipart/form-data">
+
+        <div class="upload-box">
+
+            <p>
+                📹 Select Video File
+            </p>
+
+            <input
+                type="file"
+                name="file"
+                accept="video/*"
+                required>
+
+        </div>
+
+        <br>
+
+        <button
+            type="submit"
+            class="btn-primary">
+
+            🎵 Convert To MP3
+
+        </button>
+
+    </form>
+
+    <div
+        id="processingMessage"
+        class="message"
+        style="display:none;">
+    </div>
+
+</div>
+
+<style>
+
+.tool-box{
+    max-width:700px;
+    margin:auto;
+    background:#fff;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.upload-box{
+    border:2px dashed #d1d5db;
+    padding:40px;
+    text-align:center;
+    border-radius:10px;
+    background:#f9fafb;
+}
+
+.btn-primary{
+    background:#4f46e5;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.btn-primary:hover{
+    background:#4338ca;
+}
+
+.message{
+    margin-top:20px;
+    padding:15px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+</style>
+
+<script>
+
+document.getElementById(
+    "videoForm"
+).addEventListener(
+    "submit",
+    function(){
+
+        const msg =
+            document.getElementById(
+                "processingMessage"
+            );
+
+        msg.style.display = "block";
+
+        msg.style.background =
+            "#dbeafe";
+
+        msg.style.color =
+            "#1e40af";
+
+        msg.innerHTML =
+            "⏳ Extracting MP3 from Video... Please wait.";
+
+        setTimeout(function(){
+
+            msg.style.background =
+                "#dcfce7";
+
+            msg.style.color =
+                "#166534";
+
+            msg.innerHTML =
+                "✅ MP3 Created Successfully. Download should start automatically.";
+
+        }, 3000);
+
+    }
+);
+
+</script>
+
+{% endblock %}

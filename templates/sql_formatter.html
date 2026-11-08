@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}
+SQL Formatter
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-container">
+
+    <h1>🗄️ SQL Formatter</h1>
+
+    <p>
+        Format and beautify SQL queries instantly.
+    </p>
+
+    <textarea
+        id="sqlInput"
+        rows="12"
+        placeholder="Paste SQL query here..."
+        style="
+            width:100%;
+            padding:15px;
+            border-radius:10px;
+            border:1px solid #ccc;
+            box-sizing:border-box;
+            font-family:monospace;
+        "
+    ></textarea>
+
+    <br><br>
+
+    <button onclick="formatSQL()">
+        Format SQL
+    </button>
+
+    <button onclick="copySQL()">
+        Copy
+    </button>
+
+    <button onclick="clearSQL()">
+        Clear
+    </button>
+
+</div>
+
+<script>
+
+function formatSQL(){
+
+    let sql =
+        document
+        .getElementById("sqlInput")
+        .value;
+
+    const keywords = [
+        "SELECT",
+        "FROM",
+        "WHERE",
+        "GROUP BY",
+        "ORDER BY",
+        "HAVING",
+        "JOIN",
+        "LEFT JOIN",
+        "RIGHT JOIN",
+        "INNER JOIN",
+        "OUTER JOIN",
+        "ON",
+        "AND",
+        "OR",
+        "INSERT INTO",
+        "VALUES",
+        "UPDATE",
+        "SET",
+        "DELETE",
+        "CREATE TABLE",
+        "ALTER TABLE",
+        "DROP TABLE",
+        "UNION",
+        "LIMIT"
+    ];
+
+    keywords.forEach(function(keyword){
+
+        const regex =
+            new RegExp(
+                keyword,
+                "ig"
+            );
+
+        sql =
+            sql.replace(
+                regex,
+                "\n" + keyword
+            );
+
+    });
+
+    document
+        .getElementById("sqlInput")
+        .value =
+        sql.trim();
+
+}
+
+function copySQL(){
+
+    navigator.clipboard.writeText(
+        document
+        .getElementById("sqlInput")
+        .value
+    );
+
+    alert("Copied");
+}
+
+function clearSQL(){
+
+    document
+    .getElementById("sqlInput")
+    .value = "";
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,51 +1,298 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Resize Image</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-<div class="container">
+{% block title %}
+Resize Image
+{% endblock %}
 
-<h1>📏 Resize Image</h1>
+{% block content %}
 
-<form
-    action="/resize-image"
-    method="post"
-    enctype="multipart/form-data">
+<div class="tool-container">
 
-    <input
-        type="file"
-        name="file"
-        accept="image/*"
-        required>
+    <h1>📏 Resize Image</h1>
 
-    <br><br>
+    <form
+        action="/resize-image"
+        method="post"
+        enctype="multipart/form-data"
+    >
 
-    <input
-        type="number"
-        name="width"
-        placeholder="Width"
-        required>
+        <input
+            type="file"
+            id="imageFile"
+            name="file"
+            accept="image/*"
+            required
+        >
 
-    <br><br>
+        <br><br>
 
-    <input
-        type="number"
-        name="height"
-        placeholder="Height"
-        required>
+        <div
+            style="
+                background:#eef6ff;
+                padding:12px;
+                border-radius:10px;
+                margin-bottom:20px;
+                text-align:center;
+            "
+        >
+            Upload Image → Drag Blue Handle → Resize Image
+        </div>
 
-    <br><br>
+        <div
+            id="resizeBox"
+            style="
+                display:none;
+                text-align:center;
+                position:relative;
+            "
+        >
 
-    <button type="submit">
-        Resize Image
-    </button>
+            <div
+                id="imageWrapper"
+                style="
+                    display:inline-block;
+                    position:relative;
+                "
+            >
 
-</form>
+                <img
+                    id="preview"
+                    style="
+                        display:block;
+                        border:3px dashed #2563eb;
+                        max-width:none;
+                    "
+                >
+
+                <div
+                    id="resizeHandle"
+                    style="
+                        width:24px;
+                        height:24px;
+                        background:#2563eb;
+                        border-radius:50%;
+                        position:absolute;
+                        right:-12px;
+                        bottom:-12px;
+                        cursor:nwse-resize;
+                        border:2px solid white;
+                        box-shadow:0 0 5px rgba(0,0,0,.3);
+                    "
+                ></div>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <div
+            id="currentSize"
+            style="
+                text-align:center;
+                font-weight:600;
+                color:#2563eb;
+                font-size:18px;
+            "
+        ></div>
+
+        <input
+            type="hidden"
+            id="width"
+            name="width"
+        >
+
+        <input
+            type="hidden"
+            id="height"
+            name="height"
+        >
+
+        <br>
+
+        <button type="submit">
+            Resize Image
+        </button>
+
+    </form>
 
 </div>
 
-</body>
-</html>
+<script>
+
+const imageFile =
+    document.getElementById(
+        "imageFile"
+    );
+
+const preview =
+    document.getElementById(
+        "preview"
+    );
+
+const resizeBox =
+    document.getElementById(
+        "resizeBox"
+    );
+
+const resizeHandle =
+    document.getElementById(
+        "resizeHandle"
+    );
+
+const widthField =
+    document.getElementById(
+        "width"
+    );
+
+const heightField =
+    document.getElementById(
+        "height"
+    );
+
+const currentSize =
+    document.getElementById(
+        "currentSize"
+    );
+
+let aspectRatio = 1;
+
+imageFile.addEventListener(
+    "change",
+    function(){
+
+        const file =
+            this.files[0];
+
+        if(!file){
+            return;
+        }
+
+        const img =
+            new Image();
+
+        img.onload =
+            function(){
+
+                aspectRatio =
+                    img.width /
+                    img.height;
+
+                preview.src =
+                    img.src;
+
+                let startWidth = img.width;
+
+                if(startWidth > 600){
+                    startWidth = 600;
+                }
+
+                preview.style.width =
+                    startWidth + "px";
+
+                preview.style.height =
+                    Math.round(
+                        startWidth /
+                        aspectRatio
+                    ) + "px";
+
+                resizeBox.style.display =
+                    "block";
+
+                updateDimensions();
+
+            };
+
+        img.src =
+            URL.createObjectURL(file);
+
+    }
+);
+
+function updateDimensions(){
+
+    const width =
+        Math.round(
+            preview.offsetWidth
+        );
+
+    const height =
+        Math.round(
+            preview.offsetHeight
+        );
+
+    widthField.value =
+        width;
+
+    heightField.value =
+        height;
+
+    currentSize.innerHTML =
+        "Current Size: " +
+        width +
+        " × " +
+        height;
+
+}
+
+let isResizing = false;
+
+resizeHandle.addEventListener(
+    "mousedown",
+    function(e){
+
+        e.preventDefault();
+
+        isResizing = true;
+
+    }
+);
+
+document.addEventListener(
+    "mouseup",
+    function(){
+
+        isResizing = false;
+
+    }
+);
+
+document.addEventListener(
+    "mousemove",
+    function(e){
+
+        if(!isResizing){
+            return;
+        }
+
+        const rect =
+            preview.getBoundingClientRect();
+
+        let newWidth =
+            e.clientX -
+            rect.left;
+
+        if(newWidth < 100){
+            newWidth = 100;
+        }
+
+        const newHeight =
+            Math.round(
+                newWidth /
+                aspectRatio
+            );
+
+        preview.style.width =
+            newWidth + "px";
+
+        preview.style.height =
+            newHeight + "px";
+
+        updateDimensions();
+
+    }
+);
+
+</script>
+
+{% endblock %}

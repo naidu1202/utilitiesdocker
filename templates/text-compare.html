@@ -1,56 +1,296 @@
 {% extends "base.html" %}
 
-{% block title %}Text Compare Tool | UtilitiesDocker{% endblock %}
+{% block title %}
+Text Compare Tool | UtilitiesDocker
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Text Compare Tool</h2>
-    <p>Compare two texts and highlight differences instantly.</p>
+
+<div class="container-fluid px-4 py-4">
+
+    <div class="mb-4">
+
+        <h1 class="fw-bold">
+            Text Compare Tool
+        </h1>
+
+        <p class="text-muted">
+            Compare two texts using a VS Code style diff editor.
+        </p>
+
+    </div>
 
     <form method="POST">
-        <div class="row">
-            <div class="col">
-                <label>Text 1</label>
-                <textarea name="text1" rows="15" class="form-control">{{ text1 or '' }}</textarea>
+
+        <div class="row g-4">
+
+            <div class="col-lg-6">
+
+                <label class="fw-bold mb-2">
+                    Original Text
+                </label>
+
+                <textarea
+                    name="text1"
+                    rows="8"
+                    class="form-control font-monospace shadow-sm"
+                    placeholder="Paste original text here..."
+                >{{ text1 or '' }}</textarea>
+
             </div>
 
-            <div class="col">
-                <label>Text 2</label>
-                <textarea name="text2" rows="15" class="form-control">{{ text2 or '' }}</textarea>
+            <div class="col-lg-6">
+
+                <label class="fw-bold mb-2">
+                    Modified Text
+                </label>
+
+                <textarea
+                    name="text2"
+                    rows="8"
+                    class="form-control font-monospace shadow-sm"
+                    placeholder="Paste modified text here..."
+                >{{ text2 or '' }}</textarea>
+
             </div>
+
         </div>
 
-        <br>
+        <div class="mt-4 d-flex gap-2 flex-wrap">
 
-        <button class="btn btn-primary">
-            Compare
-        </button>
+            <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+            >
+                Compare
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-outline-secondary"
+                onclick="swapText()"
+            >
+                Swap
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-outline-danger"
+                onclick="clearText()"
+            >
+                Clear
+            </button>
+
+        </div>
+
     </form>
 
-    {% if result %}
-    <hr>
-    <h3>Comparison Result</h3>
+    {% if text1 and text2 %}
 
-    <div class="diff-box">
-        {{ result|safe }}
+    <div class="row mt-4 g-3">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <h2 class="text-primary mb-1">
+                        {{ similarity }}%
+                    </h2>
+
+                    <small class="text-muted">
+                        Similarity
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <h4>
+                        {{ lines1 }}
+                    </h4>
+
+                    <small class="text-muted">
+                        Lines (Left)
+                    </small>
+
+                    <br>
+
+                    <small>
+                        {{ chars1 }} Characters
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <h4>
+                        {{ lines2 }}
+                    </h4>
+
+                    <small class="text-muted">
+                        Lines (Right)
+                    </small>
+
+                    <br>
+
+                    <small>
+                        {{ chars2 }} Characters
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+    <div class="mt-4">
+
+        <h4 class="mb-3">
+            Difference Viewer
+        </h4>
+
+        <div id="diff-editor"></div>
+
+    </div>
+
     {% endif %}
+
 </div>
 
 <style>
-.diff-box{
-    border:1px solid #ddd;
-    padding:15px;
-    background:#fff;
-    overflow:auto;
+
+textarea{
+    resize:vertical;
+    font-size:14px;
 }
 
-.diff_add{
-    background:#d4edda;
+#diff-editor{
+    height:85vh;
+    min-height:700px;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid #30363d;
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);
 }
 
-.diff_sub{
-    background:#f8d7da;
+.card{
+    border-radius:12px;
 }
+
 </style>
+
+{% if text1 and text2 %}
+
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/min/vs/loader.js"></script>
+
+<script>
+
+function swapText(){
+
+    let left =
+        document.querySelector(
+            '[name="text1"]'
+        );
+
+    let right =
+        document.querySelector(
+            '[name="text2"]'
+        );
+
+    let temp =
+        left.value;
+
+    left.value =
+        right.value;
+
+    right.value =
+        temp;
+}
+
+function clearText(){
+
+    document.querySelector(
+        '[name="text1"]'
+    ).value = '';
+
+    document.querySelector(
+        '[name="text2"]'
+    ).value = '';
+}
+
+require.config({
+    paths:{
+        vs:'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/min/vs'
+    }
+});
+
+require(
+[
+'vs/editor/editor.main'
+],
+function(){
+
+    const originalModel =
+        monaco.editor.createModel(
+`{{ text1|safe }}`,
+'plaintext'
+        );
+
+    const modifiedModel =
+        monaco.editor.createModel(
+`{{ text2|safe }}`,
+'plaintext'
+        );
+
+    const diffEditor =
+        monaco.editor.createDiffEditor(
+            document.getElementById('diff-editor'),
+            {
+                theme:'vs-dark',
+                readOnly:true,
+                automaticLayout:true,
+                renderSideBySide:true,
+
+                scrollbar:{
+                    verticalScrollbarSize:12,
+                    horizontalScrollbarSize:12
+                },
+
+                minimap:{
+                    enabled:true
+                }
+            }
+        );
+
+    diffEditor.setModel({
+        original:originalModel,
+        modified:modifiedModel
+    });
+
+});
+
+</script>
+
+{% endif %}
+
 {% endblock %}

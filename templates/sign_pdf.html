@@ -1,57 +1,272 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
 
-<title>
+{% block title %}
 Sign PDF
-</title>
+{% endblock %}
 
-<link
-rel="stylesheet"
-href="/static/style.css">
+{% block content %}
 
-</head>
+<div class="tool-container">
 
-<body>
-
-<div class="container">
-
-<h1>
-✍️ Sign PDF
-</h1>
+<h1>✍️ Sign PDF</h1>
 
 <form
-action="/sign-pdf"
-method="post"
-enctype="multipart/form-data">
+    action="/sign-pdf"
+    method="post"
+    enctype="multipart/form-data"
+>
 
-PDF File
+<div class="card">
+
+<label>PDF File</label>
 
 <input
-type="file"
-name="pdf_file"
-accept=".pdf"
-required>
+    type="file"
+    accept=".pdf"
+    name="pdf_file"
+    id="pdfFile"
+    required
+>
 
 <br><br>
 
-Signature PNG
+<label>Signature PNG</label>
 
 <input
-type="file"
-name="signature_file"
-accept=".png"
-required>
+    type="file"
+    accept=".png"
+    name="signature_file"
+    id="signatureFile"
+    required
+>
+
+<input
+    type="hidden"
+    name="x"
+    id="x"
+>
+
+<input
+    type="hidden"
+    name="y"
+    id="y"
+>
+
+<br><br>
+
+<div
+style="
+background:#eef6ff;
+padding:12px;
+border-radius:8px;
+margin-bottom:15px;
+"
+>
+1. Upload PDF<br>
+2. Upload Signature PNG<br>
+3. Click on PDF where you want the signature<br>
+4. Click Sign PDF
+</div>
+
+<canvas
+    id="pdfCanvas"
+    style="
+        border:1px solid #ccc;
+        max-width:100%;
+        cursor:crosshair;
+    "
+></canvas>
 
 <br><br>
 
 <button type="submit">
-Sign PDF
+    Sign PDF
 </button>
+
+</div>
 
 </form>
 
 </div>
 
-</body>
-</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+
+let pdfDoc = null;
+let originalPdfPage = null;
+let signatureImage = null;
+
+async function renderPage(signatureX = null, signatureY = null){
+
+    if(!originalPdfPage){
+        return;
+    }
+
+    const canvas =
+        document.getElementById(
+            "pdfCanvas"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const viewport =
+        originalPdfPage.getViewport({
+            scale: 1.5
+        });
+
+    canvas.width =
+        viewport.width;
+
+    canvas.height =
+        viewport.height;
+
+    await originalPdfPage.render({
+        canvasContext: ctx,
+        viewport: viewport
+    }).promise;
+
+    if(
+        signatureImage &&
+        signatureX !== null &&
+        signatureY !== null
+    ){
+
+        ctx.drawImage(
+            signatureImage,
+            signatureX - 70,
+            signatureY - 30,
+            140,
+            60
+        );
+    }
+}
+
+document
+.getElementById("pdfFile")
+.addEventListener(
+    "change",
+    function(e){
+
+        const file =
+            e.target.files[0];
+
+        if(!file){
+            return;
+        }
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+        async function(){
+
+            const typedarray =
+                new Uint8Array(
+                    this.result
+                );
+
+            pdfDoc =
+                await pdfjsLib
+                .getDocument(
+                    typedarray
+                ).promise;
+
+            originalPdfPage =
+                await pdfDoc.getPage(
+                    1
+                );
+
+            await renderPage();
+        };
+
+        reader.readAsArrayBuffer(
+            file
+        );
+
+    }
+);
+
+document
+.getElementById("signatureFile")
+.addEventListener(
+    "change",
+    function(e){
+
+        const file =
+            e.target.files[0];
+
+        if(!file){
+            return;
+        }
+
+        signatureImage =
+            new Image();
+
+        signatureImage.src =
+            URL.createObjectURL(
+                file
+            );
+    }
+);
+
+document
+.getElementById("pdfCanvas")
+.addEventListener(
+    "click",
+    async function(e){
+
+        if(!signatureImage){
+
+            alert(
+                "Upload signature PNG first."
+            );
+
+            return;
+        }
+
+        const rect =
+            this.getBoundingClientRect();
+
+        const canvasX =
+            e.clientX -
+            rect.left;
+
+        const canvasY =
+            e.clientY -
+            rect.top;
+
+        await renderPage(
+            canvasX,
+            canvasY
+        );
+
+        const pdfWidth =
+            originalPdfPage.view[2];
+
+        const pdfHeight =
+            originalPdfPage.view[3];
+
+        const pdfX =
+            canvasX *
+            (pdfWidth / this.width);
+
+        const pdfY =
+            canvasY *
+            (pdfHeight / this.height);
+
+        document
+        .getElementById("x")
+        .value = pdfX;
+
+        document
+        .getElementById("y")
+        .value = pdfY;
+
+    }
+);
+
+</script>
+
+{% endblock %}

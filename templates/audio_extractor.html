@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}
+Extract Audio from Video
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="tool-card">
+
+        <h1>🎵 Audio Extractor</h1>
+
+        <p class="tool-description">
+            Extract MP3 audio from MP4, MOV, AVI, MKV and other video files.
+        </p>
+
+        {% if success %}
+        <div class="alert alert-success">
+            ✅ {{ success }}
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="alert alert-danger">
+            ❌ {{ error }}
+        </div>
+        {% endif %}
+
+        {% if output_file %}
+        <div class="alert alert-success mt-3">
+            🎉 Audio extracted successfully!
+        </div>
+
+        <a href="{{ url_for('download_file', filename=output_file) }}"
+           class="btn btn-success">
+            ⬇ Download MP3
+        </a>
+        <br><br>
+        {% endif %}
+
+<form
+    id="audioForm"
+    enctype="multipart/form-data"
+>
+
+    <div class="form-group">
+        <label>Upload Video</label>
+
+        <input
+            type="file"
+            name="file"
+            accept="video/*"
+            required
+        >
+    </div>
+
+    <button
+        type="submit"
+        class="btn-primary"
+    >
+        🎧 Extract Audio
+    </button>
+
+</form>
+
+<div id="processing"
+     class="alert alert-info mt-3"
+     style="display:none;">
+    ⏳ Uploading file...
+</div>
+
+<div id="success"
+     class="alert alert-success mt-3"
+     style="display:none;">
+    ✅ Audio extracted successfully
+</div>
+
+<script>
+
+document.getElementById("audioForm")
+.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const processing =
+        document.getElementById("processing");
+
+    const success =
+        document.getElementById("success");
+
+    processing.style.display = "block";
+    success.style.display = "none";
+
+    processing.innerHTML =
+        "⏳ Uploading video...";
+
+    const formData =
+        new FormData(this);
+
+    try {
+
+        processing.innerHTML =
+            "🎵 Extracting audio...";
+
+        const response =
+            await fetch(
+                "/audio-extractor",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+        processing.innerHTML =
+            "📦 Preparing download...";
+
+        const blob =
+            await response.blob();
+
+        const url =
+            window.URL.createObjectURL(blob);
+
+        const a =
+            document.createElement("a");
+
+        a.href = url;
+        a.download = "audio.mp3";
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        a.remove();
+
+        processing.style.display = "none";
+
+        success.style.display = "block";
+
+    }
+
+    catch(error) {
+
+        processing.innerHTML =
+            "❌ Failed to extract audio";
+
+    }
+
+});
+
+</script>
+
+        <div id="processing"
+             style="display:none; margin-top:20px; color:#2563eb; font-weight:600;">
+            ⏳ Extracting audio... Please wait.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+document.getElementById("audioForm").addEventListener("submit", function() {
+    document.getElementById("processing").style.display = "block";
+});
+</script>
+
+{% endblock %}

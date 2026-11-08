@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+
+{% block title %}
+MP3 Cutter
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="tool-card">
+
+        <h1>✂ MP3 Cutter</h1>
+
+        <p>
+            Drag the handles on the waveform to select
+            the portion of audio you want to keep.
+        </p>
+
+
+
+        <style>
+
+            #waveform{
+                margin-top:20px;
+                border:1px solid #e5e7eb;
+                border-radius:12px;
+                overflow:hidden;
+                background:#fff;
+                min-height:180px;
+            }
+
+            .audio-stats{
+                display:grid;
+                grid-template-columns:
+                    repeat(auto-fit,minmax(150px,1fr));
+                gap:15px;
+                margin-top:20px;
+            }
+
+            .stat-box{
+                background:#f8fafc;
+                border:1px solid #e2e8f0;
+                border-radius:10px;
+                padding:15px;
+                text-align:center;
+            }
+
+            .stat-box span{
+                display:block;
+                color:#64748b;
+                font-size:14px;
+                margin-bottom:6px;
+            }
+
+            .stat-box strong{
+                font-size:20px;
+                color:#2563eb;
+            }
+
+            .audio-actions{
+                display:flex;
+                flex-wrap:wrap;
+                gap:10px;
+                margin:25px 0;
+            }
+
+            .btn-primary{
+                padding:10px 18px;
+                border:none;
+                border-radius:8px;
+                cursor:pointer;
+                background:#2563eb;
+                color:white;
+                font-weight:600;
+            }
+
+            .btn-primary:hover{
+                background:#1d4ed8;
+            }
+
+            .processing{
+                display:none;
+                margin-top:20px;
+                padding:15px;
+                border-radius:8px;
+                background:#eff6ff;
+                color:#2563eb;
+                font-weight:600;
+                text-align:center;
+            }
+
+            .success-box{
+                display:none;
+                margin-top:20px;
+                padding:15px;
+                border-radius:8px;
+                background:#ecfdf5;
+                color:#059669;
+                font-weight:600;
+                text-align:center;
+            }
+
+            @media(max-width:768px){
+
+                .audio-actions{
+                    flex-direction:column;
+                }
+
+                .audio-actions button{
+                    width:100%;
+                }
+
+            }
+
+        </style>
+
+        <div id="waveform"></div>
+
+        <div class="audio-stats">
+
+            <div class="stat-box">
+                <span>🎬 Start</span>
+                <strong id="startTime">0.00</strong>
+            </div>
+
+            <div class="stat-box">
+                <span>🏁 End</span>
+                <strong id="endTime">0.00</strong>
+            </div>
+
+            <div class="stat-box">
+                <span>✂ Length</span>
+                <strong id="selectedLength">0.00</strong>
+            </div>
+
+            <div class="stat-box">
+                <span>📍 Position</span>
+                <strong id="currentPosition">0.00</strong>
+            </div>
+
+        </div>
+
+        <div class="audio-actions">
+
+            <button
+                type="button"
+                class="btn-primary"
+                onclick="playSelection()">
+                ▶ Preview Selection
+            </button>
+
+            <button
+                type="button"
+                class="btn-primary"
+                onclick="pauseAudio()">
+                ⏸ Pause
+            </button>
+
+            <button
+                type="button"
+                class="btn-primary"
+                onclick="stopAudio()">
+                ⏹ Stop
+            </button>
+
+        </div>
+
+        <form
+            id="cutForm"
+            action="/cut-mp3"
+            method="post">
+
+            <input
+                type="hidden"
+                name="filename"
+                value="{{ filename }}">
+
+            <input
+                type="hidden"
+                id="start_input"
+                name="start_time"
+                value="0">
+
+            <input
+                type="hidden"
+                id="end_input"
+                name="end_time"
+                value="0">
+
+            <button
+                id="cutButton"
+                type="submit"
+                class="btn-primary">
+
+                ✂ Cut MP3
+
+            </button>
+
+        </form>
+
+
+
+<div
+    id="statusBox"
+    style="
+        display:none;
+        margin-top:20px;
+        padding:15px;
+        border-radius:10px;
+        text-align:center;
+        font-weight:600;
+    ">
+</div>
+
+
+
+    </div>
+
+</div>
+
+<script type="module">
+
+import WaveSurfer from "https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.esm.js";
+import RegionsPlugin from "https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.esm.js";
+
+const regionsPlugin =
+    RegionsPlugin.create();
+
+const wavesurfer =
+    WaveSurfer.create({
+
+        container: '#waveform',
+
+        waveColor: '#c4b5fd',
+
+        progressColor: '#7c3aed',
+
+        cursorColor: '#111827',
+
+        barWidth: 2,
+
+        barGap: 1,
+
+        normalize: true,
+
+        height: 180,
+
+        url: '/audio-file/{{ filename }}',
+
+        plugins: [regionsPlugin]
+
+    });
+
+let region = null;
+
+wavesurfer.on('ready', () => {
+
+    const duration =
+        wavesurfer.getDuration();
+
+    region =
+        regionsPlugin.addRegion({
+
+            start: 0,
+
+            end: duration,
+
+            color:
+                'rgba(124,58,237,0.25)',
+
+            drag: true,
+
+            resize: true
+
+        });
+
+    updateValues();
+
+    region.on(
+        'update-end',
+        updateValues
+    );
+
+});
+
+wavesurfer.on(
+    'timeupdate',
+    (time) => {
+
+        document.getElementById(
+            'currentPosition'
+        ).innerText =
+        time.toFixed(2);
+
+    }
+);
+
+function updateValues(){
+
+    if(!region) return;
+
+    document.getElementById(
+        'startTime'
+    ).innerText =
+    region.start.toFixed(2);
+
+    document.getElementById(
+        'endTime'
+    ).innerText =
+    region.end.toFixed(2);
+
+    document.getElementById(
+        'selectedLength'
+    ).innerText =
+    (
+        region.end -
+        region.start
+    ).toFixed(2);
+
+    document.getElementById(
+        'start_input'
+    ).value =
+    region.start.toFixed(2);
+
+    document.getElementById(
+        'end_input'
+    ).value =
+    region.end.toFixed(2);
+
+}
+
+window.playSelection =
+function(){
+
+    if(!region) return;
+
+    wavesurfer.play(
+        region.start,
+        region.end
+    );
+
+}
+
+window.pauseAudio =
+function(){
+
+    wavesurfer.pause();
+
+}
+
+window.stopAudio =
+function(){
+
+    wavesurfer.stop();
+
+}
+
+
+document
+.getElementById("cutForm")
+.addEventListener(
+"submit",
+async function(e){
+
+    e.preventDefault();
+
+    const button =
+        document.getElementById(
+            "cutButton"
+        );
+
+    const status =
+        document.getElementById(
+            "statusBox"
+        );
+
+    status.style.display =
+        "block";
+
+    status.style.background =
+        "#eff6ff";
+
+    status.style.color =
+        "#2563eb";
+
+    status.innerHTML =
+        "⏳ Cutting MP3... Please wait";
+
+    button.disabled = true;
+
+    const formData =
+        new FormData(this);
+
+    try{
+
+        const response =
+            await fetch(
+                "/cut-mp3",
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
+
+        const blob =
+            await response.blob();
+
+        const url =
+            window.URL.createObjectURL(
+                blob
+            );
+
+        const a =
+            document.createElement(
+                "a"
+            );
+
+        a.href = url;
+        a.download =
+            "trimmed.mp3";
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        a.remove();
+
+        status.style.background =
+            "#ecfdf5";
+
+        status.style.color =
+            "#059669";
+
+        status.innerHTML =
+        "✅ MP3 cut successfully! Download should begin automatically.";
+
+        button.disabled = false;
+
+    }
+
+    catch(err){
+
+        status.style.background =
+            "#fef2f2";
+
+        status.style.color =
+            "#dc2626";
+
+        status.innerHTML =
+            "❌ Failed to cut MP3";
+
+        button.disabled = false;
+    }
+
+});
+
+</script>
+
+{% endblock %}
