@@ -1,36 +1,86 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>URL Encoder Decoder</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-<div class="container">
+{% block title %}
+URL Encoder Decoder Online Free | URL Encode & Decode Tool | UtilitiesDocker
+{% endblock %}
 
-<h1>🌐 URL Encoder / Decoder</h1>
+{% block meta_description %}
+Encode and decode URLs online for free. Convert special characters into URL-safe format and decode encoded URLs instantly.
+{% endblock %}
 
-<textarea
-id="input"
-rows="8"
-style="width:100%;"></textarea>
+{% block og_title %}
+URL Encoder Decoder Online Free
+{% endblock %}
 
-<br><br>
+{% block og_description %}
+Encode and decode URLs instantly using our free URL encoder and decoder tool.
+{% endblock %}
 
-<button onclick="encodeUrl()">
-Encode
-</button>
+{% block content %}
 
-<button onclick="decodeUrl()">
-Decode
-</button>
+<div class="tool-container">
 
-<br><br>
+    <h1>URL Encoder / Decoder Online</h1>
 
-<textarea
-id="output"
-rows="8"
-style="width:100%;"></textarea>
+    <p>
+        Encode URLs for safe transmission and decode encoded URLs instantly.
+    </p>
+
+    <label>
+        <strong>Input</strong>
+    </label>
+
+    <textarea
+        id="input"
+        rows="8"
+        style="
+            width:100%;
+            padding:15px;
+            border-radius:10px;
+            border:1px solid #d1d5db;
+            box-sizing:border-box;
+            font-family:monospace;
+        "
+        placeholder="Enter URL or text...">
+    </textarea>
+
+    <br><br>
+
+    <button onclick="encodeUrl()">
+        Encode
+    </button>
+
+    <button onclick="decodeUrl()">
+        Decode
+    </button>
+
+    <button onclick="copyOutput()">
+        Copy Result
+    </button>
+
+    <button onclick="clearAll()">
+        Clear
+    </button>
+
+    <br><br>
+
+    <label>
+        <strong>Output</strong>
+    </label>
+
+    <textarea
+        id="output"
+        rows="8"
+        style="
+            width:100%;
+            padding:15px;
+            border-radius:10px;
+            border:1px solid #d1d5db;
+            box-sizing:border-box;
+            font-family:monospace;
+        "
+        readonly>
+    </textarea>
 
 </div>
 
@@ -38,23 +88,239 @@ style="width:100%;"></textarea>
 
 function encodeUrl(){
 
-document.getElementById("output").value =
-encodeURIComponent(
-document.getElementById("input").value
-);
+    document.getElementById(
+        "output"
+    ).value =
+
+    encodeURIComponent(
+
+        document.getElementById(
+            "input"
+        ).value
+
+    );
 
 }
 
 function decodeUrl(){
 
-document.getElementById("output").value =
-decodeURIComponent(
-document.getElementById("input").value
-);
+    try{
+
+        document.getElementById(
+            "output"
+        ).value =
+
+        decodeURIComponent(
+
+            document.getElementById(
+                "input"
+            ).value
+
+        );
+
+    }
+    catch(error){
+
+        alert(
+            "Invalid encoded URL"
+        );
+
+    }
+
+}
+
+function copyOutput(){
+
+    navigator.clipboard.writeText(
+
+        document.getElementById(
+            "output"
+        ).value
+
+    );
+
+    alert(
+        "Copied to clipboard!"
+    );
+
+}
+
+function clearAll(){
+
+    document.getElementById(
+        "input"
+    ).value = "";
+
+    document.getElementById(
+        "output"
+    ).value = "";
 
 }
 
 </script>
 
-</body>
-</html>
+<hr>
+
+<div class="seo-content">
+
+    <h2>URL Encoder and Decoder Online</h2>
+
+    <p>
+        Use this free URL Encoder and Decoder tool to convert URLs and text into URL-safe format and decode encoded URLs back into readable text. This tool is useful for developers, API testing, query string creation and web application development.
+    </p>
+
+    <p>
+        URL encoding replaces unsafe characters with percent-encoded values so data can safely travel through websites, browsers, APIs and web servers.
+    </p>
+
+    <h2>What is URL Encoding?</h2>
+
+    <p>
+        URL encoding converts special characters into a format that can be safely transmitted over the internet. For example, spaces become %20 and special symbols are converted into percent-encoded values.
+    </p>
+
+    <h2>How to Encode a URL</h2>
+
+    <ol>
+        <li>Paste your URL or text into the input box.</li>
+        <li>Click Encode.</li>
+        <li>Copy the encoded output.</li>
+        <li>Use the encoded URL in your application or browser.</li>
+    </ol>
+
+    <h2>How to Decode a URL</h2>
+
+    <ol>
+        <li>Paste the encoded URL.</li>
+        <li>Click Decode.</li>
+        <li>View the readable version instantly.</li>
+        <li>Copy the decoded result.</li>
+    </ol>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>API request debugging.</li>
+        <li>Query string generation.</li>
+        <li>URL parameter encoding.</li>
+        <li>Web development.</li>
+        <li>REST API testing.</li>
+        <li>Handling special characters safely.</li>
+    </ul>
+
+    <h2>Example URL Encoding</h2>
+
+    <p>
+        Original:
+    </p>
+
+<pre>
+https://example.com/search?q=hello world
+</pre>
+
+    <p>
+        Encoded:
+    </p>
+
+<pre>
+https%3A%2F%2Fexample.com%2Fsearch%3Fq%3Dhello%20world
+</pre>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Instant URL encoding.</li>
+        <li>Instant URL decoding.</li>
+        <li>One-click copy functionality.</li>
+        <li>Supports special characters.</li>
+        <li>No registration required.</li>
+        <li>Free online URL tool.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>What is URL encoding?</h3>
+
+    <p>
+        URL encoding converts special characters into a URL-safe format for web transmission.
+    </p>
+
+    <h3>Why do URLs need encoding?</h3>
+
+    <p>
+        Certain characters such as spaces and symbols are not allowed directly in URLs and must be encoded.
+    </p>
+
+    <h3>Can I decode encoded URLs?</h3>
+
+    <p>
+        Yes. Paste the encoded value and click Decode to convert it back into readable text.
+    </p>
+
+    <h3>Is the URL Encoder Decoder free?</h3>
+
+    <p>
+        Yes. The URL Encoder Decoder tool is completely free to use online.
+    </p>
+
+    <h2>Related Developer Tools</h2>
+
+    <ul>
+        <li><a href="/base64">Base64 Encoder Decoder</a></li>
+        <li><a href="/json-formatter">JSON Formatter</a></li>
+        <li><a href="/json-validator">JSON Validator</a></li>
+        <li><a href="/jwt-decoder">JWT Decoder</a></li>
+        <li><a href="/timestamp-converter">Timestamp Converter</a></li>
+        <li><a href="/sql-formatter">SQL Formatter</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"URL Encoder Decoder Online",
+  "applicationCategory":"DeveloperApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"What is URL encoding?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"URL encoding converts special characters into a URL-safe format for web transmission."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Why do URLs need encoding?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Special characters and spaces must be encoded so browsers and servers can interpret URLs correctly."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I decode encoded URLs?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Use the Decode button to convert encoded URLs back into readable text."
+      }
+    }
+  ]
+}
+</script>
+
+{% endblock %}

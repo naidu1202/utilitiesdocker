@@ -1,73 +1,239 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Age Calculator - UtilitiesDocker</title>
-    <meta name="description" content="Calculate your exact age in years, months and days.">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-        input, button {
-            padding: 10px;
-            margin-top: 10px;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f4f4f4;
-            border-radius: 6px;
-        }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h1>Age Calculator</h1>
+{% block title %}
+Age Calculator Online Free | Calculate Exact Age | UtilitiesDocker
+{% endblock %}
 
-<label>Select your Date of Birth:</label><br>
-<input type="date" id="dob">
+{% block meta_description %}
+Free online age calculator. Calculate your exact age in years, months and days from your date of birth instantly.
+{% endblock %}
 
-<br><br>
-<button onclick="calculateAge()">Calculate Age</button>
+{% block og_title %}
+Age Calculator Online Free
+{% endblock %}
 
-<div class="result" id="result"></div>
+{% block og_description %}
+Calculate your exact age in years, months and days quickly and accurately.
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-box">
+
+    <h1>Age Calculator Online Free</h1>
+
+    <p>
+        Calculate your exact age in years, months and days from your date of birth.
+    </p>
+
+    <div class="calculator-box">
+
+        <label for="dob"><strong>Select Your Date of Birth</strong></label>
+
+        <input type="date" id="dob">
+
+        <button onclick="calculateAge()" class="btn-primary">
+            Calculate Age
+        </button>
+
+        <div class="result" id="result"></div>
+
+    </div>
+
+</div>
+
+<style>
+
+.tool-box{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.calculator-box{
+    margin-top:20px;
+}
+
+input[type="date"]{
+    display:block;
+    width:100%;
+    max-width:350px;
+    padding:12px;
+    margin-top:10px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+}
+
+.btn-primary{
+    margin-top:15px;
+    background:#4f46e5;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.btn-primary:hover{
+    background:#4338ca;
+}
+
+.result{
+    margin-top:20px;
+    padding:15px;
+    background:#f3f4f6;
+    border-radius:8px;
+    display:none;
+}
+
+.result h3{
+    margin-top:0;
+}
+
+</style>
 
 <script>
-function calculateAge() {
-    let dob = new Date(document.getElementById("dob").value);
 
-    if (!document.getElementById("dob").value) {
-        alert("Please select a date");
+function calculateAge() {
+
+    const dateInput =
+        document.getElementById("dob");
+
+    if(!dateInput.value){
+        alert("Please select your date of birth.");
         return;
     }
 
-    let today = new Date();
+    const dob =
+        new Date(dateInput.value);
 
-    let years = today.getFullYear() - dob.getFullYear();
-    let months = today.getMonth() - dob.getMonth();
-    let days = today.getDate() - dob.getDate();
+    const today =
+        new Date();
 
-    if (days < 0) {
+    let years =
+        today.getFullYear() -
+        dob.getFullYear();
+
+    let months =
+        today.getMonth() -
+        dob.getMonth();
+
+    let days =
+        today.getDate() -
+        dob.getDate();
+
+    if(days < 0){
         months--;
-        let lastMonth = new Date(today.getFullYear(),
-                                 today.getMonth(), 0);
-        days += lastMonth.getDate();
+
+        const previousMonth =
+            new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                0
+            );
+
+        days += previousMonth.getDate();
     }
 
-    if (months < 0) {
+    if(months < 0){
         years--;
         months += 12;
     }
 
-    document.getElementById("result").innerHTML =
-        `<h3>Your Age</h3>
-         <p><strong>${years}</strong> Years,
-         <strong>${months}</strong> Months,
-         <strong>${days}</strong> Days</p>`;
+    const result =
+        document.getElementById("result");
+
+    result.style.display = "block";
+
+    result.innerHTML =
+    `
+    <h3>Your Exact Age</h3>
+
+    <p>
+        <strong>${years}</strong> Years,
+        <strong>${months}</strong> Months,
+        <strong>${days}</strong> Days
+    </p>
+    `;
+}
+
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Calculate Your Exact Age Online</h2>
+
+    <p>
+        This free age calculator helps you determine your exact age from your date of birth. Simply select your birth date to instantly calculate your age in years, months and days.
+    </p>
+
+    <p>
+        The calculator is useful for official forms, school admissions, job applications, insurance records and personal reference. Results are generated instantly and accurately in your browser.
+    </p>
+
+    <h2>How to Use the Age Calculator</h2>
+
+    <ol>
+        <li>Select your date of birth.</li>
+        <li>Click Calculate Age.</li>
+        <li>View your exact age in years, months and days.</li>
+    </ol>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Instant age calculation.</li>
+        <li>Accurate years, months and days calculation.</li>
+        <li>Works on desktop and mobile devices.</li>
+        <li>No registration required.</li>
+        <li>Completely free to use.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Is this age calculator free?</h3>
+    <p>
+        Yes. You can calculate your age online at no cost.
+    </p>
+
+    <h3>How accurate is the age calculation?</h3>
+    <p>
+        The calculation uses your selected date of birth and the current date to determine your exact age.
+    </p>
+
+    <h3>Does the calculator work on mobile devices?</h3>
+    <p>
+        Yes. The age calculator works on smartphones, tablets and desktop computers.
+    </p>
+
+    <h2>Related Tools</h2>
+
+    <ul>
+        <li><a href="/emi-calculator">EMI Calculator</a></li>
+        <li><a href="/loan-calculator">Loan Calculator</a></li>
+        <li><a href="/percentage-calculator">Percentage Calculator</a></li>
+        <li><a href="/bmi-calculator">BMI Calculator</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Age Calculator Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
 }
 </script>
 
-</body>
-</html>
+{% endblock %}

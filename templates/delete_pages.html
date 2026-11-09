@@ -1,38 +1,210 @@
 {% extends "base.html" %}
 
 {% block title %}
-Delete Pages
+Delete PDF Pages Online Free | Remove Pages from PDF | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Delete pages from PDF files online for free. Remove unwanted PDF pages quickly and download the updated document instantly.
+{% endblock %}
+
+{% block og_title %}
+Delete PDF Pages Online Free
+{% endblock %}
+
+{% block og_description %}
+Remove unwanted pages from PDF documents online quickly and securely.
 {% endblock %}
 
 {% block content %}
 
 <div class="tool-container">
 
-<h1>🗑️ Delete Pages</h1>
+    <h1>Delete PDF Pages Online Free</h1>
 
-<form action="/delete-pages"
-      method="post"
-      enctype="multipart/form-data">
+    <p>
+        Remove unwanted pages from your PDF document in seconds.
+    </p>
 
-<input type="file"
-       name="file"
-       required>
+    <form
+        action="/delete-pages"
+        method="post"
+        enctype="multipart/form-data">
 
-<br><br>
+        <label>
+            <strong>Select PDF File</strong>
+        </label>
 
-<input type="text"
-       name="pages"
-       placeholder="2,4,6"
-       required>
+        <input
+            type="file"
+            name="file"
+            accept=".pdf"
+            required>
 
-<br><br>
+        <br><br>
 
-<button type="submit">
-Delete Pages
-</button>
+        <label>
+            <strong>Pages to Remove</strong>
+        </label>
 
-</form>
+        <input
+            type="text"
+            name="pages"
+            placeholder="Example: 2,4,6"
+            required>
+
+        <small>
+            Enter page numbers separated by commas.
+        </small>
+
+        <br><br>
+
+        <button type="submit">
+            Delete Pages
+        </button>
+
+    </form>
 
 </div>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Remove Pages from PDF Files Online</h2>
+
+    <p>
+        Use this free PDF page remover to delete unwanted pages from PDF documents without installing software. Upload your PDF, specify the page numbers to remove, and download the updated document instantly.
+    </p>
+
+    <p>
+        This tool is useful for cleaning scanned files, removing blank pages, deleting confidential information, shortening reports and preparing documents for sharing.
+    </p>
+
+    <h2>How to Delete Pages from a PDF</h2>
+
+    <ol>
+        <li>Upload your PDF document.</li>
+        <li>Enter the page numbers you want to remove.</li>
+        <li>Click Delete Pages.</li>
+        <li>Wait for processing to complete.</li>
+        <li>Download the updated PDF.</li>
+    </ol>
+
+    <h2>Examples</h2>
+
+    <ul>
+        <li><strong>2,4,6</strong> removes pages 2, 4 and 6.</li>
+        <li><strong>1</strong> removes the first page.</li>
+        <li><strong>10,11,12</strong> removes multiple consecutive pages.</li>
+    </ul>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>Remove blank pages.</li>
+        <li>Delete unwanted scans.</li>
+        <li>Exclude confidential pages.</li>
+        <li>Reduce document size.</li>
+        <li>Prepare reports for distribution.</li>
+        <li>Organize PDF documents.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Fast PDF page deletion.</li>
+        <li>No registration required.</li>
+        <li>Works in any modern browser.</li>
+        <li>Mobile and desktop compatible.</li>
+        <li>Easy page selection.</li>
+        <li>Free PDF editing tool.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I remove specific pages from a PDF?</h3>
+
+    <p>
+        Yes. Enter the page numbers you want to remove and the tool will generate a new PDF without those pages.
+    </p>
+
+    <h3>Does deleting pages affect the remaining content?</h3>
+
+    <p>
+        No. Only the selected pages are removed. The remaining pages stay unchanged.
+    </p>
+
+    <h3>Can I delete multiple pages at once?</h3>
+
+    <p>
+        Yes. Enter multiple page numbers separated by commas.
+    </p>
+
+    <h3>Is the PDF page remover free?</h3>
+
+    <p>
+        Yes. The Delete PDF Pages tool is completely free.
+    </p>
+
+    <h2>Related PDF Tools</h2>
+
+    <ul>
+        <li><a href="/organize-pdf">Organize PDF</a></li>
+        <li><a href="/split-pdf">Split PDF</a></li>
+        <li><a href="/merge-pdf">Merge PDF</a></li>
+        <li><a href="/compress-pdf">Compress PDF</a></li>
+        <li><a href="/rotate-pdf">Rotate PDF</a></li>
+        <li><a href="/redact-pdf">Redact PDF</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Delete PDF Pages Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I remove specific pages from a PDF?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Enter the page numbers you want to remove and generate a new PDF."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I delete multiple pages at once?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Enter multiple page numbers separated by commas."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the PDF page remover free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The Delete PDF Pages tool is completely free."
+      }
+    }
+  ]
+}
+</script>
 
 {% endblock %}

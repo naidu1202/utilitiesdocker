@@ -10,7 +10,7 @@
 </script>
 
     <title>
-Free PDF Tools, Image Converter, AI & Developer Tools | UtilitiesDocker
+Free PDF, Image, Audio & Video Tools | AI & Developer Utilities | UtilitiesDocker
 </title>
 
 <link rel="manifest"
@@ -114,76 +114,14 @@ content="https://utilitiesdocker.com/static/logo.png">
 
             <div class="dropdown-content">
 
-                <a href="/merge-page">
-                    📄 Merge PDF
-                </a>
-
-                <a href="/split-page">
-                    ✂️ Split PDF
-                </a>
-
-                <a href="/compress-page">
-                    🗜️ Compress PDF
-                </a>
-
-                <a href="/images-to-pdf-page">
-                    🖼️ Images to PDF
-                </a>
-
-                <a href="/pdf-to-jpg-page">
-                    📸 PDF to JPG
-                </a>
-
-                <a href="/rotate-page">
-                    🔄 Rotate PDF
-                </a>
-
-                <a href="/delete-pages-page">
-                    🗑️ Delete Pages
-                </a>
-
-                <a href="/extract-pages-page">
-                    📑 Extract Pages
-                </a>
-
-                <a href="/protect-pdf-page">
-                    🔒 Protect PDF
-                </a>
-                <a href="/word-to-pdf-page">
-                        Word to PDF
-                </a>
-
-                <a href="/pdf-to-word-page">
-                    PDF to Word
-                </a>
-
-                <a href="/ocr-pdf">
-                    🔍 OCR PDF
-                </a>
-                <a href="/age-calculator">Age Calculator</a>
-                <a href="/emi-calculator">EMI Calculator</a>
-
-                <a href="/remove-background">
-                    🖼️ Remove Background
-                </a>
-
-                <a href="/exchange-rate">
-    💱 Exchange Rates
+{% for tool_name, tool_url in tool_links.items() %}
+<a href="{{ tool_url }}">
+    {{ tool_icons.get(tool_name, '🛠️') }}
+    {{ tool_name.replace('-', ' ').title() }}
 </a>
+{% endfor %}
 
-    <a href="/heic-to-jpg">📱 HEIC to JPG</a>
-    <a href="/webp-to-jpg">🌐 WEBP to JPG</a>
-    <a href="/svg-to-png">🎨 SVG to PNG</a>
-    <a href="/jfif-to-jpg">🖼️ JFIF to JPG</a>
-
-    <a href="/csv-to-json">📄 CSV to JSON</a>
-<a href="/json-to-csv">📊 JSON to CSV</a>
-<a href="/xml-to-json">🔄 XML to JSON</a>
-<a href="/json-to-xml">🔄 JSON to XML</a>
-<a href="/yaml-to-json">📘 YAML to JSON</a>
-<a href="/json-to-yaml">📘 JSON to YAML</a>
-
-            </div>
+</div>
 
         </div>
 
@@ -202,15 +140,10 @@ AI Utilities & Developer Tools
 </h1>
 
 <p>
-50+ free tools to edit PDFs,
-convert images, generate QR codes,
-summarize text with AI and more.
+    50+ free tools to edit PDFs, convert images, generate QR codes,
+    summarize text with AI and more. 
 </p>
 
-    <p>
-        Convert, compress, edit and optimize files online.
-        Fast, secure and completely free.
-    </p>
 
 
 
@@ -233,25 +166,18 @@ summarize text with AI and more.
 
 <div class="tool-grid">
 
-    <a href="/merge" class="tool-card">
-        <h3>📄 Merge PDF</h3>
-        <p>Combine PDFs</p>
-    </a>
+{% for tool, visits in popular_tools %}
 
-    <a href="/compress" class="tool-card">
-        <h3>🗜️ Compress PDF</h3>
-        <p>Reduce size</p>
-    </a>
+<a href="{{ tool_links.get(tool.lower(),'#') }}"
+   class="tool-card">
 
-    <a href="/pdf-to-word" class="tool-card">
-        <h3>📝 PDF to Word</h3>
-        <p>Editable DOCX</p>
-    </a>
+    <h3>{{ tool_names.get(tool, tool) }}</h3>
 
-    <a href="/remove-background" class="tool-card">
-        <h3>🎨 Remove Background</h3>
-        <p>Transparent PNG</p>
-    </a>
+    <p>{{ visits }} visits</p>
+
+</a>
+
+{% endfor %}
 
 </div>
 
@@ -687,44 +613,20 @@ summarize text with AI and more.
 <!-- WHY US -->
 
 
-<section class="seo-content">
+<section class="home-seo">
 
+    <h2>Why Choose UtilitiesDocker?</h2>
 
-<h2>
-Why Choose UtilitiesDocker?
-</h2>
-
-<p>
-
-UtilitiesDocker provides more than 50 free online tools
-for PDF editing, image conversion, AI productivity and
-developer workflows.
-
-Popular PDF tools include Merge PDF,
-Compress PDF, Split PDF, Protect PDF,
-Unlock PDF, Sign PDF and PDF Watermark.
-
-Image tools include Background Removal,
-HEIC to JPG, WEBP to JPG, SVG to PNG,
-Image Compression and Image Watermarking.
-
-Developer tools include JSON Formatter,
-JSON Validator, JWT Decoder,
-Timestamp Converter, Cron Expression Generator,
-Base64 Encoder and URL Encoder.
-
-AI-powered tools include AI Summarizer,
-AI Prompt Generator, Text To Speech
-and Speech To Text.
-
-</p>
+    <p>
+        UtilitiesDocker provides more than 50 free online tools for PDF editing,
+        image conversion, audio and video processing, AI productivity and
+        developer workflows. Popular tools include Merge PDF, Compress PDF,
+        Split PDF, PDF to Word, Word to PDF, Remove Background, Video to MP3,
+        JSON Formatter, JWT Decoder, Timestamp Converter, QR Generator,
+        AI Summarizer and Speech to Text.
+    </p>
 
 </section>
-
-
-
-
-
 
     <!-- Feedback Modal -->
 

@@ -1,19 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
 
-<title>Compress Image Online Free | UtilitiesDocker</title>
+{% block title %}
+Image Compressor Online Free | Compress JPG, PNG & JPEG Images | UtilitiesDocker
+{% endblock %}
 
-<meta name="description"
-content="Compress JPG and PNG images online for free. Reduce image size while maintaining quality.">
+{% block meta_description %}
+Compress JPG, JPEG and PNG images online for free. Reduce image file size while maintaining quality and improve website performance.
+{% endblock %}
+
+{% block og_title %}
+Image Compressor Online Free
+{% endblock %}
+
+{% block og_description %}
+Reduce JPG, JPEG and PNG image file sizes online while maintaining quality.
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-container">
+
+    <h1>Image Compressor Online Free</h1>
+
+    <p>
+        Reduce JPG, JPEG and PNG image sizes instantly while maintaining excellent image quality.
+    </p>
+
+    <form
+        action="/compress-image"
+        method="post"
+        enctype="multipart/form-data">
+
+        <label>
+            <strong>Select Image</strong>
+        </label>
+
+        <input
+            type="file"
+            name="file"
+            accept=".jpg,.jpeg,.png"
+            required>
+
+        <br><br>
+
+        <button type="submit">
+            Compress Image
+        </button>
+
+    </form>
+
+</div>
 
 <style>
 
-body{
+.tool-container{
     max-width:800px;
     margin:auto;
-    padding:20px;
-    font-family:Arial;
 }
 
 button{
@@ -21,38 +63,154 @@ button{
     background:#2563eb;
     color:white;
     border:none;
-    border-radius:5px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1d4ed8;
 }
 
 </style>
 
-</head>
-<body>
+<hr>
 
-<h1>Compress Image</h1>
+<div class="seo-content">
 
-<p>
-Reduce JPG and PNG image size instantly.
-</p>
+    <h2>Compress Images Online</h2>
 
-<form
-action="/compress-image"
-method="post"
-enctype="multipart/form-data">
+    <p>
+        Use this free image compressor to reduce image file sizes without significantly affecting image quality. Compress JPG, JPEG and PNG files for websites, blogs, email attachments, social media and online stores.
+    </p>
 
-<input
-type="file"
-name="file"
-accept=".jpg,.jpeg,.png"
-required>
+    <p>
+        Smaller image files load faster, improve website performance and reduce storage requirements. Image optimization is important for SEO, user experience and mobile browsing.
+    </p>
 
-<br><br>
+    <h2>How to Compress an Image</h2>
 
-<button type="submit">
-Compress Image
-</button>
+    <ol>
+        <li>Select a JPG, JPEG or PNG image.</li>
+        <li>Upload the image.</li>
+        <li>Click Compress Image.</li>
+        <li>Wait for image optimization.</li>
+        <li>Download the compressed image.</li>
+    </ol>
 
-</form>
+    <h2>Benefits of Image Compression</h2>
 
-</body>
-</html>
+    <ul>
+        <li>Reduce image file size.</li>
+        <li>Speed up website loading times.</li>
+        <li>Improve SEO performance.</li>
+        <li>Reduce bandwidth usage.</li>
+        <li>Save storage space.</li>
+        <li>Improve mobile user experience.</li>
+    </ul>
+
+    <h2>Supported Image Formats</h2>
+
+    <ul>
+        <li>JPG Compression</li>
+        <li>JPEG Compression</li>
+        <li>PNG Compression</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Fast image compression.</li>
+        <li>High-quality optimization.</li>
+        <li>No registration required.</li>
+        <li>Browser-based processing.</li>
+        <li>Works on desktop and mobile devices.</li>
+        <li>Free online image compressor.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I compress JPG images online?</h3>
+
+    <p>
+        Yes. Upload your JPG image and compress it instantly.
+    </p>
+
+    <h3>Will image quality be reduced?</h3>
+
+    <p>
+        Compression reduces file size while attempting to preserve visual quality as much as possible.
+    </p>
+
+    <h3>Can I compress PNG images?</h3>
+
+    <p>
+        Yes. The tool supports PNG image compression in addition to JPG and JPEG files.
+    </p>
+
+    <h3>Is the Image Compressor free?</h3>
+
+    <p>
+        Yes. The Image Compressor is completely free to use.
+    </p>
+
+    <h2>Related Image Tools</h2>
+
+    <ul>
+        <li><a href="/resize-image">Resize Image</a></li>
+        <li><a href="/image-converter">Image Converter</a></li>
+        <li><a href="/heic-to-jpg">HEIC to JPG</a></li>
+        <li><a href="/jpg-to-png">JPG to PNG</a></li>
+        <li><a href="/png-to-jpg">PNG to JPG</a></li>
+        <li><a href="/image-to-pdf">Image to PDF</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Image Compressor Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I compress JPG images online?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Upload a JPG image and compress it instantly."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I compress PNG images?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. PNG image compression is supported."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the Image Compressor free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The Image Compressor is completely free."
+      }
+    }
+  ]
+}
+</script>
+
+{% endblock %}

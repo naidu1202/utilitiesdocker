@@ -1,45 +1,210 @@
 {% extends "base.html" %}
 
 {% block title %}
-Split PDF
+Split PDF Online Free | Extract PDF Pages Easily | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Split PDF files online for free. Extract pages, separate PDF documents and create smaller PDF files instantly without software installation.
+{% endblock %}
+
+{% block og_title %}
+Split PDF Online Free
+{% endblock %}
+
+{% block og_description %}
+Split PDF documents into separate files quickly and securely online.
 {% endblock %}
 
 {% block content %}
 
 <div class="tool-container">
 
-     <h1>📄 Split PDF</h1>
+    <h1>Split PDF Online Free</h1>
 
-<p>Split a PDF at a specific page.</p>
+    <p>
+        Split PDF documents into separate files at any page number.
+    </p>
 
-<form action="/split" method="post" enctype="multipart/form-data">
+    <form
+        action="/split"
+        method="post"
+        enctype="multipart/form-data">
 
-    <input type="file"
-           name="file"
-           accept=".pdf"
-           required>
+        <label>
+            <strong>Select PDF File</strong>
+        </label>
 
-    <br><br>
+        <input
+            type="file"
+            name="file"
+            accept=".pdf"
+            required>
 
-    <input
-        type="number"
-        name="page"
-        placeholder="Page Number"
-        min="1"
-        required>
+        <br><br>
 
-    <br><br>
+        <label>
+            <strong>Split At Page Number</strong>
+        </label>
 
-    <button type="submit">
-        Split PDF
-    </button>
+        <input
+            type="number"
+            name="page"
+            placeholder="Example: 5"
+            min="1"
+            required>
 
-</form>
+        <br><br>
 
-<br>
+        <button type="submit">
+            Split PDF
+        </button>
 
-
+    </form>
 
 </div>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Split PDF Files Online</h2>
+
+    <p>
+        Use this free PDF splitter to divide large PDF files into smaller documents. Extract selected sections, separate chapters, split reports and create multiple PDF files from a single document.
+    </p>
+
+    <p>
+        Splitting PDFs helps reduce file sizes, improve document organization and simplify sharing specific pages without sending an entire document.
+    </p>
+
+    <h2>How to Split a PDF</h2>
+
+    <ol>
+        <li>Upload your PDF document.</li>
+        <li>Enter the page number where you want to split.</li>
+        <li>Click Split PDF.</li>
+        <li>Wait for processing.</li>
+        <li>Download the resulting PDF files.</li>
+    </ol>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>Separate report sections.</li>
+        <li>Split invoices and statements.</li>
+        <li>Extract chapters from ebooks.</li>
+        <li>Organize scanned documents.</li>
+        <li>Share selected document pages.</li>
+        <li>Create smaller PDF files.</li>
+    </ul>
+
+    <h2>Benefits of PDF Splitting</h2>
+
+    <ul>
+        <li>Reduce document size.</li>
+        <li>Improve document organization.</li>
+        <li>Share only necessary pages.</li>
+        <li>Create separate document sections.</li>
+        <li>Manage large PDFs efficiently.</li>
+        <li>Improve workflow productivity.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Split PDF at any page number.</li>
+        <li>Fast online processing.</li>
+        <li>No registration required.</li>
+        <li>Works on desktop and mobile devices.</li>
+        <li>Simple and user-friendly workflow.</li>
+        <li>Free online PDF splitter.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I split a PDF into multiple files?</h3>
+
+    <p>
+        Yes. Upload a PDF and choose the page where the document should be split.
+    </p>
+
+    <h3>Can I extract selected pages from a PDF?</h3>
+
+    <p>
+        Yes. PDF splitting allows you to separate pages and create smaller PDF documents.
+    </p>
+
+    <h3>Will the original PDF be modified?</h3>
+
+    <p>
+        No. A new split PDF is generated while the original document remains unchanged.
+    </p>
+
+    <h3>Is the PDF Splitter free?</h3>
+
+    <p>
+        Yes. The PDF Splitter is completely free to use online.
+    </p>
+
+    <h2>Related PDF Tools</h2>
+
+    <ul>
+        <li><a href="/merge-pdf">Merge PDF</a></li>
+        <li><a href="/organize-pdf">Organize PDF</a></li>
+        <li><a href="/rotate-pdf">Rotate PDF</a></li>
+        <li><a href="/extract-pages">Extract Pages</a></li>
+        <li><a href="/delete-pages">Delete Pages</a></li>
+        <li><a href="/compress-pdf">Compress PDF</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Split PDF Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I split a PDF into multiple files?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Upload a PDF and choose the page where the document should be split."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I extract selected pages from a PDF?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. PDF splitting allows pages to be separated into smaller documents."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the PDF Splitter free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The PDF Splitter is completely free."
+      }
+    }
+  ]
+}
+</script>
 
 {% endblock %}

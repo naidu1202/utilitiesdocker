@@ -1,29 +1,58 @@
 {% extends "base.html" %}
 
-{% block title %}Time Zone Converter{% endblock %}
+{% block title %}
+Time Zone Converter Online Free | Convert Time Between Time Zones | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Convert dates and times between time zones online for free. Compare world time zones including Singapore, India, London, New York, Tokyo and Sydney.
+{% endblock %}
+
+{% block og_title %}
+Time Zone Converter Online Free
+{% endblock %}
+
+{% block og_description %}
+Convert dates and times across global time zones instantly.
+{% endblock %}
 
 {% block content %}
 
 <div class="tool-page">
 
-    <h1>🕒 Time Zone Converter</h1>
+    <h1>Time Zone Converter Online</h1>
 
     <p>
-        Convert dates and times between different time zones.
+        Convert dates and times between different countries and time zones instantly.
     </p>
 
-    <label>Date & Time</label>
+    <label>
+        <strong>Date & Time</strong>
+    </label>
 
     <input
         type="datetime-local"
         id="datetime"
-        style="width:100%;padding:12px;">
+        style="
+            width:100%;
+            padding:12px;
+            border:1px solid #d1d5db;
+            border-radius:8px;
+        ">
 
     <br><br>
 
-    <label>From Time Zone</label>
+    <label>
+        <strong>From Time Zone</strong>
+    </label>
 
-    <select id="fromZone">
+    <select
+        id="fromZone"
+        style="
+            width:100%;
+            padding:12px;
+            border-radius:8px;
+        ">
 
         <option value="Asia/Singapore">
             Singapore (SGT)
@@ -50,16 +79,24 @@
         </option>
 
         <option value="Australia/Sydney">
-            Sydney (AEDT)
+            Sydney (AEST/AEDT)
         </option>
 
     </select>
 
     <br><br>
 
-    <label>To Time Zone</label>
+    <label>
+        <strong>To Time Zone</strong>
+    </label>
 
-    <select id="toZone">
+    <select
+        id="toZone"
+        style="
+            width:100%;
+            padding:12px;
+            border-radius:8px;
+        ">
 
         <option value="Asia/Kolkata">
             India (IST)
@@ -86,7 +123,7 @@
         </option>
 
         <option value="Australia/Sydney">
-            Sydney (AEDT)
+            Sydney (AEST/AEDT)
         </option>
 
     </select>
@@ -96,70 +133,267 @@
     <button
         class="tool-btn"
         onclick="convertTime()">
-        Convert
+
+        Convert Time
+
+    </button>
+
+    <button
+        class="tool-btn"
+        onclick="loadCurrentTime()">
+
+        Current Time
+
     </button>
 
     <div
         id="result"
         class="result-box"
-        style="margin-top:20px;">
+        style="
+            margin-top:20px;
+            padding:15px;
+            background:#f8fafc;
+            border-radius:10px;
+            border:1px solid #e5e7eb;
+        ">
     </div>
 
 </div>
 
 <script>
 
-function convertTime() {
+function loadCurrentTime(){
+
+    const now =
+        new Date();
+
+    const local =
+        new Date(
+            now.getTime() -
+            now.getTimezoneOffset() *
+            60000
+        )
+        .toISOString()
+        .slice(0,16);
+
+    document
+    .getElementById(
+        "datetime"
+    )
+    .value =
+    local;
+
+}
+
+function convertTime(){
 
     const input =
-        document.getElementById("datetime").value;
+        document.getElementById(
+            "datetime"
+        ).value;
 
-    if (!input) {
+    if(!input){
 
-        alert("Select date and time");
+        alert(
+            "Please select a date and time"
+        );
 
         return;
+
     }
 
     const fromZone =
-        document.getElementById("fromZone").value;
+        document.getElementById(
+            "fromZone"
+        ).value;
 
     const toZone =
-        document.getElementById("toZone").value;
+        document.getElementById(
+            "toZone"
+        ).value;
 
     const date =
         new Date(input);
 
-    const utc =
-        new Date(
-            date.toLocaleString(
-                "en-US",
-                { timeZone: fromZone }
-            )
-        );
-
     const converted =
-        new Date(
-            utc.toLocaleString(
-                "en-US",
-                { timeZone: toZone }
-            )
-        );
 
-    document.getElementById("result").innerHTML =
-        `
-        <h3>Converted Time</h3>
+        new Intl.DateTimeFormat(
+            "en-US",
+            {
+                timeZone: toZone,
+                dateStyle: "full",
+                timeStyle: "long"
+            }
+        ).format(date);
 
-        <p>
-            <strong>${toZone}</strong>
-        </p>
+    document
+    .getElementById(
+        "result"
+    )
+    .innerHTML =
 
-        <p>
-            ${converted.toLocaleString()}
-        </p>
-        `;
+        "<h3>Converted Time</h3>" +
+
+        "<p><strong>From:</strong> " +
+        fromZone +
+        "</p>" +
+
+        "<p><strong>To:</strong> " +
+        toZone +
+        "</p>" +
+
+        "<p><strong>Result:</strong><br>" +
+        converted +
+        "</p>";
+
 }
 
+loadCurrentTime();
+
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Time Zone Converter Online</h2>
+
+    <p>
+        Use this free Time Zone Converter to convert dates and times between global time zones. Easily compare time differences across countries and schedule meetings, events and business calls with international teams.
+    </p>
+
+    <p>
+        This tool is useful for remote teams, software developers, project managers, support teams, travelers and businesses working across multiple countries.
+    </p>
+
+    <h2>How to Convert Time Zones</h2>
+
+    <ol>
+        <li>Select a date and time.</li>
+        <li>Choose the source time zone.</li>
+        <li>Select the destination time zone.</li>
+        <li>Click Convert Time.</li>
+        <li>View the converted result instantly.</li>
+    </ol>
+
+    <h2>Supported Time Zones</h2>
+
+    <ul>
+        <li>Singapore (SGT)</li>
+        <li>India (IST)</li>
+        <li>London (GMT/BST)</li>
+        <li>New York (EST/EDT)</li>
+        <li>Los Angeles (PST/PDT)</li>
+        <li>Tokyo (JST)</li>
+        <li>Sydney (AEST/AEDT)</li>
+    </ul>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>International meeting planning.</li>
+        <li>Remote team collaboration.</li>
+        <li>Travel scheduling.</li>
+        <li>Customer support operations.</li>
+        <li>Project coordination.</li>
+        <li>Software deployment planning.</li>
+    </ul>
+
+    <h2>Benefits</h2>
+
+    <ul>
+        <li>Avoid scheduling mistakes.</li>
+        <li>Handle daylight saving changes.</li>
+        <li>Coordinate global teams.</li>
+        <li>Improve productivity.</li>
+        <li>Plan meetings accurately.</li>
+        <li>Track international business hours.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>What is a time zone converter?</h3>
+
+    <p>
+        A time zone converter helps calculate the equivalent time between different locations around the world.
+    </p>
+
+    <h3>Does the tool handle daylight saving time?</h3>
+
+    <p>
+        Yes. Modern browser time zone data automatically accounts for daylight saving time where applicable.
+    </p>
+
+    <h3>Can I convert business meeting times?</h3>
+
+    <p>
+        Yes. The converter is perfect for scheduling international meetings and events.
+    </p>
+
+    <h3>Is the Time Zone Converter free?</h3>
+
+    <p>
+        Yes. The Time Zone Converter is completely free to use online.
+    </p>
+
+    <h2>Related Developer & Utility Tools</h2>
+
+    <ul>
+        <li><a href="/timestamp-converter">Timestamp Converter</a></li>
+        <li><a href="/cron-generator">Cron Generator</a></li>
+        <li><a href="/uuid-generator">UUID Generator</a></li>
+        <li><a href="/json-formatter">JSON Formatter</a></li>
+        <li><a href="/speech-to-text">Speech to Text</a></li>
+        <li><a href="/text-utilities">Text Utilities</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Time Zone Converter Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"What is a time zone converter?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"A time zone converter calculates the equivalent time between different regions and countries."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Does the tool handle daylight saving time?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Browser-supported time zone data automatically accounts for daylight saving time changes."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Can I convert business meeting times?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The tool is designed for international scheduling and global team coordination."
+     }
+   }
+ ]
+}
 </script>
 
 {% endblock %}

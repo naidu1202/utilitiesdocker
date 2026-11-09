@@ -1,48 +1,58 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
 
-<title>
-Date Difference Calculator
-</title>
+{% block title %}
+Date Difference Calculator Online Free | Days Between Dates | UtilitiesDocker
+{% endblock %}
 
-<link
-rel="stylesheet"
-href="/static/style.css">
+{% block meta_description %}
+Calculate the number of days between two dates online for free. Fast and accurate date difference calculator.
+{% endblock %}
 
-</head>
+{% block og_title %}
+Date Difference Calculator Online Free
+{% endblock %}
 
-<body>
+{% block og_description %}
+Find the exact number of days between two dates instantly.
+{% endblock %}
 
-<div class="container">
+{% block content %}
 
-<h1>
-📅 Date Difference Calculator
-</h1>
+<div class="tool-container">
 
-Start Date
+    <h1>Date Difference Calculator Online</h1>
 
-<input
-type="date"
-id="start">
+    <p>
+        Calculate the exact number of days between two dates.
+    </p>
 
-<br><br>
+    <label>
+        <strong>Start Date</strong>
+    </label>
 
-End Date
+    <input
+        type="date"
+        id="start">
 
-<input
-type="date"
-id="end">
+    <br><br>
 
-<br><br>
+    <label>
+        <strong>End Date</strong>
+    </label>
 
-<button onclick="calculate()">
-Calculate
-</button>
+    <input
+        type="date"
+        id="end">
 
-<br><br>
+    <br><br>
 
-<div id="result"></div>
+    <button onclick="calculate()">
+        Calculate Difference
+    </button>
+
+    <br><br>
+
+    <div id="result"></div>
 
 </div>
 
@@ -60,6 +70,14 @@ function calculate(){
             document.getElementById("end").value
         );
 
+    if(
+        !document.getElementById("start").value ||
+        !document.getElementById("end").value
+    ){
+        alert("Please select both dates.");
+        return;
+    }
+
     const diff =
         Math.abs(end - start);
 
@@ -71,12 +89,145 @@ function calculate(){
 
     document.getElementById("result")
         .innerHTML =
-        "<h3>" +
-        days +
-        " Days</h3>";
+        `
+        <h2>${days} Days</h2>
+        <p>
+            Difference between selected dates.
+        </p>
+        `;
+
 }
 
 </script>
 
-</body>
-</html>
+<hr>
+
+<div class="seo-content">
+
+    <h2>Calculate Days Between Two Dates</h2>
+
+    <p>
+        Use this free Date Difference Calculator to determine the exact number of days between two calendar dates. This tool is useful for project planning, age calculations, contract periods, deadlines, vacations and financial calculations.
+    </p>
+
+    <p>
+        Simply select a start date and an end date to instantly calculate the total number of days between them.
+    </p>
+
+    <h2>How to Use the Date Difference Calculator</h2>
+
+    <ol>
+        <li>Select the start date.</li>
+        <li>Select the end date.</li>
+        <li>Click Calculate Difference.</li>
+        <li>View the total number of days.</li>
+    </ol>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>Project planning and scheduling.</li>
+        <li>Contract duration calculations.</li>
+        <li>Vacation planning.</li>
+        <li>Employee service calculations.</li>
+        <li>Academic schedules.</li>
+        <li>Age and anniversary calculations.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Instant date calculations.</li>
+        <li>Accurate day counting.</li>
+        <li>Works on desktop and mobile devices.</li>
+        <li>No registration required.</li>
+        <li>Easy to use interface.</li>
+        <li>Completely free.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>How do I calculate the number of days between two dates?</h3>
+
+    <p>
+        Select a start date and end date, then click Calculate Difference to see the number of days between them.
+    </p>
+
+    <h3>Does the calculator include leap years?</h3>
+
+    <p>
+        Yes. JavaScript date calculations automatically account for leap years and calendar variations.
+    </p>
+
+    <h3>Can I use this for project planning?</h3>
+
+    <p>
+        Yes. The tool is useful for project schedules, deadlines and duration tracking.
+    </p>
+
+    <h3>Is the Date Difference Calculator free?</h3>
+
+    <p>
+        Yes. The calculator is completely free to use online.
+    </p>
+
+    <h2>Related Calculators</h2>
+
+    <ul>
+        <li><a href="/age-calculator">Age Calculator</a></li>
+        <li><a href="/percentage-calculator">Percentage Calculator</a></li>
+        <li><a href="/emi-calculator">EMI Calculator</a></li>
+        <li><a href="/loan-calculator">Loan Calculator</a></li>
+        <li><a href="/unit-converter">Unit Converter</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Date Difference Calculator Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"How do I calculate the number of days between two dates?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Select a start date and end date, then click Calculate Difference to see the number of days between them."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Does the calculator include leap years?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The calculation automatically accounts for leap years and calendar variations."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the Date Difference Calculator free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The Date Difference Calculator is completely free."
+      }
+    }
+  ]
+}
+</script>
+
+{% endblock %}

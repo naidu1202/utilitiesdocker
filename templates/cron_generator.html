@@ -1,29 +1,108 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Cron Expression Generator | UtilitiesDocker</title>
+{% extends "base.html" %}
 
-    <link rel="stylesheet" href="/static/style.css">
+{% block title %}
+Cron Expression Generator Online Free | Linux Cron Builder | UtilitiesDocker
+{% endblock %}
 
-    <meta
-        name="description"
-        content="Generate cron expressions for Linux cron jobs online."
+{% block meta_description %}
+Generate Linux cron expressions online for free. Create, validate and understand cron schedules with an easy-to-use cron expression generator.
+{% endblock %}
+
+{% block og_title %}
+Cron Expression Generator Online Free
+{% endblock %}
+
+{% block og_description %}
+Build, validate and understand Linux cron expressions online.
+{% endblock %}
+
+{% block content %}
+
+<div class="cron-card">
+
+    <h1>Cron Expression Generator Online</h1>
+
+    <p>
+        Generate, validate and understand Linux cron expressions for scheduled tasks and automation jobs.
+    </p>
+
+    <label>
+        Frequency
+    </label>
+
+    <br><br>
+
+    <select id="schedule">
+        <option value="minute">Every Minute</option>
+        <option value="hour">Every Hour</option>
+        <option value="day">Every Day</option>
+        <option value="week">Every Sunday</option>
+        <option value="month">First Day Of Month</option>
+    </select>
+
+    <button
+        class="btn"
+        onclick="generateCron()">
+        Generate
+    </button>
+
+    <button
+        class="btn copy-btn"
+        onclick="copyCron()">
+        Copy Expression
+    </button>
+
+    <br><br>
+
+    <input
+        type="text"
+        id="cronOutput"
+        class="cron-display"
+        value="* * * * *"
+        oninput="cronEdited()"
     >
 
-    <style>
-        body{
-            background:#f5f7fb;
-            font-family:Segoe UI,sans-serif;
-        }
+    <div class="cron-fields">
+        <div>Minute</div>
+        <div>Hour</div>
+        <div>Day of Month</div>
+        <div>Month</div>
+        <div>Day of Week</div>
+    </div>
 
-        .cron-card{
-            background:white;
-            max-width:1000px;
-            margin:30px auto;
-            padding:30px;
-            border-radius:20px;
-            box-shadow:0 4px 20px rgba(0,0,0,.08);
-        }
+    <div
+        id="valid"
+        class="valid">
+        ✅ Valid Linux cron expression
+    </div>
+
+    <div
+        class="info-box"
+        id="cronDescription">
+        Runs every minute.
+    </div>
+
+    <h3 style="margin-top:30px;">
+        Next 5 Scheduled Runs
+    </h3>
+
+    <div
+        class="run-cards"
+        id="nextRuns">
+    </div>
+
+</div>
+
+<style>
+
+.cron-card{
+    background:white;
+    max-width:1000px;
+    margin:30px auto;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+}
 
 .cron-display{
     width:100%;
@@ -36,190 +115,98 @@
     font-size:42px;
     font-weight:bold;
     color:#0f172a;
-    outline:none;
 }
 
-.cron-display:focus{
-    border-color:#2563eb;
-    box-shadow:0 0 10px rgba(37,99,235,.2);
+.cron-fields{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    margin-top:10px;
+    text-align:center;
+    color:#6b7280;
+    font-size:14px;
 }
 
-        .cron-fields{
-            display:grid;
-            grid-template-columns:repeat(5,1fr);
-            margin-top:10px;
-            text-align:center;
-            color:#6b7280;
-            font-size:14px;
-        }
+select{
+    width:250px;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #d1d5db;
+}
 
-        select{
-            width:250px;
-            padding:12px;
-            border-radius:10px;
-            border:1px solid #d1d5db;
-        }
+.btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-top:15px;
+}
 
-        .btn{
-            background:#2563eb;
-            color:white;
-            border:none;
-            padding:12px 25px;
-            border-radius:10px;
-            cursor:pointer;
-            margin-top:15px;
-        }
+.btn:hover{
+    background:#1d4ed8;
+}
 
-        .btn:hover{
-            background:#1d4ed8;
-        }
+.valid{
+    margin-top:20px;
+    color:#059669;
+    font-weight:600;
+}
 
-        .valid{
-            margin-top:20px;
-            color:#059669;
-            font-weight:600;
-        }
+.info-box{
+    margin-top:25px;
+    padding:15px;
+    background:#ecfdf5;
+    border-left:5px solid #10b981;
+    border-radius:8px;
+    font-size:18px;
+    color:#065f46;
+}
 
-        .info-box{
-            margin-top:25px;
-            padding:15px;
-            background:#ecfdf5;
-            border-left:5px solid #10b981;
-            border-radius:8px;
-            font-size:18px;
-            color:#065f46;
-        }
+.run-cards{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:15px;
+}
 
-        .run-cards{
-            display:flex;
-            flex-wrap:wrap;
-            gap:10px;
-            margin-top:15px;
-        }
+.run-card{
+    background:#eef2ff;
+    padding:15px;
+    border-radius:10px;
+    min-width:180px;
+    text-align:center;
+}
 
-        .run-card{
-            background:#eef2ff;
-            padding:15px;
-            border-radius:10px;
-            min-width:180px;
-            text-align:center;
-        }
+.copy-btn{
+    float:right;
+}
 
-        .copy-btn{
-            float:right;
-        }
-
-    </style>
-</head>
-
-<body>
-
-<div class="cron-card">
-
-    <h2>Cron Expression Generator</h2>
-
-    <label>
-        Frequency
-    </label>
-
-    <br>
-
-    <select id="schedule">
-        <option value="minute">Every Minute</option>
-        <option value="hour">Every Hour</option>
-        <option value="day">Every Day</option>
-        <option value="week">Every Sunday</option>
-        <option value="month">First Day Of Month</option>
-    </select>
-
-    <button
-        class="btn"
-        onclick="generateCron()"
-    >
-        Generate
-    </button>
-
-    <button
-        class="btn copy-btn"
-        onclick="copyCron()"
-    >
-        Copy Expression
-    </button>
-
-    <br><br>
-
-<input
-    type="text"
-    id="cronOutput"
-    class="cron-display"
-    value="* * * * *"
-    oninput="cronEdited()"
-/>
-
-    <div class="cron-fields">
-        <div>Minute</div>
-        <div>Hour</div>
-        <div>Day of Month</div>
-        <div>Month</div>
-        <div>Day of Week</div>
-    </div>
-
-    <div id="valid" class="valid">
-        ✅ Valid Linux cron expression
-    </div>
-
-    <div
-        class="info-box"
-        id="cronDescription"
-    >
-        Runs every minute.
-    </div>
-
-    <h3 style="margin-top:30px;">
-        Next 5 Scheduled Runs
-    </h3>
-
-    <div
-        class="run-cards"
-        id="nextRuns"
-    >
-    </div>
-
-</div>
+</style>
 
 <script>
 
 function generateCron(){
 
-    let cron="";
-    let description="";
+    let cron = "";
 
     const schedule =
         document.getElementById("schedule").value;
 
     if(schedule==="minute"){
         cron="* * * * *";
-        description="Runs every minute";
     }
-
     else if(schedule==="hour"){
         cron="0 * * * *";
-        description="Runs at beginning of every hour";
     }
-
     else if(schedule==="day"){
         cron="0 0 * * *";
-        description="Runs every day at midnight";
     }
-
     else if(schedule==="week"){
         cron="0 0 * * 0";
-        description="Runs every Sunday";
     }
-
     else if(schedule==="month"){
         cron="0 0 1 * *";
-        description="Runs on first day of month";
     }
 
     document.getElementById(
@@ -228,9 +215,10 @@ function generateCron(){
 
     document.getElementById(
         "cronDescription"
-    ).innerHTML = explainCron(cron);
+    ).innerHTML =
+        explainCron(cron);
 
-
+    generateRuns();
 
 }
 
@@ -239,9 +227,9 @@ function generateRuns(){
     const container =
         document.getElementById("nextRuns");
 
-    container.innerHTML="";
+    container.innerHTML = "";
 
-    let now=new Date();
+    let now = new Date();
 
     for(let i=1;i<=5;i++){
 
@@ -254,28 +242,27 @@ function generateRuns(){
         let card =
             document.createElement("div");
 
-        card.className =
-            "run-card";
+        card.className = "run-card";
 
         card.innerHTML =
             next.toLocaleString();
 
         container.appendChild(card);
+
     }
+
 }
 
 function copyCron(){
 
-    const cron =
+    navigator.clipboard.writeText(
         document.getElementById(
             "cronOutput"
-        ).value;
-
-    navigator.clipboard.writeText(cron);
-
-    alert(
-        "Cron copied!"
+        ).value
     );
+
+    alert("Cron expression copied");
+
 }
 
 function cronEdited(){
@@ -289,10 +276,11 @@ function cronEdited(){
         cron.split(/\s+/);
 
     const valid =
-        document.getElementById("valid");
+        document.getElementById(
+            "valid"
+        );
 
-
-    if(fields.length === 5){
+    if(fields.length===5){
 
         valid.innerHTML =
             "✅ Valid Linux cron expression";
@@ -306,23 +294,25 @@ function cronEdited(){
             explainCron(cron);
 
         generateRuns();
-    }
-    else{
+
+    }else{
 
         valid.innerHTML =
             "❌ Invalid cron expression";
 
         valid.style.color =
             "red";
+
     }
 
 }
 
 function explainCron(cron){
 
-    const fields = cron.split(/\s+/);
+    const fields =
+        cron.split(/\s+/);
 
-    if(fields.length !== 5){
+    if(fields.length!==5){
         return "Invalid cron expression";
     }
 
@@ -333,11 +323,151 @@ function explainCron(cron){
         month <b>${fields[3]}</b>,
         day-of-week <b>${fields[4]}</b>.
     `;
+
 }
 
 generateCron();
 
 </script>
 
-</body>
-</html>
+<hr>
+
+<div class="seo-content">
+
+<h2>Cron Expression Generator</h2>
+
+<p>
+Use this free cron expression generator to create Linux cron schedules for automated tasks, scripts, backups and recurring jobs. Generate valid cron expressions without remembering cron syntax.
+</p>
+
+<p>
+Cron jobs are commonly used by Linux servers, cloud platforms, Docker containers, Kubernetes workloads and DevOps automation systems to run scheduled commands automatically.
+</p>
+
+<h2>How to Use the Cron Generator</h2>
+
+<ol>
+    <li>Select a schedule frequency.</li>
+    <li>Generate the cron expression.</li>
+    <li>Copy the cron syntax.</li>
+    <li>Use it in your server, application or scheduler.</li>
+</ol>
+
+<h2>Example Cron Expressions</h2>
+
+<ul>
+    <li><code>* * * * *</code> Every minute</li>
+    <li><code>0 * * * *</code> Every hour</li>
+    <li><code>0 0 * * *</code> Every day at midnight</li>
+    <li><code>0 0 * * 0</code> Every Sunday</li>
+    <li><code>0 0 1 * *</code> First day of every month</li>
+</ul>
+
+<h2>Common Uses</h2>
+
+<ul>
+    <li>Database backups.</li>
+    <li>Log cleanup tasks.</li>
+    <li>Email automation.</li>
+    <li>ETL jobs.</li>
+    <li>Server maintenance.</li>
+    <li>Scheduled reports.</li>
+</ul>
+
+<h2>Features</h2>
+
+<ul>
+    <li>Generate cron expressions instantly.</li>
+    <li>Validate cron syntax.</li>
+    <li>Cron schedule explanation.</li>
+    <li>Copy cron expressions with one click.</li>
+    <li>Mobile and desktop friendly.</li>
+    <li>Completely free.</li>
+</ul>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is a cron expression?</h3>
+
+<p>
+A cron expression defines when a scheduled task should run on Unix and Linux systems.
+</p>
+
+<h3>How many fields are in a Linux cron expression?</h3>
+
+<p>
+Standard Linux cron expressions contain five fields: minute, hour, day of month, month and day of week.
+</p>
+
+<h3>Can I use cron with Docker?</h3>
+
+<p>
+Yes. Cron jobs are commonly used inside Docker containers and Linux-based server environments.
+</p>
+
+<h3>Is this cron generator free?</h3>
+
+<p>
+Yes. The Cron Expression Generator is completely free.
+</p>
+
+<h2>Related Developer Tools</h2>
+
+<ul>
+    <li><a href="/json-formatter">JSON Formatter</a></li>
+    <li><a href="/xml-formatter">XML Formatter</a></li>
+    <li><a href="/base64">Base64 Encoder Decoder</a></li>
+    <li><a href="/uuid-generator">UUID Generator</a></li>
+    <li><a href="/sql-formatter">SQL Formatter</a></li>
+</ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"WebApplication",
+ "name":"Cron Expression Generator Online",
+ "applicationCategory":"DeveloperApplication",
+ "operatingSystem":"Any",
+ "offers":{
+   "@type":"Offer",
+   "price":"0"
+ }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"What is a cron expression?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"A cron expression defines when a scheduled task should run on Unix and Linux systems."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"How many fields are in a Linux cron expression?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Standard Linux cron expressions contain five fields: minute, hour, day of month, month and day of week."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Is this cron generator free?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The Cron Expression Generator is completely free."
+     }
+   }
+ ]
+}
+</script>
+
+{% endblock %}

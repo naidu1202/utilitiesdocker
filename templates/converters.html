@@ -1,38 +1,60 @@
 {% extends "base.html" %}
 
+{% block title %}
+Unit Converter Online Free | Length, Weight, Temperature & More | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Free online unit converter. Convert length, weight, temperature, volume and data units instantly with accurate calculations.
+{% endblock %}
+
+{% block og_title %}
+Unit Converter Online Free
+{% endblock %}
+
+{% block og_description %}
+Convert length, weight, temperature, volume and data units quickly and accurately online.
+{% endblock %}
+
 {% block content %}
 
-<h1>🔄 Universal Unit Converter</h1>
+<h1>Universal Unit Converter Online</h1>
 
 <div class="tool-container">
 
     <label>Category</label>
+
     <select id="category" onchange="updateUnits()">
-<option value="weight">⚖️ Weight</option>
-<option value="length">📏 Length</option>
-<option value="temperature">🌡️ Temperature</option>
-<option value="volume">💧 Volume</option>
-<option value="data">💾 Data</option>
+        <option value="weight">⚖️ Weight</option>
+        <option value="length">📏 Length</option>
+        <option value="temperature">🌡️ Temperature</option>
+        <option value="volume">💧 Volume</option>
+        <option value="data">💾 Data</option>
     </select>
 
     <br><br>
 
     <label>From</label>
+
     <select id="fromUnit"></select>
 
     <br><br>
 
     <label>To</label>
+
     <select id="toUnit"></select>
 
     <br><br>
 
     <label>Value</label>
+
     <input type="number" id="inputValue">
 
     <br><br>
 
-    <button onclick="convertUnit()">Convert</button>
+    <button onclick="convertUnit()">
+        Convert
+    </button>
 
     <h2 id="result"></h2>
 
@@ -101,6 +123,7 @@ function updateUnits() {
 
                 to.innerHTML +=
                     `<option value="${unit}">${unit}</option>`;
+
             });
 
     } else {
@@ -113,7 +136,9 @@ function updateUnits() {
 
                 to.innerHTML +=
                     `<option value="${unit}">${unit}</option>`;
+
             });
+
     }
 
     if (to.options.length > 1) {
@@ -121,6 +146,7 @@ function updateUnits() {
     }
 
     convertUnit();
+
 }
 
 function convertTemperature(value, from, to) {
@@ -134,6 +160,7 @@ function convertTemperature(value, from, to) {
 
         if (to === "Kelvin")
             return value + 273.15;
+
     }
 
     if (from === "Fahrenheit") {
@@ -143,6 +170,7 @@ function convertTemperature(value, from, to) {
 
         if (to === "Kelvin")
             return ((value - 32) * 5 / 9) + 273.15;
+
     }
 
     if (from === "Kelvin") {
@@ -152,7 +180,9 @@ function convertTemperature(value, from, to) {
 
         if (to === "Fahrenheit")
             return ((value - 273.15) * 9 / 5) + 32;
+
     }
+
 }
 
 function convertUnit() {
@@ -174,7 +204,9 @@ function convertUnit() {
     if (isNaN(value)) {
 
         document.getElementById("result").innerHTML = "";
+
         return;
+
     }
 
     let result;
@@ -196,6 +228,7 @@ function convertUnit() {
         result =
             baseValue /
             units[category][to];
+
     }
 
     document.getElementById("result").innerHTML =
@@ -204,10 +237,11 @@ function convertUnit() {
         <br>
         =
         <br>
-        <strong>${result.toLocaleString(undefined, {
-            maximumFractionDigits: 8
+        <strong>${result.toLocaleString(undefined,{
+            maximumFractionDigits:8
         })} ${to}</strong>
         `;
+
 }
 
 document.getElementById("fromUnit")
@@ -221,6 +255,150 @@ document.getElementById("inputValue")
 
 updateUnits();
 
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Free Online Unit Converter</h2>
+
+    <p>
+        Use this universal unit converter to convert measurements between length, weight, temperature, volume and digital storage units. Enter a value, select units and receive an instant conversion result.
+    </p>
+
+    <p>
+        The converter supports both metric and imperial measurement systems. It is useful for students, engineers, scientists, travelers, businesses and daily calculations.
+    </p>
+
+    <h2>Supported Conversion Categories</h2>
+
+    <ul>
+        <li>Length Converter</li>
+        <li>Weight Converter</li>
+        <li>Temperature Converter</li>
+        <li>Volume Converter</li>
+        <li>Data Storage Converter</li>
+    </ul>
+
+    <h2>How to Use the Unit Converter</h2>
+
+    <ol>
+        <li>Select a category.</li>
+        <li>Choose the source unit.</li>
+        <li>Select the target unit.</li>
+        <li>Enter a value.</li>
+        <li>View the converted result instantly.</li>
+    </ol>
+
+    <h2>Popular Conversions</h2>
+
+    <ul>
+        <li>Kilograms to Pounds</li>
+        <li>Pounds to Kilograms</li>
+        <li>Meters to Feet</li>
+        <li>Feet to Meters</li>
+        <li>Celsius to Fahrenheit</li>
+        <li>Fahrenheit to Celsius</li>
+        <li>Liters to Gallons</li>
+        <li>GB to MB</li>
+        <li>MB to GB</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Instant unit conversion.</li>
+        <li>Metric and imperial support.</li>
+        <li>Temperature calculations.</li>
+        <li>Storage unit conversions.</li>
+        <li>Works on desktop and mobile.</li>
+        <li>Free online calculator.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I convert kilograms to pounds?</h3>
+
+    <p>
+        Yes. Select Weight, choose Kilogram as the source unit and Pound as the destination unit.
+    </p>
+
+    <h3>Can I convert Celsius to Fahrenheit?</h3>
+
+    <p>
+        Yes. The tool supports Celsius, Fahrenheit and Kelvin conversions.
+    </p>
+
+    <h3>Can I convert GB to MB?</h3>
+
+    <p>
+        Yes. The data converter supports Byte, KB, MB, GB and TB conversions.
+    </p>
+
+    <h3>Is the Unit Converter free?</h3>
+
+    <p>
+        Yes. The Unit Converter is completely free to use.
+    </p>
+
+    <h2>Related Tools</h2>
+
+    <ul>
+        <li><a href="/percentage-calculator">Percentage Calculator</a></li>
+        <li><a href="/age-calculator">Age Calculator</a></li>
+        <li><a href="/bmi-calculator">BMI Calculator</a></li>
+        <li><a href="/loan-calculator">Loan Calculator</a></li>
+        <li><a href="/emi-calculator">EMI Calculator</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Universal Unit Converter Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I convert kilograms to pounds?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Select Weight, choose Kilogram as the source unit and Pound as the destination unit."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I convert Celsius to Fahrenheit?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The tool supports Celsius, Fahrenheit and Kelvin conversions."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I convert GB to MB?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The data converter supports Byte, KB, MB, GB and TB conversions."
+      }
+    }
+  ]
+}
 </script>
 
 {% endblock %}

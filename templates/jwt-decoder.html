@@ -1,38 +1,305 @@
-<h1>🔐 JWT Decoder</h1>
+{% extends "base.html" %}
 
-<textarea id="jwt"></textarea>
+{% block title %}
+JWT Decoder Online Free | Decode JSON Web Tokens | UtilitiesDocker
+{% endblock %}
 
-<button onclick="decodeJwt()">
-Decode
-</button>
+{% block meta_description %}
+Decode JWT tokens online for free. View JWT headers, payloads and claims instantly with our secure JWT decoder tool.
+{% endblock %}
 
-<pre id="header"></pre>
-<pre id="payload"></pre>
+{% block og_title %}
+JWT Decoder Online Free
+{% endblock %}
+
+{% block og_description %}
+Decode JSON Web Tokens and inspect headers and payloads instantly.
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-container">
+
+    <h1>JWT Decoder Online</h1>
+
+    <p>
+        Decode JWT tokens and inspect headers, payloads and claims instantly.
+    </p>
+
+    <textarea
+        id="jwt"
+        rows="8"
+        style="width:100%;"
+        placeholder="Paste JWT Token Here">
+    </textarea>
+
+    <br><br>
+
+    <button onclick="decodeJwt()">
+        Decode JWT
+    </button>
+
+    <br><br>
+
+    <h2>JWT Header</h2>
+
+    <pre
+        id="header"
+        style="
+            background:#f5f5f5;
+            padding:10px;
+            border-radius:8px;">
+    </pre>
+
+    <h2>JWT Payload</h2>
+
+    <pre
+        id="payload"
+        style="
+            background:#f5f5f5;
+            padding:10px;
+            border-radius:8px;">
+    </pre>
+
+</div>
 
 <script>
 
+function parseJwt(part){
+
+    part =
+        part.replace(/-/g,'+');
+
+    part =
+        part.replace(/_/g,'/');
+
+    return JSON.parse(
+
+        decodeURIComponent(
+
+            atob(part)
+            .split('')
+            .map(c =>
+                '%' +
+                (
+                    '00' +
+                    c.charCodeAt(0)
+                    .toString(16)
+                ).slice(-2)
+            )
+            .join('')
+
+        )
+
+    );
+
+}
+
 function decodeJwt(){
 
-    const token =
-        document.getElementById("jwt").value;
+    try{
 
-    const parts = token.split(".");
+        const token =
+            document
+            .getElementById("jwt")
+            .value
+            .trim();
 
-    if(parts.length !== 3){
-        alert("Invalid JWT");
-        return;
+        const parts =
+            token.split(".");
+
+        if(parts.length !== 3){
+
+            alert(
+                "Invalid JWT Token"
+            );
+
+            return;
+
+        }
+
+        const header =
+            parseJwt(parts[0]);
+
+        const payload =
+            parseJwt(parts[1]);
+
+        document
+        .getElementById("header")
+        .textContent =
+        JSON.stringify(
+            header,
+            null,
+            4
+        );
+
+        document
+        .getElementById("payload")
+        .textContent =
+        JSON.stringify(
+            payload,
+            null,
+            4
+        );
+
+    }
+    catch(err){
+
+        alert(
+            "Invalid JWT Token"
+        );
+
     }
 
-    const header =
-        JSON.parse(atob(parts[0]));
+}
 
-    const payload =
-        JSON.parse(atob(parts[1]));
+</script>
 
-    document.getElementById("header").textContent =
-        JSON.stringify(header,null,2);
+<hr>
 
-    document.getElementById("payload").textContent =
-        JSON.stringify(payload,null,2);
+<div class="seo-content">
+
+    <h2>JWT Decoder Tool</h2>
+
+    <p>
+        Use this free JWT Decoder to inspect JSON Web Tokens (JWTs) and view the header and payload contents. Developers commonly use JWT decoding to debug authentication systems, verify claims and troubleshoot API security issues.
+    </p>
+
+    <p>
+        JWTs are widely used in OAuth 2.0 authentication, OpenID Connect (OIDC), REST APIs, web applications, mobile apps and microservices. This tool decodes JWT tokens directly in your browser for easy analysis.
+    </p>
+
+    <h2>What is a JWT?</h2>
+
+    <p>
+        JWT (JSON Web Token) is a compact, URL-safe token format used to securely transmit information between systems. A JWT typically consists of three parts: Header, Payload and Signature.
+    </p>
+
+    <h2>JWT Structure</h2>
+
+    <ul>
+        <li>Header - Token type and signing algorithm.</li>
+        <li>Payload - Claims and user information.</li>
+        <li>Signature - Used to verify token integrity.</li>
+    </ul>
+
+    <h2>How to Decode a JWT</h2>
+
+    <ol>
+        <li>Copy the JWT token.</li>
+        <li>Paste it into the input box.</li>
+        <li>Click Decode JWT.</li>
+        <li>Review the decoded header.</li>
+        <li>Inspect claims in the payload section.</li>
+    </ol>
+
+    <h2>Common JWT Claims</h2>
+
+    <ul>
+        <li>sub (Subject)</li>
+        <li>iss (Issuer)</li>
+        <li>aud (Audience)</li>
+        <li>exp (Expiration Time)</li>
+        <li>iat (Issued At)</li>
+        <li>nbf (Not Before)</li>
+        <li>jti (JWT ID)</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Instant JWT decoding.</li>
+        <li>JWT header inspection.</li>
+        <li>JWT payload viewing.</li>
+        <li>Developer-friendly interface.</li>
+        <li>No registration required.</li>
+        <li>Completely free.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I decode JWT tokens online?</h3>
+
+    <p>
+        Yes. Paste your JWT token and instantly view the decoded header and payload.
+    </p>
+
+    <h3>Does decoding verify the signature?</h3>
+
+    <p>
+        No. This tool decodes JWT content but does not validate the cryptographic signature unless implemented separately.
+    </p>
+
+    <h3>Is JWT decoding secure?</h3>
+
+    <p>
+        JWT headers and payloads are Base64 encoded, not encrypted. Only paste tokens you are authorized to inspect.
+    </p>
+
+    <h3>Is the JWT Decoder free?</h3>
+
+    <p>
+        Yes. The JWT Decoder is completely free to use online.
+    </p>
+
+    <h2>Related Developer Tools</h2>
+
+    <ul>
+        <li><a href="/json-validator">JSON Validator</a></li>
+        <li><a href="/json-formatter">JSON Formatter</a></li>
+        <li><a href="/base64">Base64 Encoder Decoder</a></li>
+        <li><a href="/uuid-generator">UUID Generator</a></li>
+        <li><a href="/cron-generator">Cron Expression Generator</a></li>
+        <li><a href="/ip-lookup">IP Lookup</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"JWT Decoder Online",
+  "applicationCategory":"DeveloperApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
 }
 </script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I decode JWT tokens online?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Paste your JWT token and instantly view the decoded header and payload."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Does decoding verify the signature?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"No. Decoding JWT content does not verify the cryptographic signature."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"What is a JWT?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"JWT stands for JSON Web Token and is commonly used for authentication and authorization."
+      }
+    }
+  ]
+}
+</script>
+
+{% endblock %}

@@ -1,30 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends "base.html" %}
 
-<meta charset="UTF-8">
+{% block title %}
+QR Code Generator Online Free | Create QR Codes Instantly | UtilitiesDocker
+{% endblock %}
 
-<title>Free QR Code Generator | UtilitiesDocker</title>
+{% block meta_description %}
+Generate QR codes online for free. Create QR codes for URLs, WiFi, text, emails, phone numbers and more instantly.
+{% endblock %}
 
-<meta name="description"
-content="Generate QR codes online for free. Create QR codes for URLs, WiFi, text, emails and more.">
+{% block og_title %}
+QR Code Generator Online Free
+{% endblock %}
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+{% block og_description %}
+Create QR codes for websites, text, email, WiFi and contact information instantly.
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-container">
+
+    <h1>QR Code Generator Online Free</h1>
+
+    <p>
+        Generate QR codes for URLs, text, email addresses, phone numbers, WiFi access and more.
+    </p>
+
+    <form
+        action="/generate-qr"
+        method="post">
+
+        <label>
+            <strong>Enter URL or Text</strong>
+        </label>
+
+        <textarea
+            name="content"
+            placeholder="https://example.com"
+            required></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Generate QR Code
+        </button>
+
+    </form>
+
+</div>
 
 <style>
 
-body{
+.tool-container{
     max-width:800px;
     margin:auto;
-    padding:20px;
-    font-family:Arial,sans-serif;
 }
 
 textarea{
     width:100%;
-    height:120px;
-    padding:10px;
+    height:140px;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    resize:vertical;
+    box-sizing:border-box;
 }
 
 button{
@@ -32,7 +71,7 @@ button{
     color:white;
     border:none;
     padding:12px 20px;
-    border-radius:5px;
+    border-radius:8px;
     cursor:pointer;
 }
 
@@ -42,29 +81,149 @@ button:hover{
 
 </style>
 
-</head>
+<hr>
 
-<body>
+<div class="seo-content">
 
-<h1>Free QR Code Generator</h1>
+    <h2>Free QR Code Generator</h2>
 
-<p>
-Generate QR codes for websites, text, email addresses, phone numbers and more.
-</p>
+    <p>
+        Create QR codes instantly for websites, text messages, business cards, email addresses, phone numbers and WiFi credentials. Generate scannable QR codes that work on smartphones, tablets and desktop devices.
+    </p>
 
-<form action="/generate-qr" method="post">
+    <p>
+        QR codes are commonly used in marketing campaigns, restaurants, business cards, product packaging, event registrations, payments and digital sharing.
+    </p>
 
-<textarea
-name="content"
-placeholder="Enter URL or text"></textarea>
+    <h2>How to Generate a QR Code</h2>
 
-<br><br>
+    <ol>
+        <li>Enter a URL or text.</li>
+        <li>Click Generate QR Code.</li>
+        <li>Create the QR code instantly.</li>
+        <li>Download or share the generated image.</li>
+        <li>Scan with any smartphone camera.</li>
+    </ol>
 
-<button type="submit">
-Generate QR Code
-</button>
+    <h2>Popular QR Code Uses</h2>
 
-</form>
+    <ul>
+        <li>Website URLs.</li>
+        <li>Business cards.</li>
+        <li>WiFi access sharing.</li>
+        <li>Email addresses.</li>
+        <li>Phone numbers.</li>
+        <li>Social media profiles.</li>
+        <li>Product information.</li>
+        <li>Restaurant menus.</li>
+    </ul>
 
-</body>
-</html>
+    <h2>Benefits of QR Codes</h2>
+
+    <ul>
+        <li>Instant information sharing.</li>
+        <li>Contactless interactions.</li>
+        <li>Mobile-friendly access.</li>
+        <li>Easy marketing integration.</li>
+        <li>Improved user engagement.</li>
+        <li>Simple distribution of digital content.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Create QR codes instantly.</li>
+        <li>Supports URLs and text.</li>
+        <li>Works on all modern devices.</li>
+        <li>No registration required.</li>
+        <li>Fast QR code generation.</li>
+        <li>Free online QR generator.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>What is a QR code?</h3>
+
+    <p>
+        A QR code is a two-dimensional barcode that can store links, text and other information which can be scanned using a smartphone.
+    </p>
+
+    <h3>Can I create a QR code for a website?</h3>
+
+    <p>
+        Yes. Enter a website URL and generate a QR code that opens the website when scanned.
+    </p>
+
+    <h3>Can I generate QR codes for WiFi?</h3>
+
+    <p>
+        Yes. Many users create QR codes containing WiFi connection details for quick access.
+    </p>
+
+    <h3>Is the QR Code Generator free?</h3>
+
+    <p>
+        Yes. The QR Code Generator is completely free to use online.
+    </p>
+
+    <h2>Related Utility Tools</h2>
+
+    <ul>
+        <li><a href="/barcode-generator">Barcode Generator</a></li>
+        <li><a href="/password-generator">Password Generator</a></li>
+        <li><a href="/uuid-generator">UUID Generator</a></li>
+        <li><a href="/base64">Base64 Encoder Decoder</a></li>
+        <li><a href="/short-url">URL Shortener</a></li>
+        <li><a href="/ip-lookup">IP Lookup</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"QR Code Generator Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"What is a QR code?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"A QR code is a scannable two-dimensional barcode that can store URLs, text and other information."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I create a QR code for a website?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Enter a website URL and generate a QR code that opens the website when scanned."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the QR Code Generator free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The QR Code Generator is completely free."
+      }
+    }
+  ]
+}
+</script>
+
+{% endblock %}

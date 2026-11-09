@@ -1,20 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Exchange Rate Converter{% endblock %}
+{% block title %}
+Currency Converter Online Free | Live Exchange Rate Converter | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Convert currencies online using live exchange rates. Free currency converter supporting USD, SGD, EUR, GBP, JPY, INR, AUD, CNY and more.
+{% endblock %}
+
+{% block og_title %}
+Currency Converter Online Free
+{% endblock %}
+
+{% block og_description %}
+Convert currencies instantly using current exchange rates.
+{% endblock %}
 
 {% block content %}
 
 <div class="tool-page">
 
-    <h1>💱 Exchange Rate Converter</h1>
+    <h1>Currency Converter Online</h1>
 
     <p>
-        Convert currencies using the latest exchange rates.
+        Convert currencies using the latest available exchange rates.
     </p>
 
     <form id="currencyForm">
 
-        <label>Amount</label>
+        <label>
+            <strong>Amount</strong>
+        </label>
+
         <input
             type="number"
             id="amount"
@@ -25,7 +42,10 @@
 
         <br><br>
 
-        <label>From Currency</label>
+        <label>
+            <strong>From Currency</strong>
+        </label>
+
         <select id="fromCurrency">
             <option value="USD">USD - US Dollar</option>
             <option value="SGD">SGD - Singapore Dollar</option>
@@ -39,7 +59,10 @@
 
         <br><br>
 
-        <label>To Currency</label>
+        <label>
+            <strong>To Currency</strong>
+        </label>
+
         <select id="toCurrency">
             <option value="SGD">SGD - Singapore Dollar</option>
             <option value="USD">USD - US Dollar</option>
@@ -58,7 +81,7 @@
             class="tool-btn"
             onclick="convertCurrency()">
 
-            Convert
+            Convert Currency
 
         </button>
 
@@ -74,7 +97,7 @@
 
 <script>
 
-async function convertCurrency() {
+async function convertCurrency(){
 
     const amount =
         document.getElementById("amount").value;
@@ -85,30 +108,187 @@ async function convertCurrency() {
     const to =
         document.getElementById("toCurrency").value;
 
-    try {
+    try{
 
         const response = await fetch(
             `https://api.exchangerate-api.com/v4/latest/${from}`
         );
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
-        const rate = data.rates[to];
+        const rate =
+            data.rates[to];
 
         const converted =
             (amount * rate).toFixed(2);
 
         document.getElementById("result").innerHTML =
-            `<h3>${amount} ${from} = ${converted} ${to}</h3>`;
+            `
+            <h2>${amount} ${from}</h2>
+            <h3>= ${converted} ${to}</h3>
+            <p>
+                Exchange Rate: 1 ${from} = ${rate} ${to}
+            </p>
+            `;
 
-    } catch (error) {
+    }catch(error){
 
         document.getElementById("result").innerHTML =
-            "<span class='error'>Unable to fetch exchange rates.</span>";
+            `
+            <span style="color:red;">
+                Unable to fetch exchange rates.
+            </span>
+            `;
 
     }
+
 }
 
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Currency Converter with Exchange Rates</h2>
+
+    <p>
+        Use this free currency converter to calculate exchange rates between major world currencies. Convert USD, SGD, EUR, GBP, JPY, AUD, INR, CNY and many other currencies instantly.
+    </p>
+
+    <p>
+        The exchange rate calculator helps travelers, businesses, online shoppers, investors and international professionals estimate foreign currency values quickly and accurately.
+    </p>
+
+    <h2>How to Convert Currency</h2>
+
+    <ol>
+        <li>Enter the amount.</li>
+        <li>Select the source currency.</li>
+        <li>Select the destination currency.</li>
+        <li>Click Convert Currency.</li>
+        <li>View the converted amount instantly.</li>
+    </ol>
+
+    <h2>Popular Currency Conversions</h2>
+
+    <ul>
+        <li>USD to SGD</li>
+        <li>SGD to USD</li>
+        <li>USD to INR</li>
+        <li>EUR to USD</li>
+        <li>GBP to SGD</li>
+        <li>AUD to SGD</li>
+        <li>JPY to USD</li>
+        <li>CNY to SGD</li>
+    </ul>
+
+    <h2>Why Use a Currency Converter?</h2>
+
+    <ul>
+        <li>Travel planning.</li>
+        <li>International business transactions.</li>
+        <li>Online shopping.</li>
+        <li>Foreign exchange monitoring.</li>
+        <li>Investment research.</li>
+        <li>Budgeting and financial planning.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Live exchange rate conversion.</li>
+        <li>Supports major world currencies.</li>
+        <li>Instant calculations.</li>
+        <li>Mobile-friendly interface.</li>
+        <li>No registration required.</li>
+        <li>Free online currency converter.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I convert US Dollars to Singapore Dollars?</h3>
+
+    <p>
+        Yes. Select USD as the source currency and SGD as the target currency.
+    </p>
+
+    <h3>Are exchange rates updated automatically?</h3>
+
+    <p>
+        The converter retrieves exchange rate information from the configured exchange rate service when conversion is performed.
+    </p>
+
+    <h3>Can I convert Indian Rupees to US Dollars?</h3>
+
+    <p>
+        Yes. Select INR as the source currency and USD as the target currency.
+    </p>
+
+    <h3>Is the Currency Converter free?</h3>
+
+    <p>
+        Yes. The Currency Converter is completely free to use online.
+    </p>
+
+    <h2>Related Financial Tools</h2>
+
+    <ul>
+        <li><a href="/emi-calculator">EMI Calculator</a></li>
+        <li><a href="/loan-calculator">Loan Calculator</a></li>
+        <li><a href="/percentage-calculator">Percentage Calculator</a></li>
+        <li><a href="/unit-converter">Unit Converter</a></li>
+        <li><a href="/date-difference">Date Difference Calculator</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Currency Converter Online",
+  "applicationCategory":"FinanceApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I convert US Dollars to Singapore Dollars?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Select USD as the source currency and SGD as the destination currency."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I convert Indian Rupees to US Dollars?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Select INR as the source currency and USD as the destination currency."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the Currency Converter free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The Currency Converter is completely free."
+      }
+    }
+  ]
+}
 </script>
 
 {% endblock %}

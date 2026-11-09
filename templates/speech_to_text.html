@@ -1,55 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
 
-<title>
-Speech To Text | UtilitiesDocker
-</title>
+{% block title %}
+Speech to Text Online Free | Voice to Text Converter | UtilitiesDocker
+{% endblock %}
 
-<meta
-name="description"
-content="Convert speech to text online for free using your microphone.">
+{% block meta_description %}
+Convert speech to text online for free. Transcribe voice, meetings, lectures and audio using your microphone instantly.
+{% endblock %}
 
-<link
-rel="stylesheet"
-href="/static/style.css">
+{% block og_title %}
+Speech to Text Online Free
+{% endblock %}
 
-</head>
+{% block og_description %}
+Convert voice to text instantly using speech recognition technology.
+{% endblock %}
 
-<body>
+{% block content %}
 
-<div class="container">
+<div class="tool-container">
 
-<h1>
-🎤 Speech To Text
-</h1>
+    <h1>Speech to Text Online Free</h1>
 
-<p>
-Click Start Recording and speak into your microphone.
-</p>
+    <p>
+        Convert spoken words into text instantly using your microphone and browser.
+    </p>
 
-<button onclick="startRecording()">
-🎤 Start Recording
-</button>
+    <button onclick="startRecording()">
+        🎤 Start Recording
+    </button>
 
-<button onclick="stopRecording()">
-⏹ Stop Recording
-</button>
+    <button onclick="stopRecording()">
+        ⏹ Stop Recording
+    </button>
 
-<button onclick="copyText()">
-📋 Copy Text
-</button>
+    <button onclick="copyText()">
+        📋 Copy Text
+    </button>
 
-<br><br>
+    <br><br>
 
-<textarea
-id="output"
-rows="15"
-style="
-width:100%;
-padding:10px;"
-placeholder="Speech will appear here...">
-</textarea>
+    <div
+        id="status"
+        style="
+            font-weight:600;
+            color:#2563eb;
+            margin-bottom:10px;
+        ">
+        Ready to record
+    </div>
+
+    <textarea
+        id="output"
+        rows="15"
+        style="
+            width:100%;
+            padding:10px;
+            border:1px solid #d1d5db;
+            border-radius:8px;
+        "
+        placeholder="Speech will appear here...">
+    </textarea>
 
 </div>
 
@@ -57,9 +68,10 @@ placeholder="Speech will appear here...">
 
 let recognition;
 
-if (
-    'webkitSpeechRecognition' in window
-) {
+if(
+    'webkitSpeechRecognition'
+    in window
+){
 
     recognition =
         new webkitSpeechRecognition();
@@ -70,44 +82,70 @@ if (
 
     recognition.lang = "en-US";
 
+    recognition.onstart =
+    function(){
+
+        document
+        .getElementById(
+            "status"
+        ).innerHTML =
+        "🎤 Recording in progress...";
+
+    };
+
     recognition.onresult =
-        function(event){
+    function(event){
 
-            let transcript = "";
+        let transcript = "";
 
-            for(
-                let i = 0;
-                i < event.results.length;
-                i++
-            ){
+        for(
+            let i = 0;
+            i < event.results.length;
+            i++
+        ){
 
-                transcript +=
-                    event.results[i][0].transcript +
-                    " ";
+            transcript +=
+                event.results[i][0]
+                .transcript + " ";
 
-            }
+        }
 
-            document.getElementById(
-                "output"
-            ).value = transcript;
-        };
+        document
+        .getElementById(
+            "output"
+        ).value =
+        transcript;
+
+    };
+
+    recognition.onend =
+    function(){
+
+        document
+        .getElementById(
+            "status"
+        ).innerHTML =
+        "✅ Recording stopped";
+
+    };
 
     recognition.onerror =
-        function(event){
+    function(event){
 
-            alert(
-                "Speech Recognition Error: " +
-                event.error
-            );
+        alert(
+            "Speech Recognition Error: " +
+            event.error
+        );
 
-        };
+    };
 
 }
-else {
+else{
 
     alert(
         "Speech recognition is not supported in this browser."
     );
+
 }
 
 function startRecording(){
@@ -125,16 +163,164 @@ function stopRecording(){
 function copyText(){
 
     navigator.clipboard.writeText(
-        document.getElementById(
+
+        document
+        .getElementById(
             "output"
         ).value
+
     );
 
-    alert("Copied!");
+    alert(
+        "Copied to clipboard!"
+    );
 
 }
 
 </script>
 
-</body>
-</html>
+<hr>
+
+<div class="seo-content">
+
+    <h2>Convert Speech to Text Online</h2>
+
+    <p>
+        Use this free speech-to-text converter to transcribe spoken words into text instantly. Simply start recording through your microphone and watch your speech appear automatically as editable text.
+    </p>
+
+    <p>
+        Speech recognition technology helps improve productivity by eliminating manual typing and enabling fast note-taking, transcription and content creation.
+    </p>
+
+    <h2>How to Use Speech to Text</h2>
+
+    <ol>
+        <li>Allow microphone access.</li>
+        <li>Click Start Recording.</li>
+        <li>Speak clearly into your microphone.</li>
+        <li>Watch your speech appear as text.</li>
+        <li>Click Stop Recording when finished.</li>
+        <li>Copy the generated text.</li>
+    </ol>
+
+    <h2>Popular Uses</h2>
+
+    <ul>
+        <li>Meeting transcription.</li>
+        <li>Lecture notes.</li>
+        <li>Voice dictation.</li>
+        <li>Content writing.</li>
+        <li>Interview transcription.</li>
+        <li>Accessibility assistance.</li>
+    </ul>
+
+    <h2>Benefits of Speech Recognition</h2>
+
+    <ul>
+        <li>Faster than typing.</li>
+        <li>Improves productivity.</li>
+        <li>Supports hands-free operation.</li>
+        <li>Useful for accessibility needs.</li>
+        <li>Quick note-taking.</li>
+        <li>Easy text generation.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Real-time speech transcription.</li>
+        <li>Microphone-based recording.</li>
+        <li>Instant text generation.</li>
+        <li>Copy transcription with one click.</li>
+        <li>No registration required.</li>
+        <li>Free online voice-to-text converter.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I convert speech to text online?</h3>
+
+    <p>
+        Yes. Use your microphone to convert spoken words into text instantly.
+    </p>
+
+    <h3>Does speech recognition work in real time?</h3>
+
+    <p>
+        Yes. Text is generated while you are speaking, depending on browser support.
+    </p>
+
+    <h3>Can I copy the transcription?</h3>
+
+    <p>
+        Yes. Click the Copy Text button to copy the generated content.
+    </p>
+
+    <h3>Is the Speech to Text tool free?</h3>
+
+    <p>
+        Yes. The Speech to Text converter is completely free to use online.
+    </p>
+
+    <h2>Related Audio & AI Tools</h2>
+
+    <ul>
+        <li><a href="/text-to-speech">Text to Speech</a></li>
+        <li><a href="/audio-converter">Audio Converter</a></li>
+        <li><a href="/mp3-cutter">MP3 Cutter</a></li>
+        <li><a href="/merge-audio">Merge Audio</a></li>
+        <li><a href="/video-to-mp3">Video to MP3</a></li>
+        <li><a href="/ocr-pdf">OCR PDF</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Speech to Text Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"Can I convert speech to text online?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Use your microphone to transcribe speech into text instantly."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Does speech recognition work in real time?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Supported browsers can transcribe speech while you speak."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Can I copy the transcription?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The generated text can be copied with a single click."
+     }
+   }
+ ]
+}
+</script>
+
+{% endblock %}

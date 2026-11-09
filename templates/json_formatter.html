@@ -1,174 +1,348 @@
-<!DOCTYPE html>
-<html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends "base.html" %}
 
-    <meta charset="UTF-8">
+{% block title %}
+JSON Formatter & Validator Online Free | JSON Beautifier | UtilitiesDocker
+{% endblock %}
 
-    <title>JSON Formatter & Validator Online Free | UtilitiesDocker</title>
+{% block meta_description %}
+Format, validate, beautify and minify JSON online for free. Check JSON syntax, prettify JSON data and improve readability instantly.
+{% endblock %}
 
-    <meta
-        name="description"
-        content="Free online JSON formatter, validator and minifier. Beautify JSON, validate syntax and compress JSON data instantly."
-    >
+{% block og_title %}
+JSON Formatter & Validator Online Free
+{% endblock %}
 
-    <meta
-        name="keywords"
-        content="json formatter,json validator,json beautifier,json minifier,online json formatter"
-    >
+{% block og_description %}
+Beautify, validate and minify JSON instantly with our free online JSON formatter.
+{% endblock %}
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+{% block content %}
 
-    <meta property="og:title"
-          content="JSON Formatter & Validator Online Free">
+<div class="tool-container">
 
-    <meta property="og:description"
-          content="Beautify, validate and minify JSON instantly online.">
+    <h1>JSON Formatter & Validator Online</h1>
 
-    <meta property="og:type"
-          content="website">
+    <p>
+        Format, validate, beautify and minify JSON instantly.
+    </p>
 
-    <style>
-        body {
-            max-width: 1000px;
-            margin: auto;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
+    <textarea
+        id="jsonInput"
+        placeholder="Paste JSON here..."></textarea>
 
-        textarea {
-            width: 100%;
-            height: 300px;
-            padding: 10px;
-            font-family: monospace;
-            font-size: 14px;
-        }
+    <br>
 
-        button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            cursor: pointer;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
+    <button onclick="formatJson()">
+        Format JSON
+    </button>
 
-        button:hover {
-            background: #1d4ed8;
-        }
+    <button onclick="minifyJson()">
+        Minify JSON
+    </button>
 
-        #result {
-            margin-top: 20px;
-            background: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            white-space: pre-wrap;
-            font-family: monospace;
-            overflow-x: auto;
-        }
+    <button onclick="copyJson()">
+        Copy Result
+    </button>
 
-        .error {
-            color: red;
-        }
+    <div id="status"></div>
 
-        .success {
-            color: green;
-        }
-    </style>
+    <pre id="result"></pre>
 
-</head>
+</div>
 
-<body>
+<style>
 
-<h1>JSON Formatter</h1>
+.tool-container{
+    max-width:1000px;
+    margin:auto;
+}
 
-<p>
-Paste JSON below to beautify and validate.
-</p>
+textarea{
+    width:100%;
+    height:300px;
+    padding:10px;
+    font-family:monospace;
+    font-size:14px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    box-sizing:border-box;
+}
 
-<textarea id="jsonInput" placeholder="Paste JSON here..."></textarea>
+button{
+    margin-top:10px;
+    margin-right:10px;
+    padding:10px 20px;
+    cursor:pointer;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:5px;
+}
 
-<br>
+button:hover{
+    background:#1d4ed8;
+}
 
-<button onclick="formatJson()">Format JSON</button>
-<button onclick="minifyJson()">Minify JSON</button>
-<button onclick="copyJson()">Copy Result</button>
+#result{
+    margin-top:20px;
+    background:#f4f4f4;
+    padding:15px;
+    border-radius:5px;
+    white-space:pre-wrap;
+    font-family:monospace;
+    overflow-x:auto;
+}
 
-<div id="status"></div>
+.error{
+    color:red;
+}
 
-<pre id="result"></pre>
+.success{
+    color:green;
+}
+
+</style>
 
 <script>
 
-function formatJson() {
+function formatJson(){
 
     const input =
-        document.getElementById("jsonInput").value;
+        document.getElementById(
+            "jsonInput"
+        ).value;
 
-    try {
+    try{
 
-        const obj = JSON.parse(input);
+        const obj =
+            JSON.parse(input);
 
         const formatted =
-            JSON.stringify(obj, null, 4);
+            JSON.stringify(
+                obj,
+                null,
+                4
+            );
 
-        document.getElementById("result").textContent =
+        document.getElementById(
+            "result"
+        ).textContent =
             formatted;
 
-        document.getElementById("status").innerHTML =
+        document.getElementById(
+            "status"
+        ).innerHTML =
             "<span class='success'>✅ Valid JSON</span>";
 
-    } catch (err) {
+    }
+    catch(err){
 
-        document.getElementById("status").innerHTML =
-            "<span class='error'>❌ Invalid JSON<br>" +
-            err.message +
+        document.getElementById(
+            "status"
+        ).innerHTML =
+            "<span class='error'>❌ Invalid JSON<br>"
+            + err.message +
             "</span>";
 
-        document.getElementById("result").textContent = "";
+        document.getElementById(
+            "result"
+        ).textContent = "";
+
     }
+
 }
 
-function minifyJson() {
+function minifyJson(){
 
     const input =
-        document.getElementById("jsonInput").value;
+        document.getElementById(
+            "jsonInput"
+        ).value;
 
-    try {
+    try{
 
-        const obj = JSON.parse(input);
+        const obj =
+            JSON.parse(input);
 
-        document.getElementById("result").textContent =
+        document.getElementById(
+            "result"
+        ).textContent =
             JSON.stringify(obj);
 
-        document.getElementById("status").innerHTML =
+        document.getElementById(
+            "status"
+        ).innerHTML =
             "<span class='success'>✅ JSON Minified</span>";
 
-    } catch (err) {
-
-        document.getElementById("status").innerHTML =
-            "<span class='error'>❌ Invalid JSON<br>" +
-            err.message +
-            "</span>";
     }
+    catch(err){
+
+        document.getElementById(
+            "status"
+        ).innerHTML =
+            "<span class='error'>❌ Invalid JSON<br>"
+            + err.message +
+            "</span>";
+
+    }
+
 }
 
-function copyJson() {
+function copyJson(){
 
     const text =
-        document.getElementById("result").textContent;
+        document.getElementById(
+            "result"
+        ).textContent;
 
     navigator.clipboard.writeText(text);
 
     alert("Copied to clipboard!");
+
 }
 
 </script>
 
-</body>
-</html>
+<hr>
+
+<div class="seo-content">
+
+    <h2>JSON Formatter and Validator Online</h2>
+
+    <p>
+        Use this free JSON Formatter to beautify, validate and minify JSON data instantly. The tool helps developers improve readability, verify syntax and prepare JSON for APIs, applications and databases.
+    </p>
+
+    <p>
+        JSON (JavaScript Object Notation) is one of the most widely used formats for data exchange. Properly formatted JSON makes debugging, testing and development significantly easier.
+    </p>
+
+    <h2>How to Format JSON</h2>
+
+    <ol>
+        <li>Paste JSON data into the editor.</li>
+        <li>Click Format JSON to beautify the content.</li>
+        <li>Review validation results.</li>
+        <li>Copy the formatted JSON.</li>
+        <li>Use Minify JSON to compress the output.</li>
+    </ol>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>JSON Beautifier.</li>
+        <li>JSON Validator.</li>
+        <li>JSON Minifier.</li>
+        <li>Syntax error detection.</li>
+        <li>Copy formatted output.</li>
+        <li>Free online JSON tool.</li>
+    </ul>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>API development.</li>
+        <li>Web application testing.</li>
+        <li>JSON debugging.</li>
+        <li>Data transformation.</li>
+        <li>Configuration file validation.</li>
+        <li>Developer workflow automation.</li>
+    </ul>
+
+    <h2>Example JSON</h2>
+
+<pre>
+{
+  "name": "UtilitiesDocker",
+  "tool": "JSON Formatter",
+  "active": true
+}
+</pre>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>What is JSON?</h3>
+
+    <p>
+        JSON stands for JavaScript Object Notation and is a lightweight format used for data exchange between systems and applications.
+    </p>
+
+    <h3>Can I validate JSON online?</h3>
+
+    <p>
+        Yes. The tool checks JSON syntax and reports formatting errors instantly.
+    </p>
+
+    <h3>What is JSON minification?</h3>
+
+    <p>
+        Minification removes unnecessary spaces and formatting to reduce file size while preserving data.
+    </p>
+
+    <h3>Is the JSON Formatter free?</h3>
+
+    <p>
+        Yes. The JSON Formatter and Validator is completely free.
+    </p>
+
+    <h2>Related Developer Tools</h2>
+
+    <ul>
+        <li><a href="/xml-formatter">XML Formatter</a></li>
+        <li><a href="/sql-formatter">SQL Formatter</a></li>
+        <li><a href="/base64">Base64 Encoder Decoder</a></li>
+        <li><a href="/csv-to-json">CSV to JSON Converter</a></li>
+        <li><a href="/cron-generator">Cron Expression Generator</a></li>
+        <li><a href="/uuid-generator">UUID Generator</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"JSON Formatter and Validator Online",
+  "applicationCategory":"DeveloperApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"What is JSON?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"JSON is a lightweight format used for data exchange between applications and systems."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Can I validate JSON online?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The tool validates JSON syntax and highlights errors."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"What is JSON minification?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"JSON minification removes spaces and formatting to reduce file size."
+     }
+   }
+ ]
+}
+</script>
+
+{% endblock %}

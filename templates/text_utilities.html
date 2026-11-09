@@ -1,8 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+Text Utilities Online Free | Word Counter, Case Converter & Text Tools | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Free online text utilities including word counter, character counter, case converter, duplicate line remover and text analysis tools.
+{% endblock %}
+
+{% block og_title %}
+Text Utilities Online Free
+{% endblock %}
+
+{% block og_description %}
+Word counter, case converter, duplicate remover and text analysis tools in one place.
+{% endblock %}
+
+{% block content %}
+
 <div class="tool-page">
 
     <div class="page-header">
-        <h1>📝 Text Utilities</h1>
-        <p>Word Counter, Case Converter and Duplicate Line Remover</p>
+
+        <h1>Text Utilities Online Free</h1>
+
+        <p>
+            Word Counter, Character Counter, Case Converter and Duplicate Line Remover.
+        </p>
+
     </div>
 
     <textarea
@@ -16,8 +41,8 @@
             border:1px solid #d1d5db;
             font-size:15px;
             box-sizing:border-box;
-        "
-    ></textarea>
+        ">
+    </textarea>
 
     <div class="stats-grid">
 
@@ -53,7 +78,7 @@
 
     </div>
 
-    <h2>🔠 Case Converter</h2>
+    <h2>Case Converter</h2>
 
     <div class="button-row">
 
@@ -80,7 +105,7 @@
     </div>
 
     <h2 style="margin-top:30px;">
-        🧹 Remove Duplicates
+        Remove Duplicate Lines
     </h2>
 
     <button onclick="removeDuplicates()">
@@ -93,7 +118,8 @@
 
 .stats-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    grid-template-columns:
+        repeat(auto-fit,minmax(140px,1fr));
     gap:12px;
     margin:20px 0;
 }
@@ -150,37 +176,55 @@
 
 <script>
 
-const input = document.getElementById("textInput");
+const input =
+    document.getElementById(
+        "textInput"
+    );
 
-input.addEventListener("input", updateStats);
+input.addEventListener(
+    "input",
+    updateStats
+);
 
 function updateStats(){
 
-    let text = input.value;
+    let text =
+        input.value;
 
-    let words = text.trim()
-        ? text.trim().split(/\s+/).length
+    let words =
+        text.trim()
+        ? text.trim()
+            .split(/\s+/)
+            .length
         : 0;
 
-    let chars = text.length;
+    let chars =
+        text.length;
 
     let noSpaces =
-        text.replace(/\s/g,'').length;
+        text.replace(
+            /\s/g,
+            ''
+        ).length;
 
-    let sentences = text.trim()
+    let sentences =
+        text.trim()
         ? text.split(/[.!?]+/)
               .filter(x => x.trim())
               .length
         : 0;
 
-    let paragraphs = text.trim()
+    let paragraphs =
+        text.trim()
         ? text.split(/\n\s*\n/)
               .filter(x => x.trim())
               .length
         : 0;
 
     let reading =
-        Math.ceil(words / 200);
+        Math.ceil(
+            words / 200
+        );
 
     document.getElementById(
         "words"
@@ -204,49 +248,71 @@ function updateStats(){
 
     document.getElementById(
         "reading"
-    ).innerText = reading + " min";
+    ).innerText =
+    reading + " min";
+
 }
 
 function toUpper(){
-    input.value = input.value.toUpperCase();
+
+    input.value =
+        input.value.toUpperCase();
+
     updateStats();
+
 }
 
 function toLower(){
-    input.value = input.value.toLowerCase();
+
+    input.value =
+        input.value.toLowerCase();
+
     updateStats();
+
 }
 
 function toTitle(){
 
-    input.value = input.value
-        .toLowerCase()
-        .replace(
-            /\b\w/g,
-            c => c.toUpperCase()
-        );
+    input.value =
+        input.value
+            .toLowerCase()
+            .replace(
+                /\b\w/g,
+                c => c.toUpperCase()
+            );
 
     updateStats();
+
 }
 
 function toSnake(){
 
-    input.value = input.value
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, "_");
+    input.value =
+        input.value
+            .trim()
+            .toLowerCase()
+            .replace(
+                /\s+/g,
+                "_"
+            );
 
     updateStats();
+
 }
 
 function toKebab(){
 
-    input.value = input.value
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, "-");
+    input.value =
+        input.value
+            .trim()
+            .toLowerCase()
+            .replace(
+                /\s+/g,
+                "-"
+            );
 
     updateStats();
+
 }
 
 function removeDuplicates(){
@@ -261,8 +327,155 @@ function removeDuplicates(){
         unique.join("\n");
 
     updateStats();
+
 }
 
 updateStats();
 
 </script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Free Text Utilities Tool</h2>
+
+    <p>
+        Use this free Text Utilities tool to analyze, edit and transform text instantly. Count words, count characters, calculate reading time, convert text case formats and remove duplicate lines from text.
+    </p>
+
+    <p>
+        Writers, students, bloggers, developers, marketers, SEO specialists and content creators use text utilities daily to improve content quality and productivity.
+    </p>
+
+    <h2>Included Text Tools</h2>
+
+    <ul>
+        <li>Word Counter</li>
+        <li>Character Counter</li>
+        <li>Sentence Counter</li>
+        <li>Paragraph Counter</li>
+        <li>Reading Time Calculator</li>
+        <li>Case Converter</li>
+        <li>Duplicate Line Remover</li>
+    </ul>
+
+    <h2>Text Case Conversion Options</h2>
+
+    <ul>
+        <li>UPPERCASE</li>
+        <li>lowercase</li>
+        <li>Title Case</li>
+        <li>snake_case</li>
+        <li>kebab-case</li>
+    </ul>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>SEO content analysis.</li>
+        <li>Blog writing.</li>
+        <li>Article editing.</li>
+        <li>Programming and coding.</li>
+        <li>Removing duplicate records.</li>
+        <li>Text formatting and cleanup.</li>
+    </ul>
+
+    <h2>Benefits of Text Utilities</h2>
+
+    <ul>
+        <li>Improve content quality.</li>
+        <li>Save editing time.</li>
+        <li>Analyze writing length.</li>
+        <li>Optimize content for SEO.</li>
+        <li>Standardize text formats.</li>
+        <li>Clean large datasets quickly.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>What does the word counter do?</h3>
+
+    <p>
+        It calculates the total number of words in your text instantly.
+    </p>
+
+    <h3>What is reading time?</h3>
+
+    <p>
+        Reading time is estimated using an average reading speed of about 200 words per minute.
+    </p>
+
+    <h3>Can I remove duplicate lines?</h3>
+
+    <p>
+        Yes. The Duplicate Line Remover automatically removes repeated lines while keeping unique entries.
+    </p>
+
+    <h3>Is the Text Utilities tool free?</h3>
+
+    <p>
+        Yes. The Text Utilities tool is completely free to use online.
+    </p>
+
+    <h2>Related Text & Developer Tools</h2>
+
+    <ul>
+        <li><a href="/word-counter">Word Counter</a></li>
+        <li><a href="/json-formatter">JSON Formatter</a></li>
+        <li><a href="/sql-formatter">SQL Formatter</a></li>
+        <li><a href="/base64">Base64 Encoder Decoder</a></li>
+        <li><a href="/speech-to-text">Speech to Text</a></li>
+        <li><a href="/text-to-speech">Text to Speech</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Text Utilities Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"What does the word counter do?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"It counts the number of words in your text instantly."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Can I remove duplicate lines?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Duplicate lines can be removed automatically while preserving unique content."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Is the Text Utilities tool free?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The Text Utilities tool is completely free."
+     }
+   }
+ ]
+}
+</script>
+
+{% endblock %}

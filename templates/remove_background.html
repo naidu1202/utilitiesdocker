@@ -1,67 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Remove Background - UtilitiesDocker</title>
+{% extends "base.html" %}
 
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            max-width:800px;
-            margin:auto;
-            padding:20px;
-        }
+{% block title %}
+Remove Background Online Free | AI Background Remover | UtilitiesDocker
+{% endblock %}
 
-        .container{
-            border:1px solid #ddd;
-            padding:20px;
-            border-radius:10px;
-        }
+{% block meta_description %}
+Remove image backgrounds online for free. Automatically create transparent PNG images from photos using AI background removal.
+{% endblock %}
 
-        button{
-            background:#2563eb;
-            color:white;
-            border:none;
-            padding:10px 20px;
-            border-radius:6px;
-            cursor:pointer;
-        }
+{% block og_title %}
+Remove Background Online Free
+{% endblock %}
 
-        button:hover{
-            background:#1d4ed8;
-        }
+{% block og_description %}
+Remove photo backgrounds automatically and create transparent PNG images instantly.
+{% endblock %}
 
-        #preview{
-            max-width:350px;
-            margin-top:20px;
-            display:none;
-        }
+{% block content %}
 
-        #loading{
-            display:none;
-            margin-top:15px;
-            color:#666;
-        }
+<div class="tool-container">
 
-        #download{
-            display:none;
-            margin-top:20px;
-        }
-    </style>
-</head>
+    <h1>Remove Background Online Free</h1>
 
-<body>
+    <p>
+        Upload an image and automatically remove the background to create a transparent PNG.
+    </p>
 
-<h1>Remove Background</h1>
+    <div class="upload-box">
 
-<p>
-Upload an image and automatically remove the background.
-</p>
+        <input
+            type="file"
+            id="fileInput"
+            accept="image/*">
 
-<div class="container">
+    </div>
 
-    <input type="file" id="fileInput" accept="image/*">
-
-    <br><br>
+    <br>
 
     <img id="preview">
 
@@ -76,65 +50,344 @@ Upload an image and automatically remove the background.
     </div>
 
     <div id="download">
-        <a id="downloadLink">
+
+        <a
+            id="downloadLink"
+            class="download-btn">
+
             Download Result
+
         </a>
+
     </div>
 
 </div>
 
+<style>
+
+.tool-container{
+    max-width:800px;
+    margin:auto;
+}
+
+.upload-box{
+    border:2px dashed #d1d5db;
+    padding:40px;
+    text-align:center;
+    border-radius:10px;
+    background:#f9fafb;
+}
+
+button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+#preview{
+    max-width:350px;
+    margin-top:20px;
+    display:none;
+    border-radius:8px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+#loading{
+    display:none;
+    margin-top:15px;
+    color:#2563eb;
+    font-weight:600;
+}
+
+#download{
+    display:none;
+    margin-top:20px;
+}
+
+.download-btn{
+    display:inline-block;
+    background:#16a34a;
+    color:white;
+    padding:12px 20px;
+    border-radius:8px;
+    text-decoration:none;
+}
+
+.download-btn:hover{
+    background:#15803d;
+}
+
+</style>
+
 <script>
 
-const fileInput = document.getElementById("fileInput");
-const preview = document.getElementById("preview");
+const fileInput =
+    document.getElementById(
+        "fileInput"
+    );
 
-fileInput.addEventListener("change", () => {
+const preview =
+    document.getElementById(
+        "preview"
+    );
 
-    const file = fileInput.files[0];
+fileInput.addEventListener(
+    "change",
+    () => {
 
-    if(!file) return;
+        const file =
+            fileInput.files[0];
 
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = "block";
-});
+        if(!file){
+            return;
+        }
+
+        preview.src =
+            URL.createObjectURL(
+                file
+            );
+
+        preview.style.display =
+            "block";
+
+    }
+);
 
 async function removeBackground(){
 
-    const file = fileInput.files[0];
+    const file =
+        fileInput.files[0];
 
     if(!file){
-        alert("Please select an image");
+
+        alert(
+            "Please select an image"
+        );
+
         return;
+
     }
 
-    document.getElementById("loading").style.display = "block";
+    document
+    .getElementById(
+        "loading"
+    ).style.display =
+    "block";
 
-    const formData = new FormData();
+    const formData =
+        new FormData();
 
-    formData.append("file", file);
-
-    const response = await fetch(
-        "/remove-background",
-        {
-            method:"POST",
-            body:formData
-        }
+    formData.append(
+        "file",
+        file
     );
 
-    const blob = await response.blob();
+    try{
 
-    const url = window.URL.createObjectURL(blob);
+        const response =
+            await fetch(
+                "/remove-background",
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
 
-    const link = document.getElementById("downloadLink");
+        const blob =
+            await response.blob();
 
-    link.href = url;
-    link.download = "background_removed.png";
+        const url =
+            window.URL
+            .createObjectURL(
+                blob
+            );
 
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("download").style.display = "block";
+        const link =
+            document
+            .getElementById(
+                "downloadLink"
+            );
+
+        link.href = url;
+
+        link.download =
+            "background_removed.png";
+
+        document
+        .getElementById(
+            "loading"
+        ).style.display =
+        "none";
+
+        document
+        .getElementById(
+            "download"
+        ).style.display =
+        "block";
+
+    }
+    catch(error){
+
+        document
+        .getElementById(
+            "loading"
+        ).innerHTML =
+        "❌ Failed to process image.";
+
+    }
+
 }
 
 </script>
 
-</body>
-</html>
+<hr>
+
+<div class="seo-content">
+
+    <h2>Remove Image Backgrounds Online</h2>
+
+    <p>
+        Use this free background remover to automatically remove image backgrounds and create transparent PNG files. Perfect for product photos, profile pictures, e-commerce listings, logos, marketing materials and graphic design projects.
+    </p>
+
+    <p>
+        Background removal makes images more professional and easier to use in websites, presentations, advertisements, online stores and social media posts.
+    </p>
+
+    <h2>How to Remove an Image Background</h2>
+
+    <ol>
+        <li>Upload an image.</li>
+        <li>Preview the selected photo.</li>
+        <li>Click Remove Background.</li>
+        <li>Wait for processing.</li>
+        <li>Download the transparent PNG result.</li>
+    </ol>
+
+    <h2>Popular Uses</h2>
+
+    <ul>
+        <li>Product photography.</li>
+        <li>E-commerce product listings.</li>
+        <li>Profile pictures.</li>
+        <li>Social media graphics.</li>
+        <li>Marketing materials.</li>
+        <li>Transparent logo creation.</li>
+    </ul>
+
+    <h2>Benefits of Background Removal</h2>
+
+    <ul>
+        <li>Create transparent PNG images.</li>
+        <li>Improve image presentation.</li>
+        <li>Enhance product photos.</li>
+        <li>Support graphic design workflows.</li>
+        <li>Improve marketing visuals.</li>
+        <li>Save photo editing time.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Automatic background removal.</li>
+        <li>Transparent PNG output.</li>
+        <li>Fast online processing.</li>
+        <li>No registration required.</li>
+        <li>Works on desktop and mobile devices.</li>
+        <li>Completely free.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I make an image background transparent?</h3>
+
+    <p>
+        Yes. Upload an image and automatically generate a transparent PNG version.
+    </p>
+
+    <h3>What file format is generated?</h3>
+
+    <p>
+        The processed image is typically exported as a PNG file supporting transparency.
+    </p>
+
+    <h3>Can I use this for product photos?</h3>
+
+    <p>
+        Yes. Background removal is commonly used for e-commerce products and catalog images.
+    </p>
+
+    <h3>Is the Background Remover free?</h3>
+
+    <p>
+        Yes. The Background Remover is completely free to use online.
+    </p>
+
+    <h2>Related Image Tools</h2>
+
+    <ul>
+        <li><a href="/image-compressor">Image Compressor</a></li>
+        <li><a href="/image-converter">Image Converter</a></li>
+        <li><a href="/resize-image">Resize Image</a></li>
+        <li><a href="/image-watermark">Image Watermark</a></li>
+        <li><a href="/heic-to-jpg">HEIC to JPG</a></li>
+        <li><a href="/photo-to-video">Photo to Video</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Remove Background Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"Can I make an image background transparent?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Upload an image and generate a transparent PNG automatically."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"What file format is generated?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"The result is typically exported as a PNG file with transparency."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Is the Background Remover free?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The Background Remover is completely free."
+     }
+   }
+ ]
+}
+</script>
+
+{% endblock %}

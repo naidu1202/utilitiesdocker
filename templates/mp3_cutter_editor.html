@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 
 {% block title %}
-MP3 Cutter
+MP3 Cutter Online Free | Trim & Edit Audio Files | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Cut MP3 files online for free. Trim audio, edit music, create ringtones and extract specific sections from MP3 recordings instantly.
+{% endblock %}
+
+{% block og_title %}
+MP3 Cutter Online Free
+{% endblock %}
+
+{% block og_description %}
+Trim, cut and edit MP3 audio files directly in your browser.
 {% endblock %}
 
 {% block content %}
@@ -10,14 +22,11 @@ MP3 Cutter
 
     <div class="tool-card">
 
-        <h1>✂ MP3 Cutter</h1>
+        <h1>MP3 Cutter & Audio Editor Online</h1>
 
         <p>
-            Drag the handles on the waveform to select
-            the portion of audio you want to keep.
+            Select the exact portion of your audio file to keep using the waveform editor.
         </p>
-
-
 
         <style>
 
@@ -79,28 +88,6 @@ MP3 Cutter
                 background:#1d4ed8;
             }
 
-            .processing{
-                display:none;
-                margin-top:20px;
-                padding:15px;
-                border-radius:8px;
-                background:#eff6ff;
-                color:#2563eb;
-                font-weight:600;
-                text-align:center;
-            }
-
-            .success-box{
-                display:none;
-                margin-top:20px;
-                padding:15px;
-                border-radius:8px;
-                background:#ecfdf5;
-                color:#059669;
-                font-weight:600;
-                text-align:center;
-            }
-
             @media(max-width:768px){
 
                 .audio-actions{
@@ -120,22 +107,22 @@ MP3 Cutter
         <div class="audio-stats">
 
             <div class="stat-box">
-                <span>🎬 Start</span>
+                <span>Start Time</span>
                 <strong id="startTime">0.00</strong>
             </div>
 
             <div class="stat-box">
-                <span>🏁 End</span>
+                <span>End Time</span>
                 <strong id="endTime">0.00</strong>
             </div>
 
             <div class="stat-box">
-                <span>✂ Length</span>
+                <span>Selection Length</span>
                 <strong id="selectedLength">0.00</strong>
             </div>
 
             <div class="stat-box">
-                <span>📍 Position</span>
+                <span>Current Position</span>
                 <strong id="currentPosition">0.00</strong>
             </div>
 
@@ -147,21 +134,21 @@ MP3 Cutter
                 type="button"
                 class="btn-primary"
                 onclick="playSelection()">
-                ▶ Preview Selection
+                Preview Selection
             </button>
 
             <button
                 type="button"
                 class="btn-primary"
                 onclick="pauseAudio()">
-                ⏸ Pause
+                Pause
             </button>
 
             <button
                 type="button"
                 class="btn-primary"
                 onclick="stopAudio()">
-                ⏹ Stop
+                Stop
             </button>
 
         </div>
@@ -193,27 +180,22 @@ MP3 Cutter
                 type="submit"
                 class="btn-primary">
 
-                ✂ Cut MP3
+                Cut MP3
 
             </button>
 
         </form>
 
-
-
-<div
-    id="statusBox"
-    style="
-        display:none;
-        margin-top:20px;
-        padding:15px;
-        border-radius:10px;
-        text-align:center;
-        font-weight:600;
-    ">
-</div>
-
-
+        <div
+            id="statusBox"
+            style="
+                display:none;
+                margin-top:20px;
+                padding:15px;
+                border-radius:10px;
+                text-align:center;
+                font-weight:600;">
+        </div>
 
     </div>
 
@@ -230,25 +212,16 @@ const regionsPlugin =
 const wavesurfer =
     WaveSurfer.create({
 
-        container: '#waveform',
-
-        waveColor: '#c4b5fd',
-
-        progressColor: '#7c3aed',
-
-        cursorColor: '#111827',
-
-        barWidth: 2,
-
-        barGap: 1,
-
-        normalize: true,
-
-        height: 180,
-
-        url: '/audio-file/{{ filename }}',
-
-        plugins: [regionsPlugin]
+        container:'#waveform',
+        waveColor:'#c4b5fd',
+        progressColor:'#7c3aed',
+        cursorColor:'#111827',
+        barWidth:2,
+        barGap:1,
+        normalize:true,
+        height:180,
+        url:'/audio-file/{{ filename }}',
+        plugins:[regionsPlugin]
 
     });
 
@@ -262,16 +235,11 @@ wavesurfer.on('ready', () => {
     region =
         regionsPlugin.addRegion({
 
-            start: 0,
-
-            end: duration,
-
-            color:
-                'rgba(124,58,237,0.25)',
-
-            drag: true,
-
-            resize: true
+            start:0,
+            end:duration,
+            color:'rgba(124,58,237,0.25)',
+            drag:true,
+            resize:true
 
         });
 
@@ -291,7 +259,7 @@ wavesurfer.on(
         document.getElementById(
             'currentPosition'
         ).innerText =
-        time.toFixed(2);
+            time.toFixed(2);
 
     }
 );
@@ -303,35 +271,32 @@ function updateValues(){
     document.getElementById(
         'startTime'
     ).innerText =
-    region.start.toFixed(2);
+        region.start.toFixed(2);
 
     document.getElementById(
         'endTime'
     ).innerText =
-    region.end.toFixed(2);
+        region.end.toFixed(2);
 
     document.getElementById(
         'selectedLength'
     ).innerText =
-    (
-        region.end -
-        region.start
-    ).toFixed(2);
+        (region.end-region.start)
+        .toFixed(2);
 
     document.getElementById(
         'start_input'
     ).value =
-    region.start.toFixed(2);
+        region.start.toFixed(2);
 
     document.getElementById(
         'end_input'
     ).value =
-    region.end.toFixed(2);
+        region.end.toFixed(2);
 
 }
 
-window.playSelection =
-function(){
+window.playSelection = function(){
 
     if(!region) return;
 
@@ -340,121 +305,245 @@ function(){
         region.end
     );
 
-}
+};
 
-window.pauseAudio =
-function(){
+window.pauseAudio = function(){
 
     wavesurfer.pause();
 
-}
+};
 
-window.stopAudio =
-function(){
+window.stopAudio = function(){
 
     wavesurfer.stop();
 
+};
+
+document.getElementById(
+    "cutForm"
+).addEventListener(
+    "submit",
+    async function(e){
+
+        e.preventDefault();
+
+        const button =
+            document.getElementById(
+                "cutButton"
+            );
+
+        const status =
+            document.getElementById(
+                "statusBox"
+            );
+
+        status.style.display =
+            "block";
+
+        status.style.background =
+            "#eff6ff";
+
+        status.style.color =
+            "#2563eb";
+
+        status.innerHTML =
+            "⏳ Processing audio...";
+
+        button.disabled = true;
+
+        const formData =
+            new FormData(this);
+
+        try{
+
+            const response =
+                await fetch(
+                    "/cut-mp3",
+                    {
+                        method:"POST",
+                        body:formData
+                    }
+                );
+
+            const blob =
+                await response.blob();
+
+            const url =
+                window.URL.createObjectURL(
+                    blob
+                );
+
+            const a =
+                document.createElement(
+                    "a"
+                );
+
+            a.href = url;
+            a.download = "trimmed.mp3";
+
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            status.style.background =
+                "#ecfdf5";
+
+            status.style.color =
+                "#059669";
+
+            status.innerHTML =
+                "✅ Audio trimmed successfully.";
+
+        }
+        catch(err){
+
+            status.style.background =
+                "#fef2f2";
+
+            status.style.color =
+                "#dc2626";
+
+            status.innerHTML =
+                "❌ Failed to process audio.";
+
+        }
+
+        button.disabled = false;
+
+    }
+);
+
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>MP3 Cutter & Audio Trimmer</h2>
+
+    <p>
+        Use this free MP3 cutter to trim audio files, remove unwanted sections and save only the portion you need. The waveform editor makes it easy to precisely select start and end points.
+    </p>
+
+    <p>
+        This tool is ideal for creating ringtones, trimming podcasts, editing voice recordings, cutting music samples and preparing audio clips for presentations and social media.
+    </p>
+
+    <h2>How to Cut MP3 Files</h2>
+
+    <ol>
+        <li>Upload your audio file.</li>
+        <li>Select the desired section on the waveform.</li>
+        <li>Preview the selected audio.</li>
+        <li>Click Cut MP3.</li>
+        <li>Download the trimmed file.</li>
+    </ol>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>Create mobile ringtones.</li>
+        <li>Trim podcast segments.</li>
+        <li>Edit voice recordings.</li>
+        <li>Extract music clips.</li>
+        <li>Remove unwanted audio sections.</li>
+        <li>Create audio samples.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Interactive waveform editor.</li>
+        <li>Precise audio trimming.</li>
+        <li>Preview before exporting.</li>
+        <li>Fast browser-based processing.</li>
+        <li>No registration required.</li>
+        <li>Free online MP3 cutter.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I cut MP3 files online?</h3>
+
+    <p>
+        Yes. Upload your audio file, select the desired section and export the trimmed MP3.
+    </p>
+
+    <h3>Can I preview audio before saving?</h3>
+
+    <p>
+        Yes. Use the preview button to listen to the selected audio section before cutting.
+    </p>
+
+    <h3>Can I create ringtones with this tool?</h3>
+
+    <p>
+        Yes. The MP3 cutter is ideal for creating custom ringtones and notification sounds.
+    </p>
+
+    <h3>Is the MP3 Cutter free?</h3>
+
+    <p>
+        Yes. The MP3 Cutter and Audio Editor is completely free to use online.
+    </p>
+
+    <h2>Related Audio Tools</h2>
+
+    <ul>
+        <li><a href="/merge-audio">Merge Audio</a></li>
+        <li><a href="/audio-converter">Audio Converter</a></li>
+        <li><a href="/audio-extractor">Audio Extractor</a></li>
+        <li><a href="/video-to-mp3">Video to MP3</a></li>
+        <li><a href="/add-audio-to-video">Add Audio to Video</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"MP3 Cutter Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
 }
+</script>
 
-
-document
-.getElementById("cutForm")
-.addEventListener(
-"submit",
-async function(e){
-
-    e.preventDefault();
-
-    const button =
-        document.getElementById(
-            "cutButton"
-        );
-
-    const status =
-        document.getElementById(
-            "statusBox"
-        );
-
-    status.style.display =
-        "block";
-
-    status.style.background =
-        "#eff6ff";
-
-    status.style.color =
-        "#2563eb";
-
-    status.innerHTML =
-        "⏳ Cutting MP3... Please wait";
-
-    button.disabled = true;
-
-    const formData =
-        new FormData(this);
-
-    try{
-
-        const response =
-            await fetch(
-                "/cut-mp3",
-                {
-                    method:"POST",
-                    body:formData
-                }
-            );
-
-        const blob =
-            await response.blob();
-
-        const url =
-            window.URL.createObjectURL(
-                blob
-            );
-
-        const a =
-            document.createElement(
-                "a"
-            );
-
-        a.href = url;
-        a.download =
-            "trimmed.mp3";
-
-        document.body.appendChild(a);
-
-        a.click();
-
-        a.remove();
-
-        status.style.background =
-            "#ecfdf5";
-
-        status.style.color =
-            "#059669";
-
-        status.innerHTML =
-        "✅ MP3 cut successfully! Download should begin automatically.";
-
-        button.disabled = false;
-
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I cut MP3 files online?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Upload an audio file, select the desired portion and export the trimmed MP3."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I preview audio before saving?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Use the preview feature to listen before exporting."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the MP3 Cutter free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The MP3 Cutter is completely free."
+      }
     }
-
-    catch(err){
-
-        status.style.background =
-            "#fef2f2";
-
-        status.style.color =
-            "#dc2626";
-
-        status.innerHTML =
-            "❌ Failed to cut MP3";
-
-        button.disabled = false;
-    }
-
-});
-
+  ]
+}
 </script>
 
 {% endblock %}

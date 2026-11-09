@@ -1,21 +1,35 @@
 {% extends "base.html" %}
 
-{% block title %}IP Geolocation Lookup{% endblock %}
+{% block title %}
+IP Lookup Tool Online Free | IP Address Geolocation Lookup | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Lookup IP address information online for free. Find geolocation, ISP, ASN, country, timezone, city and network details instantly.
+{% endblock %}
+
+{% block og_title %}
+IP Lookup Tool Online Free
+{% endblock %}
+
+{% block og_description %}
+Find geolocation, ISP, country, ASN and timezone information for any public IP address.
+{% endblock %}
 
 {% block content %}
 
 <div class="tool-page">
 
-    <h1>🌍 IP Geolocation Lookup</h1>
+    <h1>IP Geolocation Lookup Online</h1>
 
     <p>
-        Find location, ISP and timezone information for any public IP address.
+        Find location, ISP, ASN and timezone information for any public IP address.
     </p>
 
     <input
         type="text"
         id="ip"
-        placeholder="8.8.8.8"
+        placeholder="Example: 8.8.8.8"
         style="width:100%;padding:12px;">
 
     <br><br>
@@ -38,49 +52,70 @@
 
 <script>
 
-async function lookupIP() {
+async function lookupIP(){
 
-    const ip = document.getElementById("ip").value.trim();
-    const formData = new FormData();
-    formData.append("ip", ip);
+    const ip =
+        document.getElementById("ip")
+        .value
+        .trim();
 
-    const response = await fetch(
-        "/ip-lookup",
-        {
-            method: "POST",
-            body: formData
-        }
-    );
+    if(!ip){
 
-    if (!ip) {
-
-        alert("Please enter an IP address");
+        alert(
+            "Please enter an IP address"
+        );
 
         return;
+
     }
 
-    try {
+    const formData =
+        new FormData();
 
-        document.getElementById("result").style.display = "block";
+    formData.append(
+        "ip",
+        ip
+    );
 
-        document.getElementById("result").innerHTML =
-            "Looking up IP information...";
+    try{
 
-        const data = await response.json();
+        document.getElementById(
+            "result"
+        ).style.display = "block";
 
-        console.log(data);
+        document.getElementById(
+            "result"
+        ).innerHTML =
+        "Looking up IP information...";
 
-        if (!data.success) {
+        const response =
+            await fetch(
+                "/ip-lookup",
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
 
-            document.getElementById("result").innerHTML =
-                "<span class='error'>Invalid IP address.</span>";
+        const data =
+            await response.json();
+
+        if(!data.success){
+
+            document.getElementById(
+                "result"
+            ).innerHTML =
+            "<span style='color:red;'>Invalid IP address.</span>";
 
             return;
+
         }
 
-        document.getElementById("result").innerHTML = `
+        document.getElementById(
+            "result"
+        ).innerHTML = `
 
-            <h3>🌍 IP Information</h3>
+            <h3>IP Information</h3>
 
             <table style="width:100%;border-collapse:collapse;">
 
@@ -149,19 +184,166 @@ async function lookupIP() {
         `;
 
     }
-    catch (error) {
+    catch(error){
 
-        console.error(error);
+        document.getElementById(
+            "result"
+        ).style.display = "block";
 
-        document.getElementById("result").style.display = "block";
-
-        document.getElementById("result").innerHTML =
-            "<span class='error'>Unable to lookup IP. Please try again.</span>";
+        document.getElementById(
+            "result"
+        ).innerHTML =
+        "<span style='color:red;'>Unable to lookup IP address.</span>";
 
     }
 
 }
 
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>IP Address Lookup Tool</h2>
+
+    <p>
+        Use this free IP Lookup tool to find geolocation data, ISP information, ASN details, timezone information and network location details for public IP addresses. Enter an IPv4 or IPv6 address to retrieve available location data instantly.
+    </p>
+
+    <p>
+        IT administrators, cybersecurity professionals, developers, network engineers and website owners commonly use IP geolocation tools for troubleshooting, analytics, fraud detection and network monitoring.
+    </p>
+
+    <h2>What Information Can Be Found?</h2>
+
+    <ul>
+        <li>Country and region.</li>
+        <li>City location.</li>
+        <li>Postal code.</li>
+        <li>Latitude and longitude.</li>
+        <li>Internet Service Provider (ISP).</li>
+        <li>Autonomous System Number (ASN).</li>
+        <li>Timezone information.</li>
+        <li>Network organization details.</li>
+    </ul>
+
+    <h2>How to Use the IP Lookup Tool</h2>
+
+    <ol>
+        <li>Enter a public IP address.</li>
+        <li>Click Lookup IP.</li>
+        <li>View geolocation information.</li>
+        <li>Review ISP and ASN details.</li>
+        <li>Use the results for networking or analysis purposes.</li>
+    </ol>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>Network troubleshooting.</li>
+        <li>Cybersecurity investigations.</li>
+        <li>Website visitor analysis.</li>
+        <li>Fraud detection.</li>
+        <li>Server diagnostics.</li>
+        <li>ISP identification.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Fast IP geolocation lookup.</li>
+        <li>IPv4 and IPv6 support.</li>
+        <li>ISP information.</li>
+        <li>ASN identification.</li>
+        <li>Timezone lookup.</li>
+        <li>Free online IP finder.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>What is an IP address?</h3>
+
+    <p>
+        An IP address is a unique identifier used by devices connected to the internet or private networks.
+    </p>
+
+    <h3>Can I find the ISP from an IP address?</h3>
+
+    <p>
+        Yes. The tool provides ISP and organization information when available.
+    </p>
+
+    <h3>Can an IP address reveal an exact location?</h3>
+
+    <p>
+        No. IP geolocation generally provides an approximate location and should not be considered precise.
+    </p>
+
+    <h3>Is the IP Lookup tool free?</h3>
+
+    <p>
+        Yes. The IP Lookup tool is completely free to use.
+    </p>
+
+    <h2>Related Network & Developer Tools</h2>
+
+    <ul>
+        <li><a href="/dns-lookup">DNS Lookup</a></li>
+        <li><a href="/whois-lookup">WHOIS Lookup</a></li>
+        <li><a href="/base64">Base64 Encoder Decoder</a></li>
+        <li><a href="/json-formatter">JSON Formatter</a></li>
+        <li><a href="/uuid-generator">UUID Generator</a></li>
+        <li><a href="/cron-generator">Cron Expression Generator</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"IP Geolocation Lookup Online",
+  "applicationCategory":"DeveloperApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"What is an IP address?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"An IP address is a unique identifier used by devices communicating over the internet."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I find the ISP from an IP address?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The tool can display ISP and organization information when available."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the IP Lookup tool free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The IP Lookup tool is completely free."
+      }
+    }
+  ]
+}
 </script>
 
 {% endblock %}

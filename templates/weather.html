@@ -1,21 +1,45 @@
 {% extends "base.html" %}
 
-{% block title %}Weather Forecast{% endblock %}
+{% block title %}
+Weather Forecast Online Free | Current Weather & Forecast | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Get current weather conditions and forecasts for any city worldwide. Check temperature, wind speed and weather information instantly.
+{% endblock %}
+
+{% block og_title %}
+Weather Forecast Online Free
+{% endblock %}
+
+{% block og_description %}
+Check current weather and forecasts for cities around the world instantly.
+{% endblock %}
 
 {% block content %}
 
 <div class="tool-page">
 
-    <h1>🌦 Weather Forecast</h1>
+    <h1>Weather Forecast Online</h1>
 
     <p>
-        Get current weather for any city.
+        Get current weather conditions and forecasts for any city worldwide.
     </p>
+
+    <label>
+        <strong>City Name</strong>
+    </label>
 
     <input
         type="text"
         id="city"
-        placeholder="Enter city name">
+        placeholder="Enter city name"
+        style="
+            width:100%;
+            padding:12px;
+            border:1px solid #d1d5db;
+            border-radius:8px;
+        ">
 
     <br><br>
 
@@ -27,35 +51,84 @@
 
     </button>
 
+    <button
+        class="tool-btn"
+        onclick="loadSingapore()">
+
+        Singapore Weather
+
+    </button>
+
     <div
         id="result"
-        class="result-box">
+        class="result-box"
+        style="
+            margin-top:20px;
+            padding:15px;
+            background:#f8fafc;
+            border-radius:10px;
+            border:1px solid #e5e7eb;
+        ">
     </div>
 
 </div>
 
 <script>
 
-async function getWeather() {
+function loadSingapore(){
+
+    document.getElementById(
+        "city"
+    ).value =
+    "Singapore";
+
+    getWeather();
+
+}
+
+async function getWeather(){
 
     let city =
-        document.getElementById("city").value;
+        document.getElementById(
+            "city"
+        ).value.trim();
 
-    try {
+    if(!city){
+
+        alert(
+            "Please enter a city name"
+        );
+
+        return;
+
+    }
+
+    try{
 
         let geo =
             await fetch(
-                `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`
+                `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`
             );
 
         let geoData =
             await geo.json();
 
+        if(
+            !geoData.results ||
+            geoData.results.length === 0
+        ){
+
+            throw new Error();
+
+        }
+
         let lat =
-            geoData.results[0].latitude;
+            geoData.results[0]
+            .latitude;
 
         let lon =
-            geoData.results[0].longitude;
+            geoData.results[0]
+            .longitude;
 
         let weather =
             await fetch(
@@ -65,25 +138,199 @@ async function getWeather() {
         let weatherData =
             await weather.json();
 
-        document.getElementById("result").innerHTML = `
-            <h3>${city}</h3>
-            Temperature:
-            ${weatherData.current_weather.temperature} °C
-            <br>
-            Wind Speed:
-            ${weatherData.current_weather.windspeed} km/h
+        document
+        .getElementById(
+            "result"
+        )
+        .innerHTML = `
+
+            <h3>
+                ${geoData.results[0].name}
+            </h3>
+
+            <p>
+                🌡 Temperature:
+                <strong>
+                    ${weatherData.current_weather.temperature}°C
+                </strong>
+            </p>
+
+            <p>
+                💨 Wind Speed:
+                <strong>
+                    ${weatherData.current_weather.windspeed} km/h
+                </strong>
+            </p>
+
+            <p>
+                🕒 Observation Time:
+                <strong>
+                    ${weatherData.current_weather.time}
+                </strong>
+            </p>
+
         `;
 
     }
-    catch {
+    catch{
 
-        document.getElementById("result").innerHTML =
-            "City not found.";
+        document
+        .getElementById(
+            "result"
+        )
+        .innerHTML =
+
+        "<strong>City not found.</strong>";
 
     }
 
 }
 
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Weather Forecast for Any City</h2>
+
+    <p>
+        Use this free weather forecast tool to check current weather conditions around the world. View temperatures, wind speeds and weather information for cities across Asia, Europe, North America, Australia and other regions.
+    </p>
+
+    <p>
+        Weather information is useful for travel planning, outdoor activities, business trips, commuting and daily decision-making.
+    </p>
+
+    <h2>How to Check Weather</h2>
+
+    <ol>
+        <li>Enter a city name.</li>
+        <li>Click Get Weather.</li>
+        <li>View the current temperature.</li>
+        <li>Review wind speed information.</li>
+        <li>Check the latest observation time.</li>
+    </ol>
+
+    <h2>Popular Cities</h2>
+
+    <ul>
+        <li>Singapore</li>
+        <li>London</li>
+        <li>New York</li>
+        <li>Tokyo</li>
+        <li>Sydney</li>
+        <li>Mumbai</li>
+        <li>Dubai</li>
+        <li>Hong Kong</li>
+    </ul>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>Travel planning.</li>
+        <li>Business trips.</li>
+        <li>Outdoor activities.</li>
+        <li>Sports planning.</li>
+        <li>Daily commuting.</li>
+        <li>Event management.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Current weather conditions.</li>
+        <li>Temperature information.</li>
+        <li>Wind speed reporting.</li>
+        <li>Worldwide city support.</li>
+        <li>Fast weather lookup.</li>
+        <li>Free online weather tool.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I check weather for any city?</h3>
+
+    <p>
+        Yes. Enter a city name and retrieve current weather information instantly.
+    </p>
+
+    <h3>What weather information is displayed?</h3>
+
+    <p>
+        The tool shows temperature, wind speed and current observation data.
+    </p>
+
+    <h3>Does it support international cities?</h3>
+
+    <p>
+        Yes. The weather lookup supports cities throughout the world.
+    </p>
+
+    <h3>Is the Weather Forecast tool free?</h3>
+
+    <p>
+        Yes. The Weather Forecast tool is completely free to use online.
+    </p>
+
+    <h2>Related Utility Tools</h2>
+
+    <ul>
+        <li><a href="/timezone-converter">Time Zone Converter</a></li>
+        <li><a href="/timestamp-converter">Timestamp Converter</a></li>
+        <li><a href="/qr-code-generator">QR Code Generator</a></li>
+        <li><a href="/text-utilities">Text Utilities</a></li>
+        <li><a href="/speech-to-text">Speech to Text</a></li>
+        <li><a href="/password-generator">Password Generator</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Weather Forecast Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I check weather for any city?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Enter a city name to retrieve current weather information."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"What weather information is displayed?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Temperature, wind speed and observation details are displayed."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Does it support international cities?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Cities across the world are supported."
+      }
+    }
+  ]
+}
 </script>
 
 {% endblock %}

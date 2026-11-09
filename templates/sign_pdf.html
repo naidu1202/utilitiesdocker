@@ -1,91 +1,108 @@
 {% extends "base.html" %}
 
 {% block title %}
-Sign PDF
+Sign PDF Online Free | Add Signature to PDF Documents | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Sign PDF documents online for free. Upload a PDF, place your signature visually and create signed PDF files instantly.
+{% endblock %}
+
+{% block og_title %}
+Sign PDF Online Free
+{% endblock %}
+
+{% block og_description %}
+Add electronic signatures to PDF documents quickly and securely online.
 {% endblock %}
 
 {% block content %}
 
 <div class="tool-container">
 
-<h1>✍️ Sign PDF</h1>
+    <h1>Sign PDF Online Free</h1>
 
-<form
-    action="/sign-pdf"
-    method="post"
-    enctype="multipart/form-data"
->
+    <p>
+        Upload a PDF document, place your signature visually and generate a signed PDF in seconds.
+    </p>
 
-<div class="card">
+    <form
+        action="/sign-pdf"
+        method="post"
+        enctype="multipart/form-data">
 
-<label>PDF File</label>
+        <div class="card">
 
-<input
-    type="file"
-    accept=".pdf"
-    name="pdf_file"
-    id="pdfFile"
-    required
->
+            <label>
+                <strong>PDF File</strong>
+            </label>
 
-<br><br>
+            <input
+                type="file"
+                accept=".pdf"
+                name="pdf_file"
+                id="pdfFile"
+                required>
 
-<label>Signature PNG</label>
+            <br><br>
 
-<input
-    type="file"
-    accept=".png"
-    name="signature_file"
-    id="signatureFile"
-    required
->
+            <label>
+                <strong>Signature PNG</strong>
+            </label>
 
-<input
-    type="hidden"
-    name="x"
-    id="x"
->
+            <input
+                type="file"
+                accept=".png"
+                name="signature_file"
+                id="signatureFile"
+                required>
 
-<input
-    type="hidden"
-    name="y"
-    id="y"
->
+            <input
+                type="hidden"
+                name="x"
+                id="x">
 
-<br><br>
+            <input
+                type="hidden"
+                name="y"
+                id="y">
 
-<div
-style="
-background:#eef6ff;
-padding:12px;
-border-radius:8px;
-margin-bottom:15px;
-"
->
-1. Upload PDF<br>
-2. Upload Signature PNG<br>
-3. Click on PDF where you want the signature<br>
-4. Click Sign PDF
-</div>
+            <br><br>
 
-<canvas
-    id="pdfCanvas"
-    style="
-        border:1px solid #ccc;
-        max-width:100%;
-        cursor:crosshair;
-    "
-></canvas>
+            <div
+                style="
+                    background:#eef6ff;
+                    padding:12px;
+                    border-radius:8px;
+                    margin-bottom:15px;
+                ">
 
-<br><br>
+                1. Upload PDF<br>
+                2. Upload Signature PNG<br>
+                3. Click on the PDF where you want the signature<br>
+                4. Click Sign PDF
 
-<button type="submit">
-    Sign PDF
-</button>
+            </div>
 
-</div>
+            <canvas
+                id="pdfCanvas"
+                style="
+                    border:1px solid #ccc;
+                    max-width:100%;
+                    cursor:crosshair;
+                    border-radius:8px;
+                ">
+            </canvas>
 
-</form>
+            <br><br>
+
+            <button type="submit">
+                Sign PDF
+            </button>
+
+        </div>
+
+    </form>
 
 </div>
 
@@ -97,7 +114,10 @@ let pdfDoc = null;
 let originalPdfPage = null;
 let signatureImage = null;
 
-async function renderPage(signatureX = null, signatureY = null){
+async function renderPage(
+    signatureX = null,
+    signatureY = null
+){
 
     if(!originalPdfPage){
         return;
@@ -113,7 +133,7 @@ async function renderPage(signatureX = null, signatureY = null){
 
     const viewport =
         originalPdfPage.getViewport({
-            scale: 1.5
+            scale:1.5
         });
 
     canvas.width =
@@ -123,8 +143,10 @@ async function renderPage(signatureX = null, signatureY = null){
         viewport.height;
 
     await originalPdfPage.render({
-        canvasContext: ctx,
-        viewport: viewport
+
+        canvasContext:ctx,
+        viewport:viewport
+
     }).promise;
 
     if(
@@ -140,7 +162,9 @@ async function renderPage(signatureX = null, signatureY = null){
             140,
             60
         );
+
     }
+
 }
 
 document
@@ -174,11 +198,10 @@ document
                 ).promise;
 
             originalPdfPage =
-                await pdfDoc.getPage(
-                    1
-                );
+                await pdfDoc.getPage(1);
 
             await renderPage();
+
         };
 
         reader.readAsArrayBuffer(
@@ -208,6 +231,7 @@ document
             URL.createObjectURL(
                 file
             );
+
     }
 );
 
@@ -224,6 +248,7 @@ document
             );
 
             return;
+
         }
 
         const rect =
@@ -267,6 +292,150 @@ document
     }
 );
 
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Sign PDF Documents Online</h2>
+
+    <p>
+        Use this free PDF signature tool to add electronic signatures to PDF files. Upload your document, choose where the signature should appear and download a signed PDF instantly.
+    </p>
+
+    <p>
+        This tool is useful for signing contracts, agreements, invoices, consent forms, business documents, employment paperwork and approval workflows without printing and scanning documents.
+    </p>
+
+    <h2>How to Sign a PDF</h2>
+
+    <ol>
+        <li>Upload your PDF document.</li>
+        <li>Upload a transparent PNG signature.</li>
+        <li>Click the desired location on the PDF preview.</li>
+        <li>Position your signature visually.</li>
+        <li>Click Sign PDF.</li>
+        <li>Download the signed PDF document.</li>
+    </ol>
+
+    <h2>Common Documents to Sign</h2>
+
+    <ul>
+        <li>Contracts and agreements.</li>
+        <li>Invoices and purchase orders.</li>
+        <li>Employment documents.</li>
+        <li>Rental agreements.</li>
+        <li>Client approval forms.</li>
+        <li>Business proposals.</li>
+    </ul>
+
+    <h2>Benefits of Electronic Signatures</h2>
+
+    <ul>
+        <li>Save time and paperwork.</li>
+        <li>No printing required.</li>
+        <li>Faster document turnaround.</li>
+        <li>Improved workflow efficiency.</li>
+        <li>Convenient digital signing.</li>
+        <li>Easy document sharing.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Visual PDF signature placement.</li>
+        <li>Signature preview before signing.</li>
+        <li>Supports PNG signatures.</li>
+        <li>No registration required.</li>
+        <li>Desktop and mobile compatible.</li>
+        <li>Free online PDF signer.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I sign a PDF online?</h3>
+
+    <p>
+        Yes. Upload your PDF and signature image, then place the signature anywhere on the page.
+    </p>
+
+    <h3>What signature format is supported?</h3>
+
+    <p>
+        PNG format is recommended because it supports transparent backgrounds.
+    </p>
+
+    <h3>Can I choose where the signature appears?</h3>
+
+    <p>
+        Yes. Simply click on the previewed PDF page to position the signature.
+    </p>
+
+    <h3>Is the PDF Signer free?</h3>
+
+    <p>
+        Yes. The PDF signing tool is completely free to use online.
+    </p>
+
+    <h2>Related PDF Tools</h2>
+
+    <ul>
+        <li><a href="/protect-pdf">Protect PDF</a></li>
+        <li><a href="/pdf-watermark">PDF Watermark</a></li>
+        <li><a href="/redact-pdf">Redact PDF</a></li>
+        <li><a href="/merge-pdf">Merge PDF</a></li>
+        <li><a href="/organize-pdf">Organize PDF</a></li>
+        <li><a href="/compress-pdf">Compress PDF</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Sign PDF Online",
+  "applicationCategory":"BusinessApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"Can I sign a PDF online?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Upload a PDF document and a signature image, then place the signature visually."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"What signature format is supported?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"PNG signatures are recommended because transparent backgrounds are supported."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Can I choose where the signature appears?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Click anywhere on the PDF preview to place your signature."
+     }
+   }
+ ]
+}
 </script>
 
 {% endblock %}

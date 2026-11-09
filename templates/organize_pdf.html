@@ -1,31 +1,47 @@
 {% extends "base.html" %}
 
 {% block title %}
-Organize PDF
+Organize PDF Online Free | Reorder PDF Pages Easily | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Organize PDF pages online for free. Reorder, rearrange and manage PDF page sequence visually using drag and drop page previews.
+{% endblock %}
+
+{% block og_title %}
+Organize PDF Online Free
+{% endblock %}
+
+{% block og_description %}
+Reorder PDF pages with drag-and-drop page previews and create a new organized PDF instantly.
 {% endblock %}
 
 {% block content %}
 
 <div class="tool-container">
 
-    <h1>📄 Organize PDF</h1>
+    <h1>Organize PDF Online Free</h1>
+
+    <p>
+        Rearrange PDF pages visually using drag-and-drop page previews.
+    </p>
 
     <form
         action="/organize-pdf"
         method="post"
         enctype="multipart/form-data"
-        onsubmit="updateOrder()"
-    >
+        onsubmit="updateOrder()">
 
-        <label>PDF File</label>
+        <label>
+            <strong>PDF File</strong>
+        </label>
 
         <input
             type="file"
             id="pdfFile"
             name="file"
             accept=".pdf"
-            required
-        >
+            required>
 
         <br><br>
 
@@ -35,9 +51,10 @@ Organize PDF
                 padding:12px;
                 border-radius:10px;
                 margin-bottom:15px;
-            "
-        >
+            ">
+
             Upload PDF → Drag Pages Into Desired Order → Organize PDF
+
         </div>
 
         <div
@@ -46,16 +63,15 @@ Organize PDF
                 color:#2563eb;
                 font-weight:600;
                 margin-bottom:15px;
-            "
-        ></div>
+            ">
+        </div>
 
         <div id="pagesContainer"></div>
 
         <input
             type="hidden"
             id="page_order"
-            name="page_order"
-        >
+            name="page_order">
 
         <br>
 
@@ -104,7 +120,6 @@ Organize PDF
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
 <script>
@@ -137,9 +152,9 @@ document
 
             pdfDoc =
                 await pdfjsLib
-                    .getDocument(
-                        typedarray
-                    ).promise;
+                .getDocument(
+                    typedarray
+                ).promise;
 
             document
             .getElementById(
@@ -171,8 +186,8 @@ async function renderPages(){
     container.innerHTML = "";
 
     for(
-        let i = 1;
-        i <= pdfDoc.numPages;
+        let i=1;
+        i<=pdfDoc.numPages;
         i++
     ){
 
@@ -241,6 +256,7 @@ async function renderPages(){
         container.appendChild(
             card
         );
+
     }
 
     new Sortable(
@@ -249,6 +265,7 @@ async function renderPages(){
             animation:150
         }
     );
+
 }
 
 function updateOrder(){
@@ -259,7 +276,7 @@ function updateOrder(){
     .querySelectorAll(
         ".page-card"
     )
-    .forEach(card=>{
+    .forEach(card => {
 
         order.push(
             card.dataset.page
@@ -274,11 +291,151 @@ function updateOrder(){
     .value =
     order.join(",");
 
-    console.log(
-        order.join(",")
-    );
 }
 
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Organize PDF Pages Online</h2>
+
+    <p>
+        Use this free PDF organizer to rearrange pages visually using drag-and-drop thumbnails. Quickly change page order, organize document sections and create a newly ordered PDF without installing software.
+    </p>
+
+    <p>
+        The built-in page preview feature allows you to see every page before reorganizing the PDF, making the process easier and more accurate than entering page numbers manually.
+    </p>
+
+    <h2>How to Organize PDF Pages</h2>
+
+    <ol>
+        <li>Upload your PDF document.</li>
+        <li>Preview all pages as thumbnails.</li>
+        <li>Drag pages into the desired order.</li>
+        <li>Click Organize PDF.</li>
+        <li>Download the reordered PDF file.</li>
+    </ol>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>Reorder report pages.</li>
+        <li>Organize scanned documents.</li>
+        <li>Arrange contract sections.</li>
+        <li>Sort educational materials.</li>
+        <li>Prepare presentations.</li>
+        <li>Correct page sequencing issues.</li>
+    </ul>
+
+    <h2>Why Use Visual PDF Organization?</h2>
+
+    <ul>
+        <li>View page previews before changes.</li>
+        <li>Drag-and-drop reordering.</li>
+        <li>Reduce page numbering mistakes.</li>
+        <li>Improve document management.</li>
+        <li>Faster than manual page entry.</li>
+        <li>Easy for large PDF files.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Interactive page thumbnails.</li>
+        <li>Drag-and-drop page reordering.</li>
+        <li>Instant PDF page previews.</li>
+        <li>No registration required.</li>
+        <li>Works on desktop and mobile browsers.</li>
+        <li>Free online PDF organizer.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I change the order of PDF pages?</h3>
+
+    <p>
+        Yes. Simply drag PDF page thumbnails into the desired order and generate a reordered PDF.
+    </p>
+
+    <h3>Can I preview pages before organizing?</h3>
+
+    <p>
+        Yes. The tool displays page thumbnails so you can visually identify each page before reordering.
+    </p>
+
+    <h3>Does the original PDF change?</h3>
+
+    <p>
+        No. A newly organized PDF is generated while leaving the original file unchanged.
+    </p>
+
+    <h3>Is the PDF Organizer free?</h3>
+
+    <p>
+        Yes. The PDF Organizer is completely free to use online.
+    </p>
+
+    <h2>Related PDF Tools</h2>
+
+    <ul>
+        <li><a href="/merge-pdf">Merge PDF</a></li>
+        <li><a href="/split-pdf">Split PDF</a></li>
+        <li><a href="/extract-pages">Extract Pages</a></li>
+        <li><a href="/delete-pages">Delete Pages</a></li>
+        <li><a href="/compress-pdf">Compress PDF</a></li>
+        <li><a href="/compare-pdf">Compare PDF</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Organize PDF Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"Can I change the order of PDF pages?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Drag PDF page thumbnails into the desired order and generate a reordered PDF."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Can I preview pages before organizing?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The tool displays page thumbnails for visual page selection and reordering."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Is the PDF Organizer free?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The PDF Organizer is completely free."
+     }
+   }
+ ]
+}
 </script>
 
 {% endblock %}

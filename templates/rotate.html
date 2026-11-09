@@ -1,41 +1,219 @@
 {% extends "base.html" %}
 
 {% block title %}
-Rotate PDF
+Rotate PDF Online Free | Rotate PDF Pages Easily | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Rotate PDF pages online for free. Turn PDF documents 90°, 180° or 270° and fix page orientation instantly.
+{% endblock %}
+
+{% block og_title %}
+Rotate PDF Online Free
+{% endblock %}
+
+{% block og_description %}
+Rotate PDF pages and fix document orientation quickly and securely online.
 {% endblock %}
 
 {% block content %}
 
 <div class="tool-container">
 
-<h1>🔄 Rotate PDF</h1>
+    <h1>Rotate PDF Online Free</h1>
 
-<form action="/rotate"
-      method="post"
-      enctype="multipart/form-data">
+    <p>
+        Rotate PDF pages to the correct orientation in seconds.
+    </p>
 
-<input type="file"
-       name="file"
-       required>
+    <form
+        action="/rotate"
+        method="post"
+        enctype="multipart/form-data">
 
-<br><br>
+        <label>
+            <strong>Select PDF File</strong>
+        </label>
 
-<select name="degrees">
+        <input
+            type="file"
+            name="file"
+            accept=".pdf"
+            required>
 
-    <option value="90">90°</option>
-    <option value="180">180°</option>
-    <option value="270">270°</option>
+        <br><br>
 
-</select>
+        <label>
+            <strong>Rotation Angle</strong>
+        </label>
 
-<br><br>
+        <select name="degrees">
 
-<button type="submit">
-Rotate
-</button>
+            <option value="90">
+                Rotate 90°
+            </option>
 
-</form>
+            <option value="180">
+                Rotate 180°
+            </option>
+
+            <option value="270">
+                Rotate 270°
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            Rotate PDF
+        </button>
+
+    </form>
 
 </div>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Rotate PDF Pages Online</h2>
+
+    <p>
+        Use this free PDF rotation tool to rotate PDF pages and correct page orientation issues. Quickly turn PDF files 90°, 180° or 270° without installing any software.
+    </p>
+
+    <p>
+        PDF rotation is useful for scanned documents, sideways pages, landscape reports, invoices, forms and documents that were saved with an incorrect orientation.
+    </p>
+
+    <h2>How to Rotate a PDF</h2>
+
+    <ol>
+        <li>Select your PDF file.</li>
+        <li>Choose the rotation angle.</li>
+        <li>Click Rotate PDF.</li>
+        <li>Wait for processing.</li>
+        <li>Download the rotated PDF.</li>
+    </ol>
+
+    <h2>Available Rotation Options</h2>
+
+    <ul>
+        <li>Rotate PDF 90° clockwise.</li>
+        <li>Rotate PDF 180°.</li>
+        <li>Rotate PDF 270° clockwise.</li>
+        <li>Fix sideways scanned pages.</li>
+        <li>Convert landscape orientation.</li>
+        <li>Correct upside-down documents.</li>
+    </ul>
+
+    <h2>Common Uses</h2>
+
+    <ul>
+        <li>Fix scanned PDF orientation.</li>
+        <li>Correct sideways pages.</li>
+        <li>Adjust document layouts.</li>
+        <li>Prepare files for printing.</li>
+        <li>Improve document readability.</li>
+        <li>Organize digitized paperwork.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>90°, 180° and 270° rotation.</li>
+        <li>Fast PDF processing.</li>
+        <li>No registration required.</li>
+        <li>Works on desktop and mobile devices.</li>
+        <li>Easy-to-use interface.</li>
+        <li>Free online PDF rotator.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I rotate a PDF online?</h3>
+
+    <p>
+        Yes. Upload a PDF, choose a rotation angle and download the corrected PDF.
+    </p>
+
+    <h3>Can I fix scanned pages that appear sideways?</h3>
+
+    <p>
+        Yes. The Rotate PDF tool is designed to correct sideways and incorrectly oriented scanned pages.
+    </p>
+
+    <h3>Will the original PDF be modified?</h3>
+
+    <p>
+        No. A new PDF file is generated while leaving your original document unchanged.
+    </p>
+
+    <h3>Is the Rotate PDF tool free?</h3>
+
+    <p>
+        Yes. The Rotate PDF tool is completely free to use online.
+    </p>
+
+    <h2>Related PDF Tools</h2>
+
+    <ul>
+        <li><a href="/organize-pdf">Organize PDF</a></li>
+        <li><a href="/merge-pdf">Merge PDF</a></li>
+        <li><a href="/split-pdf">Split PDF</a></li>
+        <li><a href="/extract-pages">Extract Pages</a></li>
+        <li><a href="/delete-pages">Delete Pages</a></li>
+        <li><a href="/compress-pdf">Compress PDF</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Rotate PDF Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"Can I rotate a PDF online?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Upload a PDF, choose a rotation angle and download the rotated document."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Can I fix scanned pages that appear sideways?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The Rotate PDF tool can correct sideways and incorrectly oriented scanned pages."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Is the Rotate PDF tool free?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. The Rotate PDF tool is completely free."
+     }
+   }
+ ]
+}
+</script>
 
 {% endblock %}

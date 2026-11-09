@@ -78,6 +78,277 @@ templates = Jinja2Templates(directory="templates")
 
 from fastapi.responses import HTMLResponse
 
+TOOL_LINKS = {
+
+   "ai-summarizer": "/ai-summarizer",
+    "barcode-generator": "/barcode-generator",
+    "text-to-speech": "/text-to-speech",
+    "powerpoint-to-pdf": "/powerpoint-to-pdf",
+    "date-difference": "/date-difference",
+    "exchange-rate": "/exchange-rate",
+    "sign-pdf": "/sign-pdf",
+    "redact-pdf": "/redact-pdf",
+    "mp3-cutter": "/mp3-cutter",
+    "audio-extractor": "/audio-extractor",
+    "compare-pdf": "/compare-pdf",
+    "organize-pdf": "/organize-pdf",
+    "audio-converter": "/audio-converter",
+    "merge-audio": "/merge-audio",
+    "video-to-mp3": "/video-to-mp3",
+    "add-audio-to-video": "/add-audio-to-video",
+    "video-compressor": "/video-compressor",
+    "video-to-gif": "/video-to-gif",
+    "gif-to-video": "/gif-to-video",
+    "photo-to-video": "/photo-to-video",
+    "audio-file": "/audio-file",
+    "sql-formatter": "/sql-formatter",
+    "speech-to-text": "/speech-to-text",
+    "converters": "/converters",
+    "password-generator": "/password-generator",
+    "url-encoder": "/url-encoder",
+    "unlock-pdf": "/unlock-pdf",
+    "resize-image": "/resize-image",
+    "image-converter": "/image-converter",
+    "json-validator": "/json-validator",
+    "jwt-decoder": "/jwt-decoder",
+    "pdf-watermark": "/pdf-watermark",
+    "timestamp-converter": "/timestamp-converter",
+    "signature-generator": "/signature-generator",
+    "image-watermark": "/image-watermark",
+    "cron-generator": "/cron-generator",
+    "ai-prompt-generator": "/ai-prompt-generator",
+    "excel-to-pdf": "/excel-to-pdf",
+    "holidays": "/holidays",
+    "weather": "/weather",
+    "ip-lookup": "/ip-lookup",
+    "timezone-converter": "/timezone-converter",
+    "svg-to-png": "/svg-to-png",
+    "ocr-pdf-page": "/ocr-pdf-page",
+    "text-utilities": "/text-utilities",
+    "csv-to-json": "/csv-to-json",
+    "json-to-csv": "/json-to-csv",
+    "xml-to-json": "/xml-to-json",
+    "yaml-to-json": "/yaml-to-json",
+    "json-to-yaml": "/json-to-yaml",
+    "ocr-pdf": "/ocr-pdf",
+    "jfif-to-jpg": "/jfif-to-jpg",
+    "heic-to-jpg": "/heic-to-jpg",
+    "age-calculator": "/age-calculator",
+    "emi-calculator": "/emi-calculator",
+    "merge": "/merge",
+    "text-compare": "/text-compare",
+    "remove-background": "/remove-background",
+    "word-to-pdf": "/word-to-pdf",
+    "webp-to-jpg": "/webp-to-jpg",
+    "pdf-to-word": "/pdf-to-word",
+    "json-formatter": "/json-formatter",
+    "qr-generator": "/qr-generator",
+    "split": "/split",
+    "pdf-to-jpg": "/pdf-to-jpg",
+    "rotate": "/rotate",
+    "delete-pages": "/delete-pages",
+    "extract-pages": "/extract-pages",
+    "protect-pdf": "/protect-pdf",
+    "image-compressor": "/image-compressor",
+    "base64-tool": "/base64-tool",
+    "compress": "/compress",
+    "images-to-pdf": "/images-to-pdf"
+
+}
+
+
+
+TOOL_ICONS = {
+
+    "ai-summarizer": "🤖",
+    "barcode-generator": "🏷️",
+    "text-to-speech": "🔊",
+    "speech-to-text": "🎤",
+    "ai-prompt-generator": "✨",
+
+    "merge": "📄",
+    "split": "✂️",
+    "compress": "🗜️",
+    "images-to-pdf": "🖼️",
+    "pdf-to-jpg": "📸",
+    "rotate": "🔄",
+    "delete-pages": "🗑️",
+    "extract-pages": "📑",
+    "protect-pdf": "🔒",
+    "unlock-pdf": "🔓",
+    "sign-pdf": "✍️",
+    "pdf-watermark": "💧",
+    "compare-pdf": "⚖️",
+    "organize-pdf": "📄",
+    "redact-pdf": "🛑",
+
+    "word-to-pdf": "📄",
+    "pdf-to-word": "📝",
+    "excel-to-pdf": "📊",
+    "powerpoint-to-pdf": "📈",
+
+    "remove-background": "🎨",
+    "resize-image": "📏",
+    "image-converter": "🖼️",
+    "image-watermark": "💧",
+    "image-compressor": "🗜️",
+    "heic-to-jpg": "📱",
+    "webp-to-jpg": "🌐",
+    "svg-to-png": "🎨",
+    "jfif-to-jpg": "🖼️",
+
+    "audio-extractor": "🎵",
+    "audio-converter": "🎼",
+    "merge-audio": "🎹",
+    "mp3-cutter": "✂️",
+    "video-to-mp3": "🎬",
+    "add-audio-to-video": "🎧",
+    "video-compressor": "🎥",
+    "video-to-gif": "🎞️",
+    "gif-to-video": "📹",
+    "photo-to-video": "📸",
+
+    "json-formatter": "📋",
+    "json-validator": "✅",
+    "json-to-csv": "📊",
+    "csv-to-json": "📄",
+    "xml-to-json": "🔄",
+    "json-to-xml": "🔄",
+    "yaml-to-json": "📘",
+    "json-to-yaml": "📘",
+    "jwt-decoder": "🔐",
+    "base64-tool": "🔑",
+    "url-encoder": "🌐",
+    "sql-formatter": "💻",
+    "timestamp-converter": "⏰",
+    "cron-generator": "🕒",
+
+    "weather": "☁️",
+    "holidays": "🎉",
+    "ip-lookup": "🌍",
+    "timezone-converter": "🕓",
+    "exchange-rate": "💱",
+    "qr-generator": "📱",
+    "password-generator": "🔑",
+    "signature-generator": "✍️",
+    "date-difference": "📅",
+    "age-calculator": "🎂",
+    "emi-calculator": "🏦",
+    "text-compare": "📝",
+    "text-utilities": "📚"
+}
+
+TOOL_NAMES = {
+    "ai-summarizer": "🤖 AI Summarizer",
+    "barcode-generator": "🏷️ Barcode Generator",
+    "text-to-speech": "🔊 Text To Speech",
+    "powerpoint-to-pdf": "📊 PowerPoint To PDF",
+    "date-difference": "📅 Date Difference",
+    "exchange-rate": "💱 Exchange Rate",
+    "sign-pdf": "✍️ Sign PDF",
+    "redact-pdf": "🛑 Redact PDF",
+    "mp3-cutter": "✂️ MP3 Cutter",
+    "audio-extractor": "🎵 Audio Extractor",
+    "compare-pdf": "⚖️ Compare PDF",
+    "organize-pdf": "📑 Organize PDF",
+    "audio-converter": "🎼 Audio Converter",
+    "merge-audio": "🎹 Merge Audio",
+    "video-to-mp3": "🎬 Video To MP3",
+    "add-audio-to-video": "🎧 Add Audio To Video",
+    "video-compressor": "🎥 Video Compressor",
+    "video-to-gif": "🎞️ Video To GIF",
+    "gif-to-video": "📹 GIF To Video",
+    "photo-to-video": "📸 Photo To Video",
+
+    "password-generator": "🔑 Password Generator",
+    "url-encoder": "🌐 URL Encoder",
+    "unlock-pdf": "🔓 Unlock PDF",
+    "resize-image": "📏 Resize Image",
+    "image-converter": "🖼️ Image Converter",
+    "json-validator": "✅ JSON Validator",
+    "jwt-decoder": "🔐 JWT Decoder",
+    "pdf-watermark": "💧 PDF Watermark",
+    "timestamp-converter": "⏰ Timestamp Converter",
+    "signature-generator": "✍️ Signature Generator",
+    "image-watermark": "💧 Image Watermark",
+    "cron-generator": "🕒 Cron Generator",
+
+    "ai-prompt-generator": "🤖 AI Prompt Generator",
+    "excel-to-pdf": "📊 Excel To PDF",
+    "holidays": "🎉 Holidays",
+    "weather": "☁️ Weather",
+    "ip-lookup": "🌍 IP Lookup",
+    "timezone-converter": "🕒 Timezone Converter",
+
+    "svg-to-png": "🎨 SVG To PNG",
+    "ocr-pdf-page": "🔍 OCR PDF",
+    "text-utilities": "📝 Text Utilities",
+
+    "csv-to-json": "📄 CSV To JSON",
+    "json-to-csv": "📊 JSON To CSV",
+    "xml-to-json": "🔄 XML To JSON",
+    "yaml-to-json": "📘 YAML To JSON",
+    "json-to-yaml": "📘 JSON To YAML",
+
+    "jfif-to-jpg": "🖼️ JFIF To JPG",
+    "heic-to-jpg": "📱 HEIC To JPG",
+
+    "age-calculator": "🎂 Age Calculator",
+    "emi-calculator": "🏦 EMI Calculator",
+
+    "merge": "📄 Merge PDF",
+    "text-compare": "📝 Text Compare",
+    "remove-background": "🎨 Remove Background",
+    "word-to-pdf": "📄 Word To PDF",
+    "webp-to-jpg": "🌐 WEBP To JPG",
+    "pdf-to-word": "📝 PDF To Word",
+    "json-formatter": "📋 JSON Formatter",
+    "qr-generator": "📱 QR Generator",
+    "split": "✂️ Split PDF",
+    "pdf-to-jpg": "📸 PDF To JPG",
+    "rotate": "🔄 Rotate PDF",
+    "delete-pages": "🗑️ Delete Pages",
+    "extract-pages": "📑 Extract Pages",
+    "protect-pdf": "🔒 Protect PDF",
+    "image-compressor": "🗜️ Image Compressor",
+    "base64-tool": "🔐 Base64 Tool",
+    "compress": "🗜️ Compress PDF",
+    "images-to-pdf": "🖼️ Images To PDF"
+}
+
+import sqlite3
+
+def init_db():
+
+    conn = sqlite3.connect("tools.db")
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS tool_visits(
+            tool_name TEXT PRIMARY KEY,
+            visits INTEGER DEFAULT 0
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+init_db()
+
+
+def record_visit(tool_name):
+
+    conn = sqlite3.connect("tools.db")
+
+    conn.execute("""
+        INSERT INTO tool_visits(tool_name, visits)
+        VALUES(?,1)
+        ON CONFLICT(tool_name)
+        DO UPDATE SET visits = visits + 1
+    """,(tool_name,))
+
+    conn.commit()
+    conn.close()
+
 class EncodeRequest(BaseModel):
     text: str
 
@@ -109,6 +380,7 @@ def decode_base64(req: DecodeRequest):
 async def ai_summarizer_page(
     request: Request
 ):
+    record_visit("ai-summarizer")
     return templates.TemplateResponse(
         request=request,
         name="ai_summarizer.html"
@@ -167,6 +439,7 @@ async def ai_summarizer(
 async def barcode_generator_page(
     request: Request
 ):
+    record_visit("barcode-generator")
     return templates.TemplateResponse(
         request=request,
         name="barcode_generator.html"
@@ -176,6 +449,7 @@ async def barcode_generator_page(
 async def text_to_speech_page(
     request: Request
 ):
+    record_visit("text-to-speech")
     return templates.TemplateResponse(
         request=request,
         name="text_to_speech.html"
@@ -210,6 +484,7 @@ async def text_to_speech(
 async def powerpoint_to_pdf_page(
     request: Request
 ):
+    record_visit("powerpoint-to-pdf")
     return templates.TemplateResponse(
         request=request,
         name="powerpoint_to_pdf.html"
@@ -280,6 +555,7 @@ async def generate_barcode(
 async def date_difference_page(
     request: Request
 ):
+    record_visit("date-difference")
     return templates.TemplateResponse(
         request=request,
         name="date_difference.html"
@@ -409,7 +685,7 @@ Sitemap: https://utilitiesdocker.com/sitemap.xml
 
 @app.get("/exchange-rate", response_class=HTMLResponse)
 async def exchange_rate(request: Request):
-
+    record_visit("exchange-rate")
     return templates.TemplateResponse(
         request=request,
         name="exchange_rate.html"
@@ -488,6 +764,7 @@ async def edit_pdf(
 async def sign_pdf_page(
     request: Request
 ):
+    record_visit("sign-pdf")
     return templates.TemplateResponse(
         request=request,
         name="sign_pdf.html"
@@ -548,6 +825,7 @@ async def sign_pdf(
 async def redact_pdf_page(
     request: Request
 ):
+    record_visit("redact-pdf")
     return templates.TemplateResponse(
         request=request,
         name="redact_pdf.html"
@@ -600,6 +878,7 @@ async def redact_pdf(
 async def organize_pdf_page(
     request: Request
 ):
+    record_visit("organize-pdf")
     return templates.TemplateResponse(
         request=request,
         name="organize_pdf.html"
@@ -650,6 +929,7 @@ async def organize_pdf(
 async def compare_pdf_page(
     request: Request
 ):
+    record_visit("compare-pdf")
     return templates.TemplateResponse(
         request=request,
         name="compare_pdf.html"
@@ -660,6 +940,7 @@ async def compare_pdf_page(
 async def audio_extractor_page(
     request: Request
 ):
+    record_visit("audio-extractor")
     return templates.TemplateResponse(
         request=request,
         name="audio_extractor.html"
@@ -711,6 +992,7 @@ async def audio_extractor(
 async def mp3_cutter_page(
     request: Request
 ):
+    record_visit("mp3-cutter")
     return templates.TemplateResponse(
         request=request,
         name="mp3_cutter.html"
@@ -771,6 +1053,7 @@ async def mp3_cutter_upload(
 async def audio_converter_page(
     request: Request
 ):
+    record_visit("audio-converter")
     return templates.TemplateResponse(
         request=request,
         name="audio_converter.html"
@@ -833,6 +1116,7 @@ async def audio_converter(
 async def merge_audio_page(
     request: Request
 ):
+    record_visit("merge-audio")
     return templates.TemplateResponse(
         request=request,
         name="merge_audio.html"
@@ -909,6 +1193,7 @@ async def merge_audio(
 async def video_to_mp3_page(
     request: Request
 ):
+    record_visit("video-to-mp3")
     return templates.TemplateResponse(
         request=request,
         name="video_to_mp3.html"
@@ -963,6 +1248,7 @@ async def video_to_mp3(
 async def add_audio_to_video_page(
     request: Request
 ):
+    record_visit("add-audio-to-video")
     return templates.TemplateResponse(
         request=request,
         name="add_audio_to_video.html"
@@ -1031,6 +1317,7 @@ async def add_audio_to_video(
 async def video_compressor_page(
     request: Request
 ):
+    record_visit("video-compressor")
     return templates.TemplateResponse(
         request=request,
         name="video_compressor.html"
@@ -1098,6 +1385,7 @@ async def video_compressor(
 async def video_to_gif_page(
     request: Request
 ):
+    record_visit("video-to-gif")
     return templates.TemplateResponse(
         request=request,
         name="video_to_gif.html"
@@ -1149,6 +1437,7 @@ async def video_to_gif(
 async def gif_to_video_page(
     request: Request
 ):
+    record_visit("gif-to-video")
     return templates.TemplateResponse(
         request=request,
         name="gif_to_video.html"
@@ -1201,6 +1490,7 @@ async def gif_to_video(
 async def photo_to_video_page(
     request: Request
 ):
+    record_visit("photo-to-video")
     return templates.TemplateResponse(
         request=request,
         name="photo_to_video.html"
@@ -1378,7 +1668,7 @@ async def cut_mp3(
 async def audio_file(
     filename: str
 ):
-
+    record_visit("audio-file")
     filepath = os.path.join(
         "uploads",
         filename
@@ -1464,6 +1754,7 @@ async def compare_pdf(
 
 @app.get("/sql-formatter")
 async def sql_formatter_page(request: Request):
+    record_visit("sql-formatter")
     return templates.TemplateResponse(
         request=request,
         name="sql_formatter.html"
@@ -1473,6 +1764,7 @@ async def sql_formatter_page(request: Request):
 async def speech_to_text_page(
     request: Request
 ):
+    record_visit("speech-to-text")
     return templates.TemplateResponse(
         request=request,
         name="speech_to_text.html"
@@ -1480,6 +1772,7 @@ async def speech_to_text_page(
 
 @app.get("/converters", response_class=HTMLResponse)
 async def converters(request: Request):
+    record_visit("converters")
     return templates.TemplateResponse(
         request=request,
         name="converters.html"
@@ -1488,6 +1781,7 @@ async def converters(request: Request):
 
 @app.get("/password-generator", response_class=HTMLResponse)
 async def password_generator(request: Request):
+    record_visit("password-generator")
     return templates.TemplateResponse(
         request=request,
         name="password_generator.html"
@@ -1495,6 +1789,7 @@ async def password_generator(request: Request):
 
 @app.get("/url-encoder", response_class=HTMLResponse)
 async def url_encoder_page(request: Request):
+    record_visit("url-encoder")
     return templates.TemplateResponse(
         request=request,
         name="url_encoder.html"
@@ -1502,6 +1797,7 @@ async def url_encoder_page(request: Request):
 
 @app.get("/unlock-pdf")
 async def unlock_pdf(request: Request):
+    record_visit("unlock-pdf")
     return templates.TemplateResponse(
         request=request,
         name="unlock_pdf.html"
@@ -1509,6 +1805,7 @@ async def unlock_pdf(request: Request):
 
 @app.get("/resize-image")
 async def resize_image_page(request: Request):
+    record_visit("resize-image")
     return templates.TemplateResponse(
         request=request,
         name="resize_image.html"
@@ -1552,6 +1849,8 @@ async def resize_image(
 async def image_converter_page(
     request: Request
 ):
+    record_visit("image-converter")
+
     return templates.TemplateResponse(
         request=request,
         name="image_converter.html"
@@ -1593,6 +1892,7 @@ async def image_converter(
 
 @app.get("/json-validator")
 async def json_validator_page(request: Request):
+    record_visit("json-validator")
     return templates.TemplateResponse(
         request=request,
         name="json_validator.html"
@@ -1600,6 +1900,7 @@ async def json_validator_page(request: Request):
 
 @app.get("/jwt-decoder")
 async def jwt_decoder(request: Request):
+    record_visit("jwt-decoder")
     return templates.TemplateResponse(
         request=request,
         name="jwt_decoder.html"
@@ -1609,6 +1910,7 @@ async def jwt_decoder(request: Request):
 async def pdf_watermark(
     request: Request
 ):
+    record_visit("pdf-watermark")
     return templates.TemplateResponse(
         request=request,
         name="pdf_watermark.html"
@@ -1692,6 +1994,7 @@ async def pdf_watermark(
 async def timestamp_converter(
     request: Request
 ):
+    record_visit("timestamp-converter")
     return templates.TemplateResponse(
         request=request,
         name="timestamp_converter.html"
@@ -1701,6 +2004,7 @@ async def timestamp_converter(
 async def signature_generator(
     request: Request
 ):
+    record_visit("signature-generator")
     return templates.TemplateResponse(
         request=request,
         name="signature_generator.html"
@@ -1710,6 +2014,7 @@ async def signature_generator(
 async def image_watermark(
     request: Request
 ):
+    record_visit("image-watermark")
     return templates.TemplateResponse(
         request=request,
         name="image_watermark.html"
@@ -1784,6 +2089,7 @@ async def image_watermark(
 async def cron_generator(
     request: Request
 ):
+    record_visit("cron-generator")
     return templates.TemplateResponse(
         request=request,
         name="cron_generator.html"
@@ -1826,6 +2132,7 @@ async def unlock_pdf(
 async def ai_prompt_generator_page(
     request: Request
 ):
+    record_visit("ai-prompt-generator")
     return templates.TemplateResponse(
         request=request,
         name="ai_prompt_generator.html"
@@ -1836,6 +2143,7 @@ async def ai_prompt_generator_page(
 async def excel_to_pdf_page(
     request: Request
 ):
+    record_visit("excel-to-pdf")
     return templates.TemplateResponse(
         request=request,
         name="excel_to_pdf.html"
@@ -1878,7 +2186,7 @@ async def excel_to_pdf(
 
 @app.get("/holidays", response_class=HTMLResponse)
 async def holidays_page(request: Request):
-
+    record_visit("holidays")
     return templates.TemplateResponse(
         request=request,
         name="holidays.html"
@@ -1890,7 +2198,7 @@ async def get_holidays(
     country: str,
     year: int
 ):
-
+    record_visit("holidays")
     url = (
         f"https://date.nager.at/api/v3/"
         f"publicholidays/{year}/{country}"
@@ -1913,6 +2221,8 @@ async def get_holidays(
 
 @app.get("/weather", response_class=HTMLResponse)
 async def weather(request: Request):
+    record_visit("weather")
+
     return templates.TemplateResponse(
         request=request,
         name="weather.html"
@@ -1920,6 +2230,7 @@ async def weather(request: Request):
 
 @app.get("/ip-lookup", response_class=HTMLResponse)
 async def ip_lookup(request: Request):
+    record_visit("ip-lookup")
     return templates.TemplateResponse(
         request=request,
         name="ip_lookup.html"
@@ -1927,6 +2238,7 @@ async def ip_lookup(request: Request):
 
 @app.get("/timezone-converter", response_class=HTMLResponse)
 async def timezone_converter(request: Request):
+    record_visit("timezone-converter")
     return templates.TemplateResponse(
         request=request,
         name="timezone_converter.html"
@@ -2101,16 +2413,34 @@ async def json_to_yaml(file: UploadFile = File(...)):
     )
 
 
-
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+
+    conn = sqlite3.connect("tools.db")
+
+    popular_tools = conn.execute("""
+        SELECT tool_name, visits
+        FROM tool_visits
+        ORDER BY visits DESC
+        LIMIT 8
+    """).fetchall()
+
+    conn.close()
+
     return templates.TemplateResponse(
         request=request,
-        name="home.html"
+        name="home.html",
+        context={
+            "popular_tools": popular_tools,
+            "tool_links": TOOL_LINKS,
+            "tool_icons": TOOL_ICONS,
+            "tool_names": TOOL_NAMES
+        }
     )
 
 @app.get("/svg-to-png", response_class=HTMLResponse)
 async def svg_to_png_page(request: Request):
+    record_visit("svg-to-png")
     return templates.TemplateResponse(
         request=request,
         name="svg_to_png.html"
@@ -2118,6 +2448,7 @@ async def svg_to_png_page(request: Request):
 
 @app.get("/ocr-pdf-page", response_class=HTMLResponse)
 async def ocr_pdf_page(request: Request):
+    record_visit("ocr-pdf-page")
     return templates.TemplateResponse(
         request=request,
         name="ocr_pdf.html"
@@ -2125,6 +2456,7 @@ async def ocr_pdf_page(request: Request):
 
 @app.get("/text-utilities", response_class=HTMLResponse)
 async def text_utilities_page(request: Request):
+    record_visit("text-utilities")
     return templates.TemplateResponse(
         request=request,
         name="text_utilities.html"
@@ -2139,6 +2471,7 @@ async def developer_tools_page(request: Request):
 
 @app.get("/csv-to-json", response_class=HTMLResponse)
 async def csv_to_json_page(request: Request):
+    record_visit("csv-to-json")
     return templates.TemplateResponse(
         request=request,
         name="csv_to_json.html"
@@ -2146,6 +2479,7 @@ async def csv_to_json_page(request: Request):
 
 @app.get("/json-to-csv", response_class=HTMLResponse)
 async def json_to_csv_page(request: Request):
+    record_visit("json-to-csv")
     return templates.TemplateResponse(
         request=request,
         name="json_to_csv.html"
@@ -2153,6 +2487,7 @@ async def json_to_csv_page(request: Request):
 
 @app.get("/xml-to-json", response_class=HTMLResponse)
 async def xml_to_json_page(request: Request):
+    record_visit("xml-to-json")
     return templates.TemplateResponse(
         request=request,
         name="xml_to_json.html"
@@ -2160,6 +2495,7 @@ async def xml_to_json_page(request: Request):
 
 @app.get("/json-to-xml", response_class=HTMLResponse)
 async def json_to_xml_page(request: Request):
+    record_visit("json-to-xml")
     return templates.TemplateResponse(
         request=request,
         name="json_to_xml.html"
@@ -2167,6 +2503,7 @@ async def json_to_xml_page(request: Request):
 
 @app.get("/yaml-to-json", response_class=HTMLResponse)
 async def yaml_to_json_page(request: Request):
+    record_visit("yaml-to-json")
     return templates.TemplateResponse(
         request=request,
         name="yaml_to_json.html"
@@ -2174,6 +2511,7 @@ async def yaml_to_json_page(request: Request):
 
 @app.get("/json-to-yaml", response_class=HTMLResponse)
 async def json_to_yaml_page(request: Request):
+    record_visit("json-to-yaml")
     return templates.TemplateResponse(
         request=request,
         name="json_to_yaml.html"
@@ -2230,6 +2568,7 @@ async def svg_to_png(
 
 @app.get("/jfif-to-jpg", response_class=HTMLResponse)
 async def jfif_to_jpg_page(request: Request):
+    record_visit("jfif-to-jpg")
     return templates.TemplateResponse(
         request=request,
         name="jfif_to_jpg.html"
@@ -2261,6 +2600,7 @@ async def jfif_to_jpg(
 
 @app.get("/heic-to-jpg", response_class=HTMLResponse)
 async def heic_to_jpg_page(request: Request):
+    record_visit("heic-to-jpg")
     return templates.TemplateResponse(
         request=request,
         name="heic_to_jpg.html"
@@ -2291,18 +2631,23 @@ async def heic_to_jpg(
         filename="converted.jpg"
     )
 
-@app.get("/age-calculator", response_class=HTMLResponse)
-async def age_calculator():
-    with open("templates/age-calculator.html") as f:
-        return HTMLResponse(f.read())
+@app.get("/age-calculator")
+async def age_calculator(request: Request):
+    record_visit("age-calculator")
+    return templates.TemplateResponse(
+        request,
+        "age-calculator.html"
+    )
 
 @app.get("/emi-calculator", response_class=HTMLResponse)
 async def emi_calculator():
+    record_visit("emi-calculator")
     with open("templates/emi-calculator.html") as f:
         return HTMLResponse(f.read())
 
 @app.get("/merge", response_class=HTMLResponse)
 async def merge_page(request: Request):
+    record_visit("merge")
     return templates.TemplateResponse(
         request=request,
         name="merge.html"
@@ -2312,6 +2657,7 @@ async def merge_page(request: Request):
 
 @app.get("/text-compare")
 async def text_compare(request: Request):
+    record_visit("text-compare")
     return templates.TemplateResponse(
         request=request,
         name="text-compare.html",
@@ -2349,6 +2695,7 @@ async def compare_text(
 
 @app.get("/remove-background")
 async def remove_background_page(request: Request):
+    record_visit("remove-background")
     return templates.TemplateResponse(
         request=request,
         name="remove_background.html"
@@ -2356,6 +2703,7 @@ async def remove_background_page(request: Request):
 
 @app.get("/word-to-pdf")
 async def word_to_pdf_page(request: Request):
+    record_visit("word-to-pdf")
     return templates.TemplateResponse(
         request=request,
         name="word_to_pdf.html"
@@ -2363,6 +2711,7 @@ async def word_to_pdf_page(request: Request):
 
 @app.get("/webp-to-jpg")
 async def webp_to_jpg_page(request: Request):
+    record_visit("webp-to-jpg")
     return templates.TemplateResponse(
         request=request,
         name="webp_to_jpg.html"
@@ -2423,6 +2772,7 @@ async def word_to_pdf(
 
 @app.get("/pdf-to-word")
 async def pdf_to_word_page(request: Request):
+    record_visit("pdf-to-word")
     return templates.TemplateResponse(
         request=request,
         name="pdf_to_word.html"
@@ -2451,6 +2801,7 @@ async def pdf_to_word(
 
 @app.get("/json-formatter", response_class=HTMLResponse)
 async def json_formatter_page(request: Request):
+    record_visit("json-formatter")
     return templates.TemplateResponse(
         request=request,
         name="json_formatter.html"
@@ -2458,6 +2809,7 @@ async def json_formatter_page(request: Request):
 
 @app.get("/qr-generator", response_class=HTMLResponse)
 async def qr_generator_page(request: Request):
+    record_visit("qr-generator")
     return templates.TemplateResponse(
         request=request,
         name="qr_generator.html"
@@ -2465,6 +2817,7 @@ async def qr_generator_page(request: Request):
 
 @app.get("/split", response_class=HTMLResponse)
 async def split_page(request: Request):
+    record_visit("split")
     return templates.TemplateResponse(
         request=request,
         name="split.html"
@@ -2472,6 +2825,7 @@ async def split_page(request: Request):
 
 @app.get("/pdf-to-jpg", response_class=HTMLResponse)
 async def pdf_to_jpg_page(request: Request):
+    record_visit("pdf-to-jpg")
     return templates.TemplateResponse(
         request=request,
         name="pdf_to_jpg.html"
@@ -2480,6 +2834,7 @@ async def pdf_to_jpg_page(request: Request):
 
 @app.get("/rotate", response_class=HTMLResponse)
 async def rotate_page(request: Request):
+    record_visit("rotate")
     return templates.TemplateResponse(
         request=request,
         name="rotate.html"
@@ -2488,6 +2843,7 @@ async def rotate_page(request: Request):
 
 @app.get("/delete-pages", response_class=HTMLResponse)
 async def delete_pages_page(request: Request):
+    record_visit("delete-pages")
     return templates.TemplateResponse(
         request=request,
         name="delete_pages.html"
@@ -2496,6 +2852,7 @@ async def delete_pages_page(request: Request):
 
 @app.get("/extract-pages", response_class=HTMLResponse)
 async def extract_pages_page(request: Request):
+    record_visit("extract-pages")
     return templates.TemplateResponse(
         request=request,
         name="extract_pages.html"
@@ -2504,6 +2861,7 @@ async def extract_pages_page(request: Request):
 
 @app.get("/protect-pdf", response_class=HTMLResponse)
 async def protect_pdf_page(request: Request):
+    record_visit("protect-pdf")
     return templates.TemplateResponse(
         request=request,
         name="protect_pdf.html"
@@ -2511,6 +2869,7 @@ async def protect_pdf_page(request: Request):
 
 @app.get("/image-compressor", response_class=HTMLResponse)
 async def image_compressor_page(request: Request):
+    record_visit("image-compressor")
     return templates.TemplateResponse(
         request=request,
         name="image_compressor.html"
@@ -2550,6 +2909,7 @@ async def compress_image(
 
 @app.get("/base64-tool", response_class=HTMLResponse)
 async def base64_tool_page(request: Request):
+    record_visit("base64-tool")
     return templates.TemplateResponse(
         request=request,
         name="base64_tool.html"
@@ -2664,6 +3024,7 @@ async def split(
 
 @app.get("/compress", response_class=HTMLResponse)
 async def compress_page(request: Request):
+    record_visit("compress")
     return templates.TemplateResponse(
         request=request,
         name="compress.html"
@@ -2706,6 +3067,7 @@ async def compress_pdf(
 
 @app.get("/images-to-pdf", response_class=HTMLResponse)
 async def images_to_pdf_page(request: Request):
+    record_visit("images-to-pdf")
     return templates.TemplateResponse(
         request=request,
         name="images_to_pdf.html"

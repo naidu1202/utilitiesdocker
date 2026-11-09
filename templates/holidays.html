@@ -1,14 +1,34 @@
 {% extends "base.html" %}
 
+{% block title %}
+Public Holidays Calendar Online | Country Holiday Finder | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Check public holidays by country and year. View official holiday calendars for Singapore, Malaysia, India, United States, Japan, China and more.
+{% endblock %}
+
+{% block og_title %}
+Public Holidays Calendar Online
+{% endblock %}
+
+{% block og_description %}
+Find public holidays by country and year with an easy-to-use holiday calendar.
+{% endblock %}
+
 {% block content %}
-
-
 
 <div class="tool-container">
 
-    <h1>🎉 Public Holidays</h1>
+    <h1>Public Holidays Calendar</h1>
 
-    <label>Country</label>
+    <p>
+        View public holidays and national holidays by country and year.
+    </p>
+
+    <label>
+        <strong>Country</strong>
+    </label>
 
     <select id="country">
 
@@ -25,7 +45,9 @@
 
     <br><br>
 
-    <label>Year</label>
+    <label>
+        <strong>Year</strong>
+    </label>
 
     <select id="year"></select>
 
@@ -63,21 +85,22 @@
 const currentYear =
     new Date().getFullYear();
 
-for (let year = 2025; year <= 2035; year++) {
+for(let year=2025;year<=2035;year++){
 
     document
         .getElementById("year")
         .innerHTML +=
         `<option value="${year}">
             ${year}
-         </option>`;
+        </option>`;
+
 }
 
 document
     .getElementById("year")
     .value = currentYear;
 
-async function getHolidays() {
+async function getHolidays(){
 
     const country =
         document.getElementById("country").value;
@@ -93,7 +116,7 @@ async function getHolidays() {
     tbody.innerHTML =
         "<tr><td colspan='2'>Loading...</td></tr>";
 
-    try {
+    try{
 
         const response =
             await fetch(
@@ -105,37 +128,35 @@ async function getHolidays() {
 
         tbody.innerHTML = "";
 
-        if (!Array.isArray(holidays)) {
+        if(!Array.isArray(holidays)){
 
-            document.getElementById("summary")
-                .innerHTML = "No holidays available";
+            document
+                .getElementById("summary")
+                .innerHTML =
+                "No holidays available";
 
             return;
+
         }
 
-        document.getElementById("summary")
+        document
+            .getElementById("summary")
             .innerHTML =
             `<strong>${holidays.length} holidays found</strong>`;
-
 
         holidays.forEach(holiday => {
 
             tbody.innerHTML += `
                 <tr>
-
-                    <td>
-                        ${holiday.date}
-                    </td>
-
-                    <td>
-                        ${holiday.localName}
-                    </td>
-
+                    <td>${holiday.date}</td>
+                    <td>${holiday.localName}</td>
                 </tr>
             `;
+
         });
 
-    } catch(error) {
+    }
+    catch(error){
 
         tbody.innerHTML = `
             <tr>
@@ -144,11 +165,156 @@ async function getHolidays() {
                 </td>
             </tr>
         `;
+
     }
+
 }
 
 getHolidays();
 
+</script>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Public Holidays by Country</h2>
+
+    <p>
+        Use this free public holiday calendar to view official public holidays, national holidays and government holidays by country and year. Quickly check upcoming holiday dates for travel planning, business scheduling and personal events.
+    </p>
+
+    <p>
+        The holiday finder supports multiple countries including Singapore, Malaysia, India, China, Japan, Australia, the United States and the United Kingdom.
+    </p>
+
+    <h2>How to Use the Public Holiday Calendar</h2>
+
+    <ol>
+        <li>Select a country.</li>
+        <li>Choose a year.</li>
+        <li>Click Get Holidays.</li>
+        <li>View the complete holiday list.</li>
+    </ol>
+
+    <h2>Supported Countries</h2>
+
+    <ul>
+        <li>Singapore</li>
+        <li>Malaysia</li>
+        <li>India</li>
+        <li>China</li>
+        <li>Japan</li>
+        <li>United States</li>
+        <li>United Kingdom</li>
+        <li>Australia</li>
+    </ul>
+
+    <h2>Popular Uses</h2>
+
+    <ul>
+        <li>Plan vacations and travel.</li>
+        <li>Schedule business meetings.</li>
+        <li>Manage employee leave.</li>
+        <li>Prepare project timelines.</li>
+        <li>Track public holiday dates.</li>
+        <li>Plan family events.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Holiday lookup by country.</li>
+        <li>Multiple year support.</li>
+        <li>Fast holiday searches.</li>
+        <li>Mobile-friendly design.</li>
+        <li>No registration required.</li>
+        <li>Free online holiday calendar.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I view Singapore public holidays?</h3>
+
+    <p>
+        Yes. Select Singapore from the country list to view available public holidays for the selected year.
+    </p>
+
+    <h3>Can I check holidays for future years?</h3>
+
+    <p>
+        Yes. The tool allows you to select different years and retrieve holiday information where available.
+    </p>
+
+    <h3>Can I use this for travel planning?</h3>
+
+    <p>
+        Yes. The holiday calendar helps identify public holidays when planning travel and vacations.
+    </p>
+
+    <h3>Is the Public Holiday tool free?</h3>
+
+    <p>
+        Yes. The Public Holiday Calendar is completely free to use.
+    </p>
+
+    <h2>Related Tools</h2>
+
+    <ul>
+        <li><a href="/date-difference">Date Difference Calculator</a></li>
+        <li><a href="/age-calculator">Age Calculator</a></li>
+        <li><a href="/unit-converter">Unit Converter</a></li>
+        <li><a href="/currency-converter">Currency Converter</a></li>
+        <li><a href="/emi-calculator">EMI Calculator</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Public Holidays Calendar Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I view Singapore public holidays?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Select Singapore from the country list to view public holidays."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I check holidays for future years?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Select a supported year to retrieve holiday information."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the Public Holiday Calendar free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The Public Holiday Calendar is completely free."
+      }
+    }
+  ]
+}
 </script>
 
 {% endblock %}

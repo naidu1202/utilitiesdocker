@@ -1,58 +1,227 @@
 {% extends "base.html" %}
 
 {% block title %}
-Image Converter
+Image Converter Online Free | JPG, PNG, WEBP & BMP Converter | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Convert images online for free. Transform JPG, PNG, WEBP and BMP images into different formats quickly and securely.
+{% endblock %}
+
+{% block og_title %}
+Image Converter Online Free
+{% endblock %}
+
+{% block og_description %}
+Convert JPG, PNG, WEBP and BMP images into different formats online.
 {% endblock %}
 
 {% block content %}
 
-<div class= "tool-container">
+<div class="tool-container">
 
-<h1>🔄 Image Converter</h1>
+    <h1>Image Converter Online Free</h1>
 
-<form
-    action="/image-converter"
-    method="post"
-    enctype="multipart/form-data">
+    <p>
+        Convert images between JPG, PNG, WEBP and BMP formats in seconds.
+    </p>
 
-    <input
-        type="file"
-        name="file"
-        accept="image/*"
-        required>
+    <form
+        action="/image-converter"
+        method="post"
+        enctype="multipart/form-data">
 
-    <br><br>
+        <label>
+            <strong>Select Image</strong>
+        </label>
 
-    <select
-        name="output_format"
-        required>
+        <input
+            type="file"
+            name="file"
+            accept="image/*"
+            required>
 
-        <option value="jpg">
-            JPG
-        </option>
+        <br><br>
 
-        <option value="png">
-            PNG
-        </option>
+        <label>
+            <strong>Output Format</strong>
+        </label>
 
-        <option value="webp">
-            WEBP
-        </option>
+        <select
+            name="output_format"
+            required>
 
-        <option value="bmp">
-            BMP
-        </option>
+            <option value="jpg">
+                JPG
+            </option>
 
-    </select>
+            <option value="png">
+                PNG
+            </option>
 
-    <br><br>
+            <option value="webp">
+                WEBP
+            </option>
 
-    <button type="submit">
-        Convert Image
-    </button>
+            <option value="bmp">
+                BMP
+            </option>
 
-</form>
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            Convert Image
+        </button>
+
+    </form>
 
 </div>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Convert Images Online</h2>
+
+    <p>
+        Use this free online image converter to transform images between popular formats including JPG, PNG, WEBP and BMP. Upload an image, select the desired output format and download the converted image instantly.
+    </p>
+
+    <p>
+        Image format conversion helps improve compatibility, optimize storage requirements and prepare images for websites, applications, printing and social media platforms.
+    </p>
+
+    <h2>Supported Image Conversions</h2>
+
+    <ul>
+        <li>JPG to PNG</li>
+        <li>PNG to JPG</li>
+        <li>WEBP to JPG</li>
+        <li>JPG to WEBP</li>
+        <li>BMP to JPG</li>
+        <li>BMP to PNG</li>
+        <li>PNG to WEBP</li>
+        <li>WEBP to PNG</li>
+    </ul>
+
+    <h2>How to Convert Images</h2>
+
+    <ol>
+        <li>Select an image file.</li>
+        <li>Choose the output format.</li>
+        <li>Click Convert Image.</li>
+        <li>Wait for processing.</li>
+        <li>Download the converted image.</li>
+    </ol>
+
+    <h2>Why Convert Image Formats?</h2>
+
+    <ul>
+        <li>Improve compatibility across devices.</li>
+        <li>Reduce image file sizes.</li>
+        <li>Prepare images for websites.</li>
+        <li>Convert transparent PNG files.</li>
+        <li>Create optimized WEBP images.</li>
+        <li>Support printing and publishing needs.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Multiple image formats supported.</li>
+        <li>Fast image conversion.</li>
+        <li>No registration required.</li>
+        <li>Mobile and desktop compatible.</li>
+        <li>Easy-to-use interface.</li>
+        <li>Free online image converter.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I convert JPG to PNG?</h3>
+
+    <p>
+        Yes. Upload a JPG file and choose PNG as the output format.
+    </p>
+
+    <h3>Can I convert WEBP images?</h3>
+
+    <p>
+        Yes. The tool supports converting WEBP files to JPG, PNG and other supported formats.
+    </p>
+
+    <h3>Will image quality be preserved?</h3>
+
+    <p>
+        The converter aims to maintain image quality while creating the selected output format.
+    </p>
+
+    <h3>Is the Image Converter free?</h3>
+
+    <p>
+        Yes. The Image Converter is completely free to use online.
+    </p>
+
+    <h2>Related Image Tools</h2>
+
+    <ul>
+        <li><a href="/image-compressor">Image Compressor</a></li>
+        <li><a href="/resize-image">Resize Image</a></li>
+        <li><a href="/heic-to-jpg">HEIC to JPG</a></li>
+        <li><a href="/jpg-to-png">JPG to PNG</a></li>
+        <li><a href="/png-to-jpg">PNG to JPG</a></li>
+        <li><a href="/image-to-pdf">Image to PDF</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Image Converter Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I convert JPG to PNG?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. Upload a JPG image and choose PNG as the output format."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Can I convert WEBP images?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The tool supports WEBP image conversion."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the Image Converter free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The Image Converter is completely free."
+      }
+    }
+  ]
+}
+</script>
 
 {% endblock %}

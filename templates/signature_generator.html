@@ -1,24 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Signature Generator | UtilitiesDocker</title>
+{% extends "base.html" %}
 
-    <meta
-        name="description"
-        content="Create and download digital signatures online for free. Draw your signature and save as PNG.">
+{% block title %}
+Signature Generator Online Free | Create Digital Signatures | UtilitiesDocker
+{% endblock %}
 
-    <link
-        rel="stylesheet"
-        href="/static/style.css">
-</head>
-<body>
+{% block meta_description %}
+Create and download digital signatures online for free. Draw your handwritten signature and save it as a transparent PNG for PDF signing and documents.
+{% endblock %}
 
-<div class="container">
+{% block og_title %}
+Signature Generator Online Free
+{% endblock %}
 
-    <h1>✍️ Signature Generator</h1>
+{% block og_description %}
+Draw, create and download digital signatures instantly for PDFs, contracts and documents.
+{% endblock %}
+
+{% block content %}
+
+<div class="tool-container">
+
+    <h1>Signature Generator Online Free</h1>
 
     <p>
-        Draw your signature below and download it as PNG.
+        Draw your signature and download it as a PNG image for use in PDFs, contracts and digital documents.
     </p>
 
     <canvas
@@ -28,17 +33,20 @@
         style="
             border:2px solid #ccc;
             background:white;
-            touch-action:none;">
+            touch-action:none;
+            max-width:100%;
+            border-radius:10px;
+        ">
     </canvas>
 
     <br><br>
 
     <button onclick="clearCanvas()">
-        🗑 Clear
+        Clear Signature
     </button>
 
     <button onclick="downloadSignature()">
-        💾 Download PNG
+        Download PNG
     </button>
 
 </div>
@@ -46,7 +54,9 @@
 <script>
 
 const canvas =
-    document.getElementById("signaturePad");
+    document.getElementById(
+        "signaturePad"
+    );
 
 const ctx =
     canvas.getContext("2d");
@@ -63,25 +73,35 @@ function startDraw(event){
     ctx.beginPath();
 
     ctx.moveTo(
-        (event.clientX || event.touches[0].clientX) - rect.left,
-        (event.clientY || event.touches[0].clientY) - rect.top
+        (event.clientX ||
+         event.touches[0].clientX)
+         - rect.left,
+
+        (event.clientY ||
+         event.touches[0].clientY)
+         - rect.top
     );
+
 }
 
 function draw(event){
 
-    if(!drawing) return;
+    if(!drawing){
+        return;
+    }
 
     const rect =
         canvas.getBoundingClientRect();
 
     const x =
-        (event.clientX || event.touches[0].clientX)
-        - rect.left;
+        (event.clientX ||
+         event.touches[0].clientX)
+         - rect.left;
 
     const y =
-        (event.clientY || event.touches[0].clientY)
-        - rect.top;
+        (event.clientY ||
+         event.touches[0].clientY)
+         - rect.top;
 
     ctx.lineWidth = 2;
     ctx.lineCap = "round";
@@ -89,10 +109,13 @@ function draw(event){
 
     ctx.lineTo(x,y);
     ctx.stroke();
+
 }
 
 function stopDraw(){
+
     drawing = false;
+
 }
 
 function clearCanvas(){
@@ -103,20 +126,26 @@ function clearCanvas(){
         canvas.width,
         canvas.height
     );
+
 }
 
 function downloadSignature(){
 
     const link =
-        document.createElement("a");
+        document.createElement(
+            "a"
+        );
 
     link.download =
         "signature.png";
 
     link.href =
-        canvas.toDataURL("image/png");
+        canvas.toDataURL(
+            "image/png"
+        );
 
     link.click();
+
 }
 
 canvas.addEventListener(
@@ -156,5 +185,147 @@ canvas.addEventListener(
 
 </script>
 
-</body>
-</html>
+<hr>
+
+<div class="seo-content">
+
+    <h2>Create a Digital Signature Online</h2>
+
+    <p>
+        Use this free Signature Generator to create handwritten digital signatures directly in your browser. Draw your signature with a mouse, touchscreen or stylus and download it instantly as a PNG image.
+    </p>
+
+    <p>
+        Digital signature images are commonly used for PDF documents, contracts, agreements, invoices, business forms, HR paperwork and approval workflows.
+    </p>
+
+    <h2>How to Create a Signature</h2>
+
+    <ol>
+        <li>Draw your signature in the signature pad.</li>
+        <li>Review the signature appearance.</li>
+        <li>Clear and redraw if needed.</li>
+        <li>Click Download PNG.</li>
+        <li>Use the signature in PDFs and documents.</li>
+    </ol>
+
+    <h2>Popular Uses</h2>
+
+    <ul>
+        <li>Sign PDF documents.</li>
+        <li>Digital contracts.</li>
+        <li>Business agreements.</li>
+        <li>Employee forms.</li>
+        <li>Invoices and quotations.</li>
+        <li>E-signature workflows.</li>
+    </ul>
+
+    <h2>Benefits of Digital Signatures</h2>
+
+    <ul>
+        <li>No printing required.</li>
+        <li>Sign documents faster.</li>
+        <li>Easy document sharing.</li>
+        <li>Improve workflow efficiency.</li>
+        <li>Reduce paperwork.</li>
+        <li>Reusable signature images.</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Draw signatures with mouse or touch.</li>
+        <li>Download signature as PNG.</li>
+        <li>Works on desktop and mobile devices.</li>
+        <li>No registration required.</li>
+        <li>Instant signature creation.</li>
+        <li>Free online signature maker.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I create a signature online?</h3>
+
+    <p>
+        Yes. Draw your signature using the signature pad and download it instantly.
+    </p>
+
+    <h3>What format is downloaded?</h3>
+
+    <p>
+        The signature is downloaded as a PNG image file that can be inserted into documents and PDFs.
+    </p>
+
+    <h3>Can I use the signature for PDF signing?</h3>
+
+    <p>
+        Yes. The downloaded PNG signature works perfectly with PDF signing tools.
+    </p>
+
+    <h3>Is the Signature Generator free?</h3>
+
+    <p>
+        Yes. The Signature Generator is completely free to use online.
+    </p>
+
+    <h2>Related Tools</h2>
+
+    <ul>
+        <li><a href="/sign-pdf">Sign PDF</a></li>
+        <li><a href="/protect-pdf">Protect PDF</a></li>
+        <li><a href="/pdf-watermark">PDF Watermark</a></li>
+        <li><a href="/qr-code-generator">QR Code Generator</a></li>
+        <li><a href="/password-generator">Password Generator</a></li>
+        <li><a href="/remove-background">Remove Background</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Signature Generator Online",
+  "applicationCategory":"BusinessApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {
+     "@type":"Question",
+     "name":"Can I create a signature online?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. Draw your signature and download it instantly."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"What format is downloaded?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"The signature is downloaded as a PNG image file."
+     }
+   },
+   {
+     "@type":"Question",
+     "name":"Can I use the signature for PDF signing?",
+     "acceptedAnswer":{
+       "@type":"Answer",
+       "text":"Yes. PNG signatures can be used with PDF signing tools and document workflows."
+     }
+   }
+ ]
+}
+</script>
+
+{% endblock %}

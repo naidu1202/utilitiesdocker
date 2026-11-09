@@ -1,30 +1,195 @@
 {% extends "base.html" %}
 
 {% block title %}
-Excel to PDF
+Excel to PDF Converter Online Free | XLSX to PDF | UtilitiesDocker
+{% endblock %}
+
+{% block meta_description %}
+Convert Excel files to PDF online for free. Transform XLS and XLSX spreadsheets into professional PDF documents instantly.
+{% endblock %}
+
+{% block og_title %}
+Excel to PDF Converter Online Free
+{% endblock %}
+
+{% block og_description %}
+Convert Excel spreadsheets to PDF documents quickly and securely online.
 {% endblock %}
 
 {% block content %}
 
-<div class= "tool-container">
+<div class="tool-container">
 
-<h2>Excel to PDF</h2>
+    <h1>Excel to PDF Converter Online</h1>
 
-<form action="/excel-to-pdf"
-      method="post"
-      enctype="multipart/form-data">
+    <p>
+        Convert Excel spreadsheets into professional PDF documents in seconds.
+    </p>
 
-    <input type="file"
-           name="file"
-           accept=".doc,.docx"
-           required>
+    <form
+        action="/excel-to-pdf"
+        method="post"
+        enctype="multipart/form-data">
 
-    <button type="submit">
-        Convert
-    </button>
+        <label>
+            <strong>Select Excel File</strong>
+        </label>
 
-</form>
+        <input
+            type="file"
+            name="file"
+            accept=".xls,.xlsx"
+            required>
+
+        <br><br>
+
+        <button type="submit">
+            Convert to PDF
+        </button>
+
+    </form>
 
 </div>
+
+<hr>
+
+<div class="seo-content">
+
+    <h2>Convert Excel to PDF Online</h2>
+
+    <p>
+        Use this free Excel to PDF converter to transform XLS and XLSX spreadsheet files into PDF documents. PDF files are easier to share, print and preserve formatting across devices and operating systems.
+    </p>
+
+    <p>
+        Whether you are converting financial reports, invoices, project plans, budgets or business spreadsheets, this tool makes it easy to generate professional PDF files directly from Excel documents.
+    </p>
+
+    <h2>How to Convert Excel to PDF</h2>
+
+    <ol>
+        <li>Select an Excel file (.xls or .xlsx).</li>
+        <li>Upload the spreadsheet.</li>
+        <li>Click Convert to PDF.</li>
+        <li>Wait for processing to complete.</li>
+        <li>Download the generated PDF document.</li>
+    </ol>
+
+    <h2>Why Convert Excel Files to PDF?</h2>
+
+    <ul>
+        <li>Preserve spreadsheet formatting.</li>
+        <li>Improve file sharing compatibility.</li>
+        <li>Create printable reports.</li>
+        <li>Protect document layout.</li>
+        <li>Support business presentations.</li>
+        <li>Archive spreadsheets in a fixed format.</li>
+    </ul>
+
+    <h2>Supported Formats</h2>
+
+    <ul>
+        <li>XLS to PDF</li>
+        <li>XLSX to PDF</li>
+        <li>Microsoft Excel Workbook to PDF</li>
+        <li>Spreadsheet to PDF</li>
+    </ul>
+
+    <h2>Features</h2>
+
+    <ul>
+        <li>Fast Excel conversion.</li>
+        <li>Supports XLS and XLSX files.</li>
+        <li>No registration required.</li>
+        <li>Works on desktop and mobile devices.</li>
+        <li>Secure file processing.</li>
+        <li>Free online converter.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can I convert XLSX files to PDF?</h3>
+
+    <p>
+        Yes. The tool supports both XLS and XLSX spreadsheet formats.
+    </p>
+
+    <h3>Will the spreadsheet formatting be preserved?</h3>
+
+    <p>
+        The converter attempts to maintain the original spreadsheet layout, formatting and structure in the PDF output.
+    </p>
+
+    <h3>Can I print the generated PDF?</h3>
+
+    <p>
+        Yes. PDF files are ideal for printing and document distribution.
+    </p>
+
+    <h3>Is the Excel to PDF converter free?</h3>
+
+    <p>
+        Yes. The converter is completely free to use online.
+    </p>
+
+    <h2>Related Document Tools</h2>
+
+    <ul>
+        <li><a href="/pdf-to-excel">PDF to Excel</a></li>
+        <li><a href="/word-to-pdf">Word to PDF</a></li>
+        <li><a href="/pdf-to-word">PDF to Word</a></li>
+        <li><a href="/merge-pdf">Merge PDF</a></li>
+        <li><a href="/compress-pdf">Compress PDF</a></li>
+        <li><a href="/csv-to-json">CSV to JSON</a></li>
+    </ul>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Excel to PDF Converter Online",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "offers":{
+    "@type":"Offer",
+    "price":"0"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"Can I convert XLSX files to PDF?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The converter supports both XLS and XLSX spreadsheet formats."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Will spreadsheet formatting be preserved?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"The converter attempts to maintain the original spreadsheet formatting and layout."
+      }
+    },
+    {
+      "@type":"Question",
+      "name":"Is the Excel to PDF converter free?",
+      "acceptedAnswer":{
+        "@type":"Answer",
+        "text":"Yes. The converter is completely free to use online."
+      }
+    }
+  ]
+}
+</script>
 
 {% endblock %}
