@@ -2,58 +2,609 @@
 <html>
 <head>
 
-<title>
-Edit PDF
-</title>
+<meta charset="UTF-8">
 
-<link
-rel="stylesheet"
-href="/static/style.css">
+<title>Visual PDF Editor</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    margin:20px;
+    background:#f5f5f5;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.toolbar{
+    margin-bottom:20px;
+}
+
+.toolbar button,
+.toolbar input[type=file]{
+    margin-right:10px;
+    margin-bottom:10px;
+}
+
+#editorContainer{
+    border:1px solid #ddd;
+    background:white;
+    padding:10px;
+    overflow:auto;
+    min-height:800px;
+}
+
+canvas{
+    border:1px solid #ccc;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+</style>
 
 </head>
 
 <body>
 
-<div class="container">
+<h1>✏️ Visual PDF Editor</h1>
 
-<h1>
-✏️ Edit PDF
-</h1>
+<div class="toolbar">
 
-<form
-action="/edit-pdf"
-method="post"
-enctype="multipart/form-data">
+    <input
+        type="file"
+        id="pdfFile"
+        accept=".pdf">
 
-<input
-type="file"
-name="file"
-accept=".pdf"
-required>
-
-<br><br>
+    <button type="button" onclick="addText()">
+        Add Text
+    </button>
 
 <input
-type="text"
-name="find_text"
-placeholder="Text to find"
-required>
+    type="file"
+    id="signatureFile"
+    accept="image/*">
 
-<br><br>
-
-<input
-type="text"
-name="replace_text"
-placeholder="Replacement text"
-required>
-
-<br><br>
-
-<button type="submit">
-Edit PDF
+<button
+    type="button"
+    onclick="openSignaturePad()">
+    Draw Signature
 </button>
 
-</form>
+<button
+    type="button"
+    onclick="savePdf()">
+    Save PDF
+</button>
+
+</div>
+
+<div id="editorContainer">
+    <canvas id="pdfCanvas"></canvas>
+</div>
+
+<script>
+
+let canvas =
+    new fabric.Canvas("pdfCanvas");
+
+let pdfId = null;
+
+document
+.getElementById("pdfFile")
+.addEventListener(
+    "change",
+    uploadPdf
+);
+
+async function uploadPdf(e){
+
+    try{
+
+        const file =
+            e.target.files[0];
+
+        if(!file){
+            return;
+        }
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "pdf_file",
+            file
+        );
+
+        const response =
+            await fetch(
+                "/api/upload-pdf",
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
+
+        const data =
+            await response.json();
+
+        pdfId =
+            data.pdf_id;
+
+        await renderPdf(
+            URL.createObjectURL(file)
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Failed loading PDF."
+        );
+    }
+}
+
+async function renderPdf(url){
+
+    try{
+
+        const loadingTask =
+            pdfjsLib.getDocument(url);
+
+        const pdf =
+            await loadingTask.promise;
+
+        const page =
+            await pdf.getPage(1);
+
+        const viewport =
+            page.getViewport({
+                scale:1.5
+            });
+
+        const tempCanvas =
+            document.createElement(
+                "canvas"
+            );
+
+        const context =
+            tempCanvas.getContext(
+                "2d"
+            );
+
+        tempCanvas.width =
+            viewport.width;
+
+        tempCanvas.height =
+            viewport.height;
+
+        await page.render({
+
+            canvasContext: context,
+
+            viewport: viewport
+
+        }).promise;
+
+        canvas.clear();
+
+        canvas.setWidth(
+            viewport.width
+        );
+
+        canvas.setHeight(
+            viewport.height
+        );
+
+        fabric.Image.fromURL(
+
+            tempCanvas.toDataURL(),
+
+            function(img){
+
+                img.selectable =
+                    false;
+
+                img.evented =
+                    false;
+
+                canvas.setBackgroundImage(
+                    img,
+                    canvas.renderAll.bind(
+                        canvas
+                    )
+                );
+
+            }
+
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Unable to render PDF"
+        );
+
+    }
+}
+
+function addText(){
+
+    const text =
+        new fabric.IText(
+
+            "Double click to edit",
+
+            {
+
+                left:100,
+
+                top:100,
+
+                fontSize:20,
+
+                fill:"#000000"
+
+            }
+
+        );
+
+    canvas.add(text);
+
+    canvas.setActiveObject(
+        text
+    );
+
+}
+
+document
+.getElementById(
+    "signatureFile"
+)
+.addEventListener(
+
+    "change",
+
+    function(e){
+
+        const file =
+            e.target.files[0];
+
+        if(!file){
+            return;
+        }
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+        function(event){
+
+            fabric.Image.fromURL(
+
+                event.target.result,
+
+                function(img){
+
+                    img.scale(0.4);
+
+                    img.left = 150;
+
+                    img.top = 150;
+
+                    canvas.add(img);
+
+                    canvas.renderAll();
+
+                }
+
+            );
+
+        };
+
+        reader.readAsDataURL(
+            file
+        );
+
+    }
+
+);
+
+let signaturePad = null;
+
+function openSignaturePad(){
+
+    document
+        .getElementById(
+            "signatureModal"
+        )
+        .style.display =
+        "block";
+
+    if(!signaturePad){
+
+        signaturePad =
+            new SignaturePad(
+
+                document.getElementById(
+                    "signaturePad"
+                )
+
+            );
+
+    }
+
+}
+
+function clearSignature(){
+
+    signaturePad.clear();
+
+}
+
+function addSignatureToPdf(){
+
+    if(
+        signaturePad.isEmpty()
+    ){
+
+        alert(
+            "Please draw your signature"
+        );
+
+        return;
+
+    }
+
+    const signatureImage =
+
+        signaturePad.toDataURL(
+            "image/png"
+        );
+
+    fabric.Image.fromURL(
+
+        signatureImage,
+
+        function(img){
+
+            img.left = 150;
+
+            img.top = 200;
+
+            img.scale(0.5);
+
+            canvas.add(img);
+
+            canvas.setActiveObject(
+                img
+            );
+
+            canvas.renderAll();
+
+        }
+
+    );
+
+    document
+        .getElementById(
+            "signatureModal"
+        )
+        .style.display =
+        "none";
+
+}
+
+async function savePdf(){
+
+    if(!pdfId){
+
+        alert(
+            "Please upload PDF."
+        );
+
+        return;
+    }
+
+    let objects = [];
+
+    canvas.getObjects().forEach(obj => {
+
+    if (obj.type === "i-text") {
+
+        objects.push({
+
+            type: "text",
+
+            text: obj.text,
+
+            x: obj.left,
+
+            y: obj.top,
+
+            font_size: obj.fontSize,
+
+            canvas_width: canvas.width,
+
+            canvas_height: canvas.height,
+
+            page: 0
+
+        });
+
+    }
+
+    else if (obj.type === "image") {
+
+        objects.push({
+
+            type: "image",
+
+            src: obj.toDataURL(),
+
+            x: obj.left,
+
+            y: obj.top,
+
+            width: obj.getScaledWidth(),
+
+            height: obj.getScaledHeight(),
+
+            canvas_width: canvas.width,
+
+            canvas_height: canvas.height,
+
+            page: 0
+
+        });
+
+    }
+
+});
+
+    try{
+
+        const response =
+            await fetch(
+
+                "/api/save-pdf",
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                        "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        pdf_id:
+                            pdfId,
+
+                        objects:
+                            objects
+
+                    })
+
+                }
+
+            );
+
+        if(!response.ok){
+
+            alert(
+                "Failed saving PDF."
+            );
+
+            return;
+        }
+
+        const blob =
+            await response.blob();
+
+        const downloadUrl =
+            URL.createObjectURL(
+                blob
+            );
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+        link.href =
+            downloadUrl;
+
+        link.download =
+            "edited.pdf";
+
+        document.body.appendChild(
+            link
+        );
+
+        link.click();
+
+        link.remove();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Error saving PDF."
+        );
+
+    }
+
+}
+
+</script>
+
+<div
+    id="signatureModal"
+    style="
+        display:none;
+        position:fixed;
+        top:10%;
+        left:20%;
+        width:600px;
+        background:white;
+        padding:20px;
+        border:1px solid #ccc;
+        box-shadow:0 0 15px rgba(0,0,0,.3);
+        z-index:9999;
+    ">
+
+    <h3>Draw Signature</h3>
+
+    <canvas
+        id="signaturePad"
+        width="550"
+        height="200"
+        style="
+            border:1px solid #222;
+            background:white;
+        ">
+    </canvas>
+
+    <br><br>
+
+    <button onclick="clearSignature()">
+        Clear
+    </button>
+
+    <button onclick="addSignatureToPdf()">
+        Add To PDF
+    </button>
+
+    <button onclick="
+        document.getElementById('signatureModal').style.display='none';
+    ">
+        Close
+    </button>
 
 </div>
 

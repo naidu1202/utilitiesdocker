@@ -10,6 +10,8 @@ from pydantic import BaseModel
 from difflib import SequenceMatcher
 from pdf2docx import Converter
 from pillow_heif import register_heif_opener
+import fitz
+import pymupdf as fitz
 import cairosvg
 import pytesseract
 register_heif_opener()
@@ -24,6 +26,13 @@ import json
 import xmltodict
 import yaml
 from dicttoxml import dicttoxml
+
+import uuid
+import os
+from fastapi import UploadFile, File
+import uuid
+from fastapi import UploadFile, File, Form
+from fastapi.responses import FileResponse
 
 from google import genai
 from dotenv import load_dotenv
@@ -152,7 +161,8 @@ TOOL_LINKS = {
     "image-compressor": "/image-compressor",
     "base64-tool": "/base64-tool",
     "compress": "/compress",
-    "images-to-pdf": "/images-to-pdf"
+    "images-to-pdf": "/images-to-pdf",
+    "edit-pdf": "/edit-pdf"
 
 }
 
@@ -165,7 +175,7 @@ TOOL_ICONS = {
     "text-to-speech": "🔊",
     "speech-to-text": "🎤",
     "ai-prompt-generator": "✨",
-
+    "edit-pdf": "✏️",
     "merge": "📄",
     "split": "✂️",
     "compress": "🗜️",
@@ -246,6 +256,7 @@ TOOL_NAMES = {
     "date-difference": "📅 Date Difference",
     "exchange-rate": "💱 Exchange Rate",
     "sign-pdf": "✍️ Sign PDF",
+    "edit-pdf": "✏️ Edit PDF",
     "redact-pdf": "🛑 Redact PDF",
     "mp3-cutter": "✂️ MP3 Cutter",
     "audio-extractor": "🎵 Audio Extractor",
@@ -701,64 +712,24 @@ async def edit_pdf_page(
         name="edit_pdf.html"
     )
 
-import fitz
 
-@app.post("/edit-pdf")
-async def edit_pdf(
 
-    file: UploadFile = File(...),
 
-    find_text: str = Form(...),
+@app.post("/api/upload-pdf")
+async def upload_pdf(pdf_file: UploadFile = File(...)):
 
-    replace_text: str = Form(...)
+    pdf_id = str(uuid.uuid4())
 
-):
-
-    pdf_path = (
-        f"uploads/{uuid.uuid4()}.pdf"
-    )
+    pdf_path = f"uploads/{pdf_id}.pdf"
 
     with open(pdf_path, "wb") as f:
-        f.write(await file.read())
+        f.write(await pdf_file.read())
 
-    doc = fitz.open(pdf_path)
+    print("PDF Uploaded:", pdf_path)
 
-    for page in doc:
-
-        areas = page.search_for(
-            find_text
-        )
-
-        for area in areas:
-
-            page.add_redact_annot(
-                area,
-                fill=(1,1,1)
-            )
-
-        page.apply_redactions()
-
-        for area in areas:
-
-            page.insert_text(
-                area.tl,
-                replace_text,
-                fontsize=12,
-                color=(0,0,0)
-            )
-
-    output_file = (
-        f"output/{uuid.uuid4()}.pdf"
-    )
-
-    doc.save(output_file)
-
-    doc.close()
-
-    return FileResponse(
-        output_file,
-        filename="edited.pdf"
-    )
+    return {
+        "pdf_id": pdf_id
+    }
 
 @app.get("/sign-pdf")
 async def sign_pdf_page(
@@ -769,6 +740,175 @@ async def sign_pdf_page(
         request=request,
         name="sign_pdf.html"
     )
+
+from fastapi import Body
+
+from fastapi import Body
+from fastapi.responses import FileResponse
+import uuid
+import fitz
+import os
+
+@app.post("/api/save-pdf")
+async def save_pdf(data: dict = Body(...)):
+
+    pdf_id = data["pdf_id"]
+
+    objects = data["objects"]
+
+    pdf_path = f"uploads/{pdf_id}.pdf"
+
+    print("PDF PATH:", pdf_path)
+
+    if not os.path.exists(pdf_path):
+
+        return {
+            "error": f"PDF not found: {pdf_path}"
+        }
+
+    doc = fitz.open(pdf_path)
+
+    for obj in objects:
+
+        page_number = obj.get(
+            "page",
+            0
+        )
+
+        page = doc[page_number]
+
+        if obj["type"] == "text":
+
+            pdf_width = page.rect.width
+            pdf_height = page.rect.height
+
+            canvas_width = obj["canvas_width"]
+            canvas_height = obj["canvas_height"]
+
+            pdf_x = (
+                obj["x"]
+                * pdf_width
+                / canvas_width
+            )
+
+            pdf_y = (
+                obj["y"]
+                * pdf_height
+                / canvas_height
+            )
+
+            rect = fitz.Rect(
+                pdf_x,
+                pdf_y,
+                pdf_x + 500,
+                pdf_y + 50
+            )
+
+            page.insert_textbox(
+
+                rect,
+
+                obj["text"],
+
+                fontsize=obj.get(
+                    "font_size",
+                    12
+                ) * 0.5,
+
+                color=(0,0,0)
+
+            )
+
+        elif obj["type"] == "image":
+
+            image_data = obj["src"]
+
+            image_data = image_data.split(",")[1]
+
+            image_bytes = base64.b64decode(
+                image_data
+            )
+
+            image_file = (
+                f"uploads/{uuid.uuid4()}.png"
+            )
+
+            with open(
+                image_file,
+                "wb"
+            ) as f:
+
+                f.write(image_bytes)
+
+            pdf_width = page.rect.width
+            pdf_height = page.rect.height
+
+            canvas_width = obj["canvas_width"]
+            canvas_height = obj["canvas_height"]
+
+            pdf_x = (
+                obj["x"]
+                * pdf_width
+                / canvas_width
+            )
+
+            pdf_y = (
+                obj["y"]
+                * pdf_height
+                / canvas_height
+            )
+
+            pdf_w = (
+                obj["width"]
+                * pdf_width
+                / canvas_width
+            )
+
+            pdf_h = (
+                obj["height"]
+                * pdf_height
+                / canvas_height
+            )
+
+            rect = fitz.Rect(
+
+                pdf_x,
+                pdf_y,
+
+                pdf_x + pdf_w,
+
+                pdf_y + pdf_h
+
+            )
+
+            page.insert_image(
+
+                rect,
+
+                filename=image_file
+
+            )
+
+        
+    output_file = (
+        f"output/{uuid.uuid4()}.pdf"
+    )
+
+    doc.save(output_file)
+
+    doc.close()
+
+    print(
+        "Saved:",
+        output_file
+    )
+
+    return FileResponse(
+        output_file,
+        media_type="application/pdf",
+        filename="edited.pdf"
+    )
+
 
 @app.post("/sign-pdf")
 async def sign_pdf(
