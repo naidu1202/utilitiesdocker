@@ -329,6 +329,12 @@ TOOL_NAMES = {
 
 import sqlite3
 
+
+
+@app.get("/privacy", response_class=HTMLResponse)
+async def privacy():
+    return open("templates/privacy.html").read()
+
 def init_db():
 
     conn = sqlite3.connect("tools.db")
