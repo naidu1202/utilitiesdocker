@@ -66,6 +66,12 @@ from PIL import Image
 from reportlab.pdfgen import canvas
 from pypdf import PdfReader
 from pypdf import PdfWriter
+from fastapi.responses import (
+    FileResponse,
+    HTMLResponse,
+    Response,
+    RedirectResponse
+)
 
 
 
@@ -86,6 +92,112 @@ templates = Jinja2Templates(directory="templates")
 
 
 from fastapi.responses import HTMLResponse
+
+# SEO redirects for old URLs found by Google
+
+@app.get("/audio-cutter")
+async def audio_cutter_redirect():
+    return RedirectResponse("/mp3-cutter", status_code=301)
+
+@app.get("/base64-encoder")
+async def base64_encoder_redirect():
+    return RedirectResponse("/base64-tool", status_code=301)
+
+@app.get("/base64")
+async def base64_redirect():
+    return RedirectResponse("/base64-tool", status_code=301)
+
+@app.get("/loan-calculator")
+async def loan_calculator_redirect():
+    return RedirectResponse("/emi-calculator", status_code=301)
+
+@app.get("/compress-pdf")
+async def compress_pdf_redirect():
+    return RedirectResponse("/compress", status_code=301)
+
+@app.get("/compress-video")
+async def compress_video_redirect():
+    return RedirectResponse("/video-compressor", status_code=301)
+
+@app.get("/merge-pdf")
+async def merge_pdf_redirect():
+    return RedirectResponse("/merge", status_code=301)
+
+
+@app.get("/ocr-pdf")
+async def ocr_pdf_redirect():
+    return RedirectResponse(
+        "/ocr-pdf-page",
+        status_code=301
+    )
+
+@app.get("/split-pdf")
+async def split_pdf_redirect():
+    return RedirectResponse("/split", status_code=301)
+
+@app.get("/unit-converter")
+async def unit_converter_redirect():
+    return RedirectResponse("/converters", status_code=301)
+
+@app.get("/image-to-pdf")
+async def image_to_pdf_redirect():
+    return RedirectResponse("/images-to-pdf", status_code=301)
+
+@app.get("/qr-code-generator")
+async def qr_code_generator_redirect():
+    return RedirectResponse("/qr-generator", status_code=301)
+
+@app.get("/whois-lookup")
+async def whois_lookup_redirect():
+    return RedirectResponse("/ip-lookup", status_code=301)
+
+@app.get("/audio-file")
+async def audio_file_redirect():
+    return RedirectResponse("/", status_code=301)
+
+@app.get("/grammar-checker")
+async def grammar_checker_redirect():
+    return RedirectResponse("/text-utilities", status_code=301)
+
+@app.get("/text-rewriter")
+async def text_rewriter_redirect():
+    return RedirectResponse("/ai-summarizer", status_code=301)
+
+@app.get("/xml-formatter")
+async def xml_formatter_redirect():
+    return RedirectResponse("/json-formatter", status_code=301)
+
+@app.get("/percentage-calculator")
+async def percentage_calculator_redirect():
+    return RedirectResponse("/", status_code=301)
+
+@app.get("/ai-translator")
+async def ai_translator_redirect():
+    return RedirectResponse("/ai-summarizer", status_code=301)
+
+@app.get("/uuid-generator")
+async def uuid_generator_redirect():
+    return RedirectResponse("/", status_code=301)
+
+@app.get("/bmi-calculator")
+async def bmi_calculator_redirect():
+    return RedirectResponse("/", status_code=301)
+
+@app.get("/pdf-to-excel")
+async def pdf_to_excel_redirect():
+    return RedirectResponse("/pdf-to-word", status_code=301)
+
+@app.get("/dns-lookup")
+async def dns_lookup_redirect():
+    return RedirectResponse("/ip-lookup", status_code=301)
+
+@app.get("/keyword-extractor")
+async def keyword_extractor_redirect():
+    return RedirectResponse("/ai-summarizer", status_code=301)
+
+@app.get("/merge-video")
+async def merge_video_redirect():
+    return RedirectResponse("/video-compressor", status_code=301)
 
 TOOL_LINKS = {
 
@@ -132,7 +244,7 @@ TOOL_LINKS = {
     "ip-lookup": "/ip-lookup",
     "timezone-converter": "/timezone-converter",
     "svg-to-png": "/svg-to-png",
-    "ocr-pdf-page": "/ocr-pdf-page",
+    "ocr-pdf": "/ocr-pdf",
     "text-utilities": "/text-utilities",
     "csv-to-json": "/csv-to-json",
     "json-to-csv": "/json-to-csv",
@@ -2585,13 +2697,7 @@ async def svg_to_png_page(request: Request):
         name="svg_to_png.html"
     )
 
-@app.get("/ocr-pdf-page", response_class=HTMLResponse)
-async def ocr_pdf_page(request: Request):
-    record_visit("ocr-pdf-page")
-    return templates.TemplateResponse(
-        request=request,
-        name="ocr_pdf.html"
-    )
+
 
 @app.get("/text-utilities", response_class=HTMLResponse)
 async def text_utilities_page(request: Request):
