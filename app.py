@@ -2880,8 +2880,8 @@ async def heic_to_jpg(
 async def age_calculator(request: Request):
     record_visit("age-calculator")
     return templates.TemplateResponse(
-        request,
-        "age-calculator.html"
+        request=request,
+        name="age_calculator.html"
     )
 
 @app.get("/emi-calculator", response_class=HTMLResponse)
