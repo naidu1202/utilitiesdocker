@@ -2876,12 +2876,12 @@ async def heic_to_jpg(
         filename="converted.jpg"
     )
 
-@app.get("/age-calculator")
+@app.get("/age-calculator", response_class=HTMLResponse)
 async def age_calculator(request: Request):
     record_visit("age-calculator")
     return templates.TemplateResponse(
         request=request,
-        name="age_calculator.html"
+        name="age-calculator.html"
     )
 
 @app.get("/emi-calculator", response_class=HTMLResponse)
