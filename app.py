@@ -765,7 +765,6 @@ async def sitemap():
     "/edit-pdf",
     "/compare-pdf",
     "/organize-pdf",
-    "/ocr-pdf",
     "/redact-pdf",
     "/sql-formatter",
     "/audio-file"
@@ -814,6 +813,13 @@ async def exchange_rate(request: Request):
     )
 
     
+@app.get("/ocr-pdf-page")
+async def ocr_pdf_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="ocr_pdf_page.html"
+    )
+
 @app.get("/edit-pdf")
 async def edit_pdf_page(
     request: Request
