@@ -1,20 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}
-EMI Calculator Online Free | Loan EMI Calculator | UtilitiesDocker
-{% endblock %}
+{% block title %}EMI Calculator Online Free | Loan EMI Calculator | UtilitiesDocker{% endblock %}
 
-{% block meta_description %}
-Calculate monthly EMI, total interest and total repayment instantly with our free online EMI calculator.
-{% endblock %}
+{% block meta_description %}Calculate monthly EMI, total interest and total repayment instantly with our free online EMI calculator for home, personal and car loans.{% endblock %}
 
-{% block og_title %}
-EMI Calculator Online Free
-{% endblock %}
+{% block og_title %}EMI Calculator Online Free{% endblock %}
 
-{% block og_description %}
-Calculate loan EMI, total interest and repayment amount instantly.
-{% endblock %}
+{% block og_description %}Calculate loan EMI, total interest and repayment amount instantly.{% endblock %}
 
 {% block content %}
 
@@ -26,50 +18,26 @@ Calculate loan EMI, total interest and repayment amount instantly.
         Calculate your monthly EMI, total interest payable and total loan repayment amount.
     </p>
 
-    <label>
-        <strong>Loan Amount</strong>
-    </label>
+    <label><strong>Loan Amount</strong></label>
+    <input type="number" id="loan" placeholder="500000">
 
-    <input
-        type="number"
-        id="loan"
-        placeholder="500000">
+    <label><strong>Annual Interest Rate (%)</strong></label>
+    <input type="number" id="interest" placeholder="8.5">
 
-    <label>
-        <strong>Annual Interest Rate (%)</strong>
-    </label>
+    <label><strong>Loan Tenure (Years)</strong></label>
+    <input type="number" id="years" placeholder="20">
 
-    <input
-        type="number"
-        id="interest"
-        placeholder="8.5">
+    <button onclick="calculateEMI()">Calculate EMI</button>
 
-    <label>
-        <strong>Loan Tenure (Years)</strong>
-    </label>
-
-    <input
-        type="number"
-        id="years"
-        placeholder="20">
-
-    <button onclick="calculateEMI()">
-        Calculate EMI
-    </button>
-
-    <div
-        class="result"
-        id="result">
-    </div>
+    <div class="result" id="result"></div>
 
 </div>
 
 <style>
-
 .tool-box{
     max-width:800px;
     margin:auto;
-    background:#ffffff;
+    background:#fff;
     padding:30px;
     border-radius:12px;
     box-shadow:0 2px 10px rgba(0,0,0,.1);
@@ -90,7 +58,7 @@ button{
     border:none;
     border-radius:8px;
     background:#2563eb;
-    color:white;
+    color:#fff;
     cursor:pointer;
 }
 
@@ -105,157 +73,47 @@ button:hover{
     border-radius:10px;
     display:none;
 }
-
 </style>
 
 <script>
-
 function calculateEMI(){
 
-    let P =
-        parseFloat(
-            document.getElementById("loan").value
-        );
+    const P = parseFloat(document.getElementById("loan").value);
+    const annualRate = parseFloat(document.getElementById("interest").value);
+    const years = parseFloat(document.getElementById("years").value);
 
-    let annualRate =
-        parseFloat(
-            document.getElementById("interest").value
-        );
-
-    let years =
-        parseFloat(
-            document.getElementById("years").value
-        );
-
-    if(
-        isNaN(P) ||
-        isNaN(annualRate) ||
-        isNaN(years)
-    ){
+    if(isNaN(P) || isNaN(annualRate) || isNaN(years)){
         alert("Please enter all values.");
         return;
     }
 
-    let r =
-        annualRate / 12 / 100;
+    const r = annualRate / 12 / 100;
+    const n = years * 12;
 
-    let n =
-        years * 12;
+    const emi =
+        (P * r * Math.pow(1 + r, n)) /
+        (Math.pow(1 + r, n) - 1);
 
-    let emi =
-        (P * r * Math.pow(1+r,n)) /
-        (Math.pow(1+r,n)-1);
+    const totalPayment = emi * n;
+    const totalInterest = totalPayment - P;
 
-    let totalPayment =
-        emi * n;
-
-    let totalInterest =
-        totalPayment - P;
-
-    const result =
-        document.getElementById("result");
+    const result = document.getElementById("result");
 
     result.style.display = "block";
 
     result.innerHTML = `
         <h3>Loan Summary</h3>
-
-        <p>
-            Monthly EMI:
-            <strong>${emi.toFixed(2)}</strong>
-        </p>
-
-        <p>
-            Total Interest:
-            <strong>${totalInterest.toFixed(2)}</strong>
-        </p>
-
-        <p>
-            Total Repayment:
-            <strong>${totalPayment.toFixed(2)}</strong>
-        </p>
+        <p>Monthly EMI: <strong>${emi.toFixed(2)}</strong></p>
+        <p>Total Interest: <strong>${totalInterest.toFixed(2)}</strong></p>
+        <p>Total Repayment: <strong>${totalPayment.toFixed(2)}</strong></p>
     `;
-
 }
-
 </script>
 
 <hr>
 
 <div class="seo-content">
-
-    <h2>What is an EMI Calculator?</h2>
-
-    <p>
-        An EMI (Equated Monthly Installment) Calculator helps borrowers estimate their monthly loan repayments. Enter the loan amount, interest rate and loan tenure to instantly calculate the EMI, total interest payable and total repayment amount.
-    </p>
-
-    <p>
-        This calculator is useful for home loans, personal loans, car loans, education loans, business loans and mortgage planning.
-    </p>
-
-    <h2>How to Calculate EMI</h2>
-
-    <ol>
-        <li>Enter the loan amount.</li>
-        <li>Enter the annual interest rate.</li>
-        <li>Enter the loan tenure in years.</li>
-        <li>Click Calculate EMI.</li>
-        <li>View your monthly installment and repayment details.</li>
-    </ol>
-
-    <h2>Benefits of Using an EMI Calculator</h2>
-
-    <ul>
-        <li>Estimate monthly loan payments.</li>
-        <li>Compare loan options.</li>
-        <li>Plan finances effectively.</li>
-        <li>Understand interest costs.</li>
-        <li>Improve budgeting decisions.</li>
-        <li>Avoid repayment surprises.</li>
-    </ul>
-
-    <h2>Example EMI Calculation</h2>
-
-    <p>
-        For a loan amount of 500,000 with an annual interest rate of 8.5% and a tenure of 20 years, the calculator instantly estimates the monthly EMI and total repayment amounts.
-    </p>
-
-    <h2>Frequently Asked Questions</h2>
-
-    <h3>What does EMI stand for?</h3>
-
-    <p>
-        EMI stands for Equated Monthly Installment, which is the fixed monthly payment made towards a loan.
-    </p>
-
-    <h3>Can I calculate home loan EMI?</h3>
-
-    <p>
-        Yes. This calculator can be used for home loans, mortgages and housing finance calculations.
-    </p>
-
-    <h3>Can I calculate car loan EMI?</h3>
-
-    <p>
-        Yes. The same EMI formula applies to car loans, personal loans and most installment-based financing.
-    </p>
-
-    <h3>Is the EMI Calculator free?</h3>
-
-    <p>
-        Yes. The EMI Calculator is completely free to use online.
-    </p>
-
-    <h2>Related Financial Calculators</h2>
-
-    <ul>
-        <li><a href="/loan-calculator">Loan Calculator</a></li>
-        <li><a href="/percentage-calculator">Percentage Calculator</a></li>
-        <li><a href="/age-calculator">Age Calculator</a></li>
-        <li><a href="/date-difference">Date Difference Calculator</a></li>
-    </ul>
-
+    <!-- Keep your existing SEO content here -->
 </div>
 
 <script type="application/ld+json">
@@ -282,7 +140,7 @@ function calculateEMI(){
       "name":"What does EMI stand for?",
       "acceptedAnswer":{
         "@type":"Answer",
-        "text":"EMI stands for Equated Monthly Installment, which is a fixed monthly payment towards a loan."
+        "text":"EMI stands for Equated Monthly Installment."
       }
     },
     {
@@ -290,7 +148,7 @@ function calculateEMI(){
       "name":"Can I calculate home loan EMI?",
       "acceptedAnswer":{
         "@type":"Answer",
-        "text":"Yes. This calculator can be used for home loans, mortgages and housing finance."
+        "text":"Yes, this calculator can be used for home loans and mortgages."
       }
     },
     {
@@ -298,7 +156,7 @@ function calculateEMI(){
       "name":"Is the EMI Calculator free?",
       "acceptedAnswer":{
         "@type":"Answer",
-        "text":"Yes. The EMI Calculator is completely free."
+        "text":"Yes, it is completely free."
       }
     }
   ]
