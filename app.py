@@ -444,8 +444,11 @@ import sqlite3
 
 
 @app.get("/privacy", response_class=HTMLResponse)
-async def privacy():
-    return open("templates/privacy.html").read()
+async def privacy(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="privacy.html"
+    )
 
 def init_db():
 
@@ -2891,10 +2894,12 @@ async def age_calculator(request: Request):
     )
 
 @app.get("/emi-calculator", response_class=HTMLResponse)
-async def emi_calculator():
+async def emi_calculator(request: Request):
     record_visit("emi-calculator")
-    with open("templates/emi-calculator.html") as f:
-        return HTMLResponse(f.read())
+    return templates.TemplateResponse(
+        request=request,
+        name="emi-calculator.html"
+    )
 
 @app.get("/merge", response_class=HTMLResponse)
 async def merge_page(request: Request):
