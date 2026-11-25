@@ -693,7 +693,8 @@ async def date_difference_page(
         name="date_difference.html"
     )
 
-@app.get("/sitemap.xml")
+
+@app.api_route("/sitemap.xml", methods=["GET", "HEAD"])
 async def sitemap():
 
     urls = [
@@ -795,9 +796,9 @@ async def sitemap():
 
 
 
-@app.get("/robots.txt")
-async def robots_txt():
 
+@app.api_route("/robots.txt", methods=["GET", "HEAD"])
+async def robots_txt():
     return Response(
         content="""User-agent: *
 Allow: /
@@ -806,7 +807,6 @@ Sitemap: https://utilitiesdocker.com/sitemap.xml
 """,
         media_type="text/plain"
     )
-
 @app.get("/exchange-rate", response_class=HTMLResponse)
 async def exchange_rate(request: Request):
     record_visit("exchange-rate")
